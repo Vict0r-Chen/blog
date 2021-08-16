@@ -5,16 +5,23 @@
   
 
   
-  <title>Victor&#39;s blog</title>
+  <title>安装Framework或远程调试工具时出现 &#39;处理证书链,但是在不受信任提供程序信任的根证书中终止...&#39; | Victor&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Victor&#39;s blog">
-<meta property="og:url" content="https://v1ctor.cn/index.html">
+  <meta name="description" content="今天发现一个WPF程序在Win7上有兼容性问题，但是从log看不出有啥问题，于是搭了一个Win7的虚拟机环境，但上去装Visual Studio 2019远程调试工具时竟然提示“处理证书链,但是在不受信任提供程序信任的根证书中终止…”，心想这不会是个流氓软件吧？但我是从MS官网下载的啊…找了goole一下，应该是vs2019调试工具中的证书在win7的证书库中不存在导致的，因为无论是vs2019还">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安装Framework或远程调试工具时出现 &#39;处理证书链,但是在不受信任提供程序信任的根证书中终止...&#39;">
+<meta property="og:url" content="https://v1ctor.cn/2021/08/16/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="今天发现一个WPF程序在Win7上有兼容性问题，但是从log看不出有啥问题，于是搭了一个Win7的虚拟机环境，但上去装Visual Studio 2019远程调试工具时竟然提示“处理证书链,但是在不受信任提供程序信任的根证书中终止…”，心想这不会是个流氓软件吧？但我是从MS官网下载的啊…找了goole一下，应该是vs2019调试工具中的证书在win7的证书库中不存在导致的，因为无论是vs2019还">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://v1ctor.cn/2021/08/16/images/202108/2021081601.png">
+<meta property="og:image" content="https://v1ctor.cn/2021/08/16/images/202108/2021081602.png">
+<meta property="article:published_time" content="2021-08-16T09:59:15.000Z">
+<meta property="article:modified_time" content="2021-08-16T10:17:52.859Z">
 <meta property="article:author" content="Victor Chen">
-<meta property="article:tag" content="blog .net eletron wpf flutter 微信小程序 uniapp">
+<meta property="article:tag" content=".NET">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://v1ctor.cn/2021/08/16/images/202108/2021081601.png">
   
     <link rel="alternate" href="/atom.xml" title="Victor&#39;s blog" type="application/atom+xml">
   
@@ -63,9 +70,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-安装Framework或远程调试工具时出现-处理证书链-但是在不受信任提供程序信任的根证书中终止" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-安装Framework或远程调试工具时出现-处理证书链-但是在不受信任提供程序信任的根证书中终止" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/08/16/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/" class="article-date">
   <time datetime="2021-08-16T09:59:15.000Z" itemprop="datePublished">2021-08-16</time>
@@ -78,8 +83,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/16/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/">安装Framework或远程调试工具时出现 &#39;处理证书链,但是在不受信任提供程序信任的根证书中终止...&#39;</a>
+    <h1 class="article-title" itemprop="name">
+      安装Framework或远程调试工具时出现 &#39;处理证书链,但是在不受信任提供程序信任的根证书中终止...&#39;
     </h1>
   
 
@@ -112,60 +117,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-序" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/03/%E5%BA%8F/" class="article-date">
-  <time datetime="2020-10-03T04:40:22.000Z" itemprop="datePublished">2020-10-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/03/%E5%BA%8F/">序</a>
-    </h1>
+    <a href="/2020/10/03/%E5%BA%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">序</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>很久之前便想分享一下工作中碰到的问题、解决方案，虽然也完全可以在自己的服务器上搭配Wordpress做个博客站来达到这个目的，但感觉使用GitHub Pages+Hexo的静态博客站看起来会更酷一些，于是花了几个小时做了这么一件事情，这个国庆也不算完全浪费了。</p>
-<p>说来惭愧，互联网行业从业7年，一直在索取，从未付出，如今为了沉淀一些东西，将自己认为一些有价值的东西在此分享，也算是还账了！</p>
-<p>因为项目原因，最近其实有接触到一些比较冷门的东西（似乎国内看来如此），像是Windows切换默认音频、禁用音频设备、Xbox设备通讯，如果使用百度来检索这些内容，几乎很难找到想要的东西，所幸在几年前就养成了使用Google的习惯，在加上有一丁丁的英语阅读能力，所以最终这些问题还是找到了解决方案。所以我计划在未来，将这些内容分享出来–如果我没变得更懒的话～</p>
-<p>另外最近这段时间，越发觉得国外编程的环境比国内还是好太多了。举个例子，我有个技术问题，假如在StackOverflow提问，大部分情况你会得到最准确专业的答案，如果有不准确或者其它问题，甚至还有人发comment说答主答案不够准确、答主太懒只给链接不给代码的情况；如果是在CSDN提问，你可能收获到的是一堆的“同问”、“帮楼主顶一下”、“蹭一下分”（黑人问号脸）；</p>
-<p>鉴于此，建议大伙多使用Google，学会用英文搜索问题————这个非常重要，因为对于我来说可能有25%的情况是，相同的问题，在百度上搜索，我完全找不到相关的内容（即便增加搜索范围、更换关键字），以至于我觉得这是不是我的错觉，但如果使用英文在Google搜索，你通常会发现这些问题很多人都碰见过并且已经解决了。值得一提的是，如果使用中文在Google搜索，大部分情况下你也无法找到解决方案，这应该能说明百度在中文搜索方面已经比较不错了————只是会有一些垃圾信息跟不准确。</p>
-<p>okok，不再安利Google了，懂的人自然懂。😏</p>
-<hr />
-<p><strong>2021-8-15 更新：</strong></p>
-<p>没想到再次更新，居然距上次近1年了，希望接下来至少要 <s>每周</s> 每个月更新一篇文章！</p>
-<p>这次使用我的<a target="_blank" rel="noopener" href="https://github.com/Vict0r-Chen/v1ctor.git">新仓库(v1ctor)</a>来发布博客，因为免费用户<code>Private repo</code>的Github action有每月<a target="_blank" rel="noopener" href="https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#included-storage-and-minutes">时长限制</a> - <code>2,000 Minutes per month</code>，所以就将仓库设为<code>public</code>了，同时搭配Github action来自动发布博客，希望能减少发布工作量以减少不发博客的理由😂😂</p>
-<p>这次 <s>抄袭</s> 借鉴了不少东西（因为我甚至不知道DeployKey咋用），感谢帮助过我的人、感谢互联网，希望接下来我也能出一份力，奥力给~</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span>&#123;</span><br><span class="line">    Consolo.Writeline(<span class="string">&quot;Hello Blog~&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://v1ctor.cn/2020/10/03/%E5%BA%8F/" data-id="ckscwfew30000vku2hgbz12br" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
-
-
-  
-
 
 </section>
         
