@@ -1,229 +1,400 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 <head>
-  <meta charset="utf-8">
-  
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-  
-  <title>WPF中不同文字显示不同颜色(高亮) | Victor&#39;s blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本文代码来自于 Stackoverflow @Blechdose，感谢！ 但由于代码不完全满足需求，所以稍改了一下，并未完整封装。  功能概述： 实现自动替换TextBlock内容中的多个占位符，并将替换后的字符高亮（样式自定义）。  用例： 12345678910&lt;!--   若HighlightTermBehavior处于另外的类库中，则需额外添加此定义:   xmlns:MyContr">
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文代码来自于 Stackoverflow @Blechdose，感谢！ 但由于代码不完全满足需求，所以稍改了一下，并未完整封装。  功能概述： 实现自动替换TextBlock内容中的多个占位符，并将替换后的字符高亮（样式自定义）。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WPF中不同文字显示不同颜色(高亮)">
 <meta property="og:url" content="https://v1ctor.cn/2022/01/13/WPF%E4%B8%AD%E4%B8%8D%E5%90%8C%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2-%E9%AB%98%E4%BA%AE/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
-<meta property="og:description" content="本文代码来自于 Stackoverflow @Blechdose，感谢！ 但由于代码不完全满足需求，所以稍改了一下，并未完整封装。  功能概述： 实现自动替换TextBlock内容中的多个占位符，并将替换后的字符高亮（样式自定义）。  用例： 12345678910&lt;!--   若HighlightTermBehavior处于另外的类库中，则需额外添加此定义:   xmlns:MyContr">
+<meta property="og:description" content="本文代码来自于 Stackoverflow @Blechdose，感谢！ 但由于代码不完全满足需求，所以稍改了一下，并未完整封装。  功能概述： 实现自动替换TextBlock内容中的多个占位符，并将替换后的字符高亮（样式自定义）。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://v1ctor.cn/2022/01/13/WPF%E4%B8%AD%E4%B8%8D%E5%90%8C%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2-%E9%AB%98%E4%BA%AE/20220113_01.png">
 <meta property="article:published_time" content="2022-01-13T02:14:49.000Z">
-<meta property="article:modified_time" content="2022-01-13T02:24:08.521Z">
+<meta property="article:modified_time" content="2022-01-14T06:10:02.043Z">
 <meta property="article:author" content="Victor Chen">
 <meta property="article:tag" content="WPF">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://v1ctor.cn/2022/01/13/WPF%E4%B8%AD%E4%B8%8D%E5%90%8C%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2-%E9%AB%98%E4%BA%AE/20220113_01.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Victor&#39;s blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<link rel="canonical" href="https://v1ctor.cn/2022/01/13/WPF%E4%B8%AD%E4%B8%8D%E5%90%8C%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2-%E9%AB%98%E4%BA%AE/">
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Victor&#39;s blog</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://v1ctor.cn"></form>
-      </div>
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-cn'
+  };
+</script>
+
+  <title>WPF中不同文字显示不同颜色(高亮) | Victor's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-WPF中不同文字显示不同颜色-高亮" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/01/13/WPF%E4%B8%AD%E4%B8%8D%E5%90%8C%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2-%E9%AB%98%E4%BA%AE/" class="article-date">
-  <time datetime="2022-01-13T02:14:49.000Z" itemprop="datePublished">2022-01-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      WPF中不同文字显示不同颜色(高亮)
-    </h1>
-  
 
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Victor's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay hungry, stay foolish.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/2022/01/13/WPF%E4%B8%AD%E4%B8%8D%E5%90%8C%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2-%E9%AB%98%E4%BA%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WPF中不同文字显示不同颜色(高亮)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-13 10:14:49" itemprop="dateCreated datePublished" datetime="2022-01-13T10:14:49+08:00">2022-01-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-14 14:10:02" itemprop="dateModified" datetime="2022-01-14T14:10:02+08:00">2022-01-14</time>
+              </span>
+
+          
+
+        </div>
       </header>
+
     
-    <div class="article-entry" itemprop="articleBody">
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <p>本文代码来自于 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/751741/wpf-textblock-highlight-certain-parts-based-on-search-condition/60474831#60474831">Stackoverflow</a> @<code>Blechdose</code>，感谢！<br />
 但由于代码不完全满足需求，所以稍改了一下，并未完整封装。</p>
 <h3 id="功能概述"><a class="markdownIt-Anchor" href="#功能概述"></a> 功能概述：</h3>
 <p>实现自动替换<code>TextBlock</code>内容中的多个占位符，并将替换后的字符高亮（样式自定义）。</p>
+<span id="more"></span>
 <h3 id="用例"><a class="markdownIt-Anchor" href="#用例"></a> 用例：</h3>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">   若HighlightTermBehavior处于另外的类库中，则需额外添加此定义:</span></span><br><span class="line"><span class="comment">   xmlns:MyControls=&quot;clr-namespace:MyControls;assembly=MyControls&quot;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   另：HighlightTermBehavior.Text和TermToBeHighlighted也可使用动态或静态资源绑定</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">TextBlock</span> <span class="attr">TextWrapping</span>=<span class="string">&quot;Wrap&quot;</span> <span class="attr">FontWeight</span>=<span class="string">&quot;Bold&quot;</span> <span class="attr">FontSize</span>=<span class="string">&quot;14&quot;</span> <span class="attr">Padding</span>=<span class="string">&quot;10&quot;</span> <span class="attr">TextAlignment</span>=<span class="string">&quot;Center&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">MyControls:HighlightTermBehavior.TermToBeHighlighted</span>=<span class="string">&quot;PS|Options&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">MyControls:HighlightTermBehavior.Text</span>=<span class="string">&quot;Press &#123;0&#125; and &#123;1&#125;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">TextBlock</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h3 id="效果"><a class="markdownIt-Anchor" href="#效果"></a> 效果：</h3>
 <img src="/2022/01/13/WPF%E4%B8%AD%E4%B8%8D%E5%90%8C%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2-%E9%AB%98%E4%BA%AE/20220113_01.png" class="" title="效果图">
 <h3 id="源码highlighttermbehavior"><a class="markdownIt-Anchor" href="#源码highlighttermbehavior"></a> 源码(<code>HighlightTermBehavior</code>)：</h3>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">MyControls</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HighlightTermBehavior</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> DependencyProperty TextProperty = DependencyProperty.RegisterAttached(</span><br><span class="line">            <span class="string">&quot;Text&quot;</span>,</span><br><span class="line">            <span class="keyword">typeof</span>(<span class="built_in">string</span>),</span><br><span class="line">            <span class="keyword">typeof</span>(HighlightTermBehavior),</span><br><span class="line">            <span class="keyword">new</span> FrameworkPropertyMetadata(<span class="string">&quot;&quot;</span>, OnTextChanged));</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">GetText</span>(<span class="params">FrameworkElement frameworkElement</span>)</span> =&gt; (<span class="built_in">string</span>)frameworkElement.GetValue(TextProperty);</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetText</span>(<span class="params">FrameworkElement frameworkElement, <span class="built_in">string</span> <span class="keyword">value</span></span>)</span> =&gt; frameworkElement.SetValue(TextProperty, <span class="keyword">value</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> DependencyProperty TermToBeHighlightedProperty = DependencyProperty.RegisterAttached(</span><br><span class="line">            <span class="string">&quot;TermToBeHighlighted&quot;</span>,</span><br><span class="line">            <span class="keyword">typeof</span>(<span class="built_in">string</span>),</span><br><span class="line">            <span class="keyword">typeof</span>(HighlightTermBehavior),</span><br><span class="line">            <span class="keyword">new</span> FrameworkPropertyMetadata(<span class="string">&quot;&quot;</span>, OnTextChanged));</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">GetTermToBeHighlighted</span>(<span class="params">FrameworkElement frameworkElement</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="built_in">string</span>)frameworkElement.GetValue(TermToBeHighlightedProperty);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetTermToBeHighlighted</span>(<span class="params">FrameworkElement frameworkElement, <span class="built_in">string</span> <span class="keyword">value</span></span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            frameworkElement.SetValue(TermToBeHighlightedProperty, <span class="keyword">value</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OnTextChanged</span>(<span class="params">DependencyObject d, DependencyPropertyChangedEventArgs e</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (d <span class="keyword">is</span> TextBlock textBlock)</span><br><span class="line">                SetTextBlockTextAndHighlightTerm(textBlock, GetText(textBlock), GetTermToBeHighlighted(textBlock));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetTextBlockTextAndHighlightTerm</span>(<span class="params">TextBlock textBlock, <span class="built_in">string</span> text, <span class="built_in">string</span> termToBeHighlighted</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            textBlock.Text = <span class="built_in">string</span>.Empty;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">string</span>.IsNullOrEmpty(text))</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            <span class="comment">//此处使用“|”将需要高亮的字符串分割成参数数组，然后使用string.Format进行格式化，可自行调整</span></span><br><span class="line">            text = <span class="built_in">string</span>.Format(text, termToBeHighlighted.Split(<span class="string">&#x27;|&#x27;</span>));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> textParts = SplitTextIntoTermAndNotTermParts(text, termToBeHighlighted);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> textPart <span class="keyword">in</span> textParts)</span><br><span class="line">                AddPartToTextBlockAndHighlightIfNecessary(textBlock, termToBeHighlighted, textPart);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">AddPartToTextBlockAndHighlightIfNecessary</span>(<span class="params">TextBlock textBlock, <span class="built_in">string</span> termToBeHighlighted, <span class="built_in">string</span> textPart</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (termToBeHighlighted.Contains(textPart))</span><br><span class="line">                AddHighlightedPartToTextBlock(textBlock, textPart);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                AddPartToTextBlock(textBlock, textPart);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">AddPartToTextBlock</span>(<span class="params">TextBlock textBlock, <span class="built_in">string</span> part</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//此处样式为硬编码，有待优化🤣</span></span><br><span class="line">            textBlock.Inlines.Add(<span class="keyword">new</span> Run &#123; Text = part, FontWeight = FontWeights.Bold, Foreground = <span class="keyword">new</span> SolidColorBrush(Color.FromRgb(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)) &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">AddHighlightedPartToTextBlock</span>(<span class="params">TextBlock textBlock, <span class="built_in">string</span> part</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//此处样式为硬编码，有待优化🤣</span></span><br><span class="line">            textBlock.Inlines.Add(<span class="keyword">new</span> Run &#123; Text = part, FontWeight = FontWeights.Bold, Foreground = <span class="keyword">new</span> SolidColorBrush(Color.FromRgb(<span class="number">0xFF</span>, <span class="number">0</span>, <span class="number">0</span>)) &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;<span class="built_in">string</span>&gt; <span class="title">SplitTextIntoTermAndNotTermParts</span>(<span class="params"><span class="built_in">string</span> text, <span class="built_in">string</span> term</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">string</span>.IsNullOrEmpty(text))</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;() &#123; <span class="built_in">string</span>.Empty &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Regex.Split(text, <span class="string">$@&quot;(<span class="subst">&#123;term&#125;</span>)&quot;</span>)</span><br><span class="line">                        .Where(p =&gt; p != <span class="built_in">string</span>.Empty)</span><br><span class="line">                        .ToList();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="https://v1ctor.cn/2022/01/13/WPF%E4%B8%AD%E4%B8%8D%E5%90%8C%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2-%E9%AB%98%E4%BA%AE/" data-id="ckycburuo0000vkw9b0ly8rhr" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WPF/" rel="tag">WPF</a></li></ul>
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WPF/" rel="tag"># WPF</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/16/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/" rel="prev" title="安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止...'">
+      <i class="fa fa-chevron-left"></i> 安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止...'
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text"> 功能概述：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text"> 用例：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%88%E6%9E%9C"><span class="nav-number">3.</span> <span class="nav-text"> 效果：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81highlighttermbehavior"><span class="nav-number">4.</span> <span class="nav-text"> 源码(HighlightTermBehavior)：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Victor Chen"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Victor Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Victor Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-  
-    <a href="/2021/08/16/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">安装Framework或远程调试工具时出现 &#39;处理证书链,但是在不受信任提供程序信任的根证书中终止...&#39;</div>
-    </a>
-  
-</nav>
 
   
-</article>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
+<script src="/js/utils.js"></script>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET/" rel="tag">.NET</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WPF/" rel="tag">WPF</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li></ul>
-    </div>
-  </div>
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/NET/" style="font-size: 10px;">.NET</a> <a href="/tags/WPF/" style="font-size: 10px;">WPF</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a>
-    </div>
-  </div>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li></ul>
-    </div>
-  </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/01/13/WPF%E4%B8%AD%E4%B8%8D%E5%90%8C%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2-%E9%AB%98%E4%BA%AE/">WPF中不同文字显示不同颜色(高亮)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/08/16/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/">安装Framework或远程调试工具时出现 &#39;处理证书链,但是在不受信任提供程序信任的根证书中终止...&#39;</a>
-          </li>
-        
-          <li>
-            <a href="/2020/10/03/%E5%BA%8F/">序</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
 
   
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2022 Victor Chen<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-  
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-  </div>
 </body>
 </html>
