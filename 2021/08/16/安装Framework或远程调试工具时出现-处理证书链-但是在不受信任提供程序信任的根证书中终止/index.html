@@ -189,6 +189,27 @@
               </span>
 
           
+            <span id="/2021/08/16/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/" class="post-meta-item leancloud_visitors" data-flag-title="安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止...'" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2021/08/16/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/16/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -254,6 +275,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -407,6 +429,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'b8Cl0cL4LSTvWfsE6yHbF6uk-9Nh9j0Va# Your leancloud application appid',
+      appKey     : 'Y5HlQlullBWD8Txpao74GIqp# Your leancloud application appkey',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>
