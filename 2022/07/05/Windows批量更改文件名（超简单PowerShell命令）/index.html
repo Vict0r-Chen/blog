@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="今天有一个批量替换文件名的需求，记得以前用过一个工具可以批量命名，但想着应该有更简单的方式，于是Google，发现了一段超简单的PowerShell命令： Get-ChildItem &amp;#123;筛选条件&amp;#125; *| Rename-Item -NewName &amp;#123; $_.Name -replace &#39;&amp;#123;查找内容&amp;#125;&#39;,&#39;&amp;#123;替换内容&amp;#125;&#39; &amp;#125">
+  <meta name="description" content="正文 今天有一个批量替换文件名的需求，记得以前用过一个工具可以批量命名，但想着应该有更简单的方式，于是Google，发现了一段超简单的PowerShell命令： Get-ChildItem &amp;#123;筛选条件&amp;#125; *| Rename-Item -NewName &amp;#123; $_.Name -replace &#39;&amp;#123;查找内容&amp;#125;&#39;,&#39;&amp;#123;替换内容&amp;#125;&#39; &amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows批量更改文件名（超简单PowerShell命令）">
 <meta property="og:url" content="https://v1ctor.cn/2022/07/05/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
-<meta property="og:description" content="今天有一个批量替换文件名的需求，记得以前用过一个工具可以批量命名，但想着应该有更简单的方式，于是Google，发现了一段超简单的PowerShell命令： Get-ChildItem &amp;#123;筛选条件&amp;#125; *| Rename-Item -NewName &amp;#123; $_.Name -replace &#39;&amp;#123;查找内容&amp;#125;&#39;,&#39;&amp;#123;替换内容&amp;#125;&#39; &amp;#125">
+<meta property="og:description" content="正文 今天有一个批量替换文件名的需求，记得以前用过一个工具可以批量命名，但想着应该有更简单的方式，于是Google，发现了一段超简单的PowerShell命令： Get-ChildItem &amp;#123;筛选条件&amp;#125; *| Rename-Item -NewName &amp;#123; $_.Name -replace &#39;&amp;#123;查找内容&amp;#125;&#39;,&#39;&amp;#123;替换内容&amp;#125;&#39; &amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-05T12:17:12.000Z">
-<meta property="article:modified_time" content="2022-07-05T12:50:54.416Z">
+<meta property="article:modified_time" content="2022-07-05T13:01:24.522Z">
 <meta property="article:author" content="Victor Chen">
 <meta property="article:tag" content="PowerShell">
 <meta name="twitter:card" content="summary">
@@ -176,7 +176,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-07-05 20:17:12 / Modified: 20:50:54" itemprop="dateCreated datePublished" datetime="2022-07-05T20:17:12+08:00">2022-07-05</time>
+              <time title="Created: 2022-07-05 20:17:12 / Modified: 21:01:24" itemprop="dateCreated datePublished" datetime="2022-07-05T20:17:12+08:00">2022-07-05</time>
             </span>
 
           
@@ -211,12 +211,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>今天有一个批量替换文件名的需求，记得以前用过一个工具可以批量命名，但想着应该有更简单的方式，于是Google，发现了一段超简单的PowerShell命令：</p>
+        <h2 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h2>
+<p>今天有一个批量替换文件名的需求，记得以前用过一个工具可以批量命名，但想着应该有更简单的方式，于是Google，发现了一段超简单的PowerShell命令：</p>
 <p><code>Get-ChildItem &#123;筛选条件&#125; *| Rename-Item -NewName &#123; $_.Name -replace '&#123;查找内容&#125;','&#123;替换内容&#125;' &#125;</code></p>
+<span id="more"></span>
 <p>我的需求是把一堆<code>*.png</code>的文件名里面的<code>test_</code>删除，那么对应的命令则是：</p>
 <p><code>Get-ChildItem .png *| Rename-Item -NewName &#123; $_.Name -replace 'test_','' &#125;</code></p>
 <p>如果需求是把一堆<code>txt</code>文件名里的<code>a</code>替换成<code>b</code>，那么对应的命令：</p>
 <p><code>Get-ChildItem .txt *| Rename-Item -NewName &#123; $_.Name -replace 'a','b' &#125;</code></p>
+<h2 id="说明"><a class="markdownIt-Anchor" href="#说明"></a> 说明</h2>
+<p>记得调用此命名前使用<code>cd &#123;path&#125;</code>跳转到对应文件夹，也可以在对应文件夹内按住<code>shift+鼠标右键</code>，在弹框中找到“<strong>在此处打开Powershell</strong>”。</p>
+<h2 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h2>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-childitem?view=powershell-7.2">Get-ChildItem</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/rename-item?view=powershell-7.2">Rename-Item</a></p>
 
     </div>
 
@@ -298,6 +305,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E6%96%87"><span class="nav-number">1.</span> <span class="nav-text"> 正文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text"> 说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text"> 参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
