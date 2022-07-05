@@ -172,7 +172,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-07-05 20:17:12 / Modified: 20:28:54" itemprop="dateCreated datePublished" datetime="2022-07-05T20:17:12+08:00">2022-07-05</time>
+              <time title="Created: 2022-07-05 20:17:12 / Modified: 20:50:54" itemprop="dateCreated datePublished" datetime="2022-07-05T20:17:12+08:00">2022-07-05</time>
             </span>
 
           
@@ -210,7 +210,9 @@
           <p>今天有一个批量替换文件名的需求，记得以前用过一个工具可以批量命名，但想着应该有更简单的方式，于是Google，发现了一段超简单的PowerShell命令：</p>
 <p><code>Get-ChildItem &#123;筛选条件&#125; *| Rename-Item -NewName &#123; $_.Name -replace '&#123;查找内容&#125;','&#123;替换内容&#125;' &#125;</code></p>
 <p>我的需求是把一堆<code>*.png</code>的文件名里面的<code>test_</code>删除，那么对应的命令则是：</p>
-<p><code>Get-ChildItem .png *| Rename-Item -NewName &#123; $_.Name -replace 'mapping_','' &#125;</code></p>
+<p><code>Get-ChildItem .png *| Rename-Item -NewName &#123; $_.Name -replace 'test_','' &#125;</code></p>
+<p>如果需求是把一堆<code>txt</code>文件名里的<code>a</code>替换成<code>b</code>，那么对应的命令：</p>
+<p><code>Get-ChildItem .txt *| Rename-Item -NewName &#123; $_.Name -replace 'a','b' &#125;</code></p>
 
       
     </div>
@@ -261,7 +263,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-05 20:28:54" itemprop="dateModified" datetime="2022-07-05T20:28:54+08:00">2022-07-05</time>
+                <time title="Modified: 2022-07-05 20:50:54" itemprop="dateModified" datetime="2022-07-05T20:50:54+08:00">2022-07-05</time>
               </span>
 
           
@@ -355,7 +357,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-05 20:28:54" itemprop="dateModified" datetime="2022-07-05T20:28:54+08:00">2022-07-05</time>
+                <time title="Modified: 2022-07-05 20:50:54" itemprop="dateModified" datetime="2022-07-05T20:50:54+08:00">2022-07-05</time>
               </span>
 
           
@@ -452,7 +454,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-05 20:28:54" itemprop="dateModified" datetime="2022-07-05T20:28:54+08:00">2022-07-05</time>
+                <time title="Modified: 2022-07-05 20:50:54" itemprop="dateModified" datetime="2022-07-05T20:50:54+08:00">2022-07-05</time>
               </span>
 
           
@@ -548,7 +550,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-05 20:28:54" itemprop="dateModified" datetime="2022-07-05T20:28:54+08:00">2022-07-05</time>
+                <time title="Modified: 2022-07-05 20:50:54" itemprop="dateModified" datetime="2022-07-05T20:50:54+08:00">2022-07-05</time>
               </span>
 
           
@@ -641,7 +643,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-05 20:28:54" itemprop="dateModified" datetime="2022-07-05T20:28:54+08:00">2022-07-05</time>
+                <time title="Modified: 2022-07-05 20:50:54" itemprop="dateModified" datetime="2022-07-05T20:50:54+08:00">2022-07-05</time>
               </span>
 
           
