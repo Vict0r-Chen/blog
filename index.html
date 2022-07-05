@@ -147,6 +147,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/2022/07/05/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/07/05/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/" class="post-title-link" itemprop="url">Windows批量更改文件名（超简单PowerShell命令）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-07-05 20:17:12 / Modified: 20:28:54" itemprop="dateCreated datePublished" datetime="2022-07-05T20:17:12+08:00">2022-07-05</time>
+            </span>
+
+          
+            <span id="/2022/07/05/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="Windows批量更改文件名（超简单PowerShell命令）" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2022/07/05/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/05/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今天有一个批量替换文件名的需求，记得以前用过一个工具可以批量命名，但想着应该有更简单的方式，于是Google，发现了一段超简单的PowerShell命令：</p>
+<p><code>Get-ChildItem &#123;筛选条件&#125; *| Rename-Item -NewName &#123; $_.Name -replace '&#123;查找内容&#125;','&#123;替换内容&#125;' &#125;</code></p>
+<p>我的需求是把一堆<code>*.png</code>的文件名里面的<code>test_</code>删除，那么对应的命令则是：</p>
+<p><code>Get-ChildItem .png *| Rename-Item -NewName &#123; $_.Name -replace 'mapping_','' &#125;</code></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
     <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -170,10 +253,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-03 13:50:52 / Modified: 17:26:36" itemprop="dateCreated datePublished" datetime="2022-07-03T13:50:52+08:00">2022-07-03</time>
+              <time title="Created: 2022-07-03 13:50:52" itemprop="dateCreated datePublished" datetime="2022-07-03T13:50:52+08:00">2022-07-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-05 20:28:54" itemprop="dateModified" datetime="2022-07-05T20:28:54+08:00">2022-07-05</time>
+              </span>
 
           
             <span id="/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/" class="post-meta-item leancloud_visitors" data-flag-title="IOS中通过快捷捷径打开健康码/场所码" title="Views">
@@ -266,7 +355,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-03 13:46:17" itemprop="dateModified" datetime="2022-07-03T13:46:17+08:00">2022-07-03</time>
+                <time title="Modified: 2022-07-05 20:28:54" itemprop="dateModified" datetime="2022-07-05T20:28:54+08:00">2022-07-05</time>
               </span>
 
           
@@ -363,7 +452,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-03 13:46:17" itemprop="dateModified" datetime="2022-07-03T13:46:17+08:00">2022-07-03</time>
+                <time title="Modified: 2022-07-05 20:28:54" itemprop="dateModified" datetime="2022-07-05T20:28:54+08:00">2022-07-05</time>
               </span>
 
           
@@ -459,7 +548,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-03 13:46:17" itemprop="dateModified" datetime="2022-07-03T13:46:17+08:00">2022-07-03</time>
+                <time title="Modified: 2022-07-05 20:28:54" itemprop="dateModified" datetime="2022-07-05T20:28:54+08:00">2022-07-05</time>
               </span>
 
           
@@ -552,7 +641,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-03 13:46:17" itemprop="dateModified" datetime="2022-07-03T13:46:17+08:00">2022-07-03</time>
+                <time title="Modified: 2022-07-05 20:28:54" itemprop="dateModified" datetime="2022-07-05T20:28:54+08:00">2022-07-05</time>
               </span>
 
           
@@ -678,12 +767,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
