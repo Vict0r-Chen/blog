@@ -23,23 +23,23 @@
   <meta name="description" content="说明 本文标题其实应该叫“使用快捷捷径打开任意微信小程序页面”，因为本质上这篇文章就是说明如何在获取微信小程序任意界面的页面路径，以及通过Universal link在微信中打开对应页面的方法（本文使用“跨时空”APP来达到此目的）。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IOS中通过快捷捷径打开健康码&#x2F;场所码">
-<meta property="og:url" content="https://v1ctor.cn/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/index.html">
+<meta property="og:url" content="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
 <meta property="og:description" content="说明 本文标题其实应该叫“使用快捷捷径打开任意微信小程序页面”，因为本质上这篇文章就是说明如何在获取微信小程序任意界面的页面路径，以及通过Universal link在微信中打开对应页面的方法（本文使用“跨时空”APP来达到此目的）。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://v1ctor.cn/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p1.png">
-<meta property="og:image" content="https://v1ctor.cn/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p2.png">
-<meta property="og:image" content="https://v1ctor.cn/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p3.png">
-<meta property="og:image" content="https://v1ctor.cn/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p4.png">
-<meta property="og:image" content="https://v1ctor.cn/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p5.png">
+<meta property="og:image" content="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p1.png">
+<meta property="og:image" content="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p2.png">
+<meta property="og:image" content="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p3.png">
+<meta property="og:image" content="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p4.png">
+<meta property="og:image" content="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p5.png">
 <meta property="article:published_time" content="2022-07-03T05:50:52.000Z">
 <meta property="article:modified_time" content="2022-07-03T09:26:36.115Z">
 <meta property="article:author" content="Victor Chen">
 <meta property="article:tag" content="Geek">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://v1ctor.cn/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p1.png">
+<meta name="twitter:image" content="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p1.png">
 
-<link rel="canonical" href="https://v1ctor.cn/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/">
+<link rel="canonical" href="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/">
 
 
 <script id="page-configurations">
@@ -54,6 +54,15 @@
 
   <title>IOS中通过快捷捷径打开健康码/场所码 | Victor's blog</title>
   
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HM4V7STC5P');
+      }
+    </script>
 
 
 
@@ -158,7 +167,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
-    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -186,7 +195,7 @@
             </span>
 
           
-            <span id="/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/" class="post-meta-item leancloud_visitors" data-flag-title="IOS中通过快捷捷径打开健康码/场所码" title="Views">
+            <span id="/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/" class="post-meta-item leancloud_visitors" data-flag-title="IOS中通过快捷捷径打开健康码/场所码" title="Views">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -201,8 +210,8 @@
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/" itemprop="commentCount"></span>
+    <a title="valine" href="/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -233,16 +242,16 @@
 <ol>
 <li>
 <p>登录<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/">微信公众号</a>，在<code>草稿箱</code>新建<code>图文消息</code>，点击上方的“小程序”，然后在弹出窗中输入对应小程序的全称或AppId（此处以<code>粤省事</code>为例，<strong>AppId</strong>：<code>wx82d43fee89cdc7df</code>，<em><strong>账号原始ID</strong></em>：<code>gh_1ac06b5a8f4e</code>，因广东场所码都在<code>粤省事</code>里面），点击下一步；</p>
-<img src="/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p1.png" class="">
+<img src="/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p1.png" class="">
 </li>
 <li>
 <p>在“填写详细信”的窗口，将鼠标悬浮在<code>获取更多页面路径</code>后，在新的弹窗中输入自己的微信号，点击开启；</p>
-<img src="/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p2.png" class="">
+<img src="/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p2.png" class="">
 </li>
 <li>
 <p>开启后，你就可以扫描你目标二维码打开小程序=&gt;点击右上角菜单按钮=&gt;点击<code>复制页面路径</code>，此处我得到的路径是：<br />
 <code>operation_plus/pages/yiqing/daka/worker/inspector/fast-result/index.html?scene=id%3D999999999%2Ccp%3D0</code>；</p>
-<img src="/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p3.png" class="">
+<img src="/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p3.png" class="">
 </li>
 </ol>
 <p>至此，准备工作已经完成，接下来就是“跨时空”APP登场啦！</p>
@@ -261,13 +270,13 @@
 </ol>
 </li>
 </ol>
-<img src="/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p4.png" class="">
+<img src="/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p4.png" class="">
 <ol start="3">
 <li>运行快捷指令看看效果～</li>
 <li>尝试将快捷指令增加到桌面或者添加到通知界面吧！</li>
 </ol>
 <p><strong>最后Show一下我的快捷指令组件吧～</strong></p>
-<img src="/2022/07/03/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p5.png" class="">
+<img src="/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p5.png" class="">
     </div>
 
     
@@ -285,11 +294,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/08/AdvanceInstaller-19-2-%E5%AE%89%E8%A3%85%E5%8C%85%E5%8F%8A%E6%BF%80%E6%B4%BB%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/" rel="prev" title="Advanced Installer 19.2 安装包及激活工具分享">
+    <a href="/AdvanceInstaller-19-2-%E5%AE%89%E8%A3%85%E5%8C%85%E5%8F%8A%E6%BF%80%E6%B4%BB%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/" rel="prev" title="Advanced Installer 19.2 安装包及激活工具分享">
       <i class="fa fa-chevron-left"></i> Advanced Installer 19.2 安装包及激活工具分享
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/07/05/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/" rel="next" title="Windows批量更改文件名（超简单PowerShell命令）">
+    <a href="/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/" rel="next" title="Windows批量更改文件名（超简单PowerShell命令）">
       Windows批量更改文件名（超简单PowerShell命令） <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -440,6 +449,31 @@
 
 
   
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
 
 
 

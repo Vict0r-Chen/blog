@@ -44,6 +44,15 @@
 
   <title>Tag: .NET | Victor's blog</title>
   
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HM4V7STC5P');
+      }
+    </script>
 
 
 
@@ -172,7 +181,7 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2021/08/16/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/" itemprop="url">
+          <a class="post-title-link" href="/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/" itemprop="url">
             <span itemprop="name">安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止...'</span>
           </a>
       </div>
@@ -326,6 +335,31 @@
 
 
   
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
 
 
 
