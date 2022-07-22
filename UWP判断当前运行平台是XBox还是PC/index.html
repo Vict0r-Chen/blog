@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言 其实这是个小众需求，因为在我的视角看来，UWP应用运行在XBox与PC间的差异非常少，对我日常开发来说几乎没有太多区别（除了XBox下没有处理的游戏控制器的B键会退出应用😂）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UWP判断当前运行平台是XBox还是PC">
+<meta property="og:url" content="https://v1ctor.cn/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/index.html">
+<meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="前言 其实这是个小众需求，因为在我的视角看来，UWP应用运行在XBox与PC间的差异非常少，对我日常开发来说几乎没有太多区别（除了XBox下没有处理的游戏控制器的B键会退出应用😂）。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://v1ctor.cn/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/p1.png">
+<meta property="article:published_time" content="2022-07-22T15:08:54.000Z">
+<meta property="article:modified_time" content="2022-07-22T16:46:11.542Z">
+<meta property="article:author" content="Victor Chen">
+<meta property="article:tag" content="UWP">
+<meta property="article:tag" content="XBox">
+<meta property="article:tag" content="ResouceDictionary">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://v1ctor.cn/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/p1.png">
+
+<link rel="canonical" href="https://v1ctor.cn/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>UWP判断当前运行平台是XBox还是PC | Victor's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HM4V7STC5P');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Victor's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay hungry, stay foolish.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UWP判断当前运行平台是XBox还是PC
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-07-22 23:08:54" itemprop="dateCreated datePublished" datetime="2022-07-22T23:08:54+08:00">2022-07-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-23 00:46:11" itemprop="dateModified" datetime="2022-07-23T00:46:11+08:00">2022-07-23</time>
+              </span>
+
+          
+            <span id="/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/" class="post-meta-item leancloud_visitors" data-flag-title="UWP判断当前运行平台是XBox还是PC" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>其实这是个小众需求，因为在我的视角看来，UWP应用运行在XBox与PC间的差异非常少，对我日常开发来说几乎没有太多区别（除了XBox下没有处理的游戏控制器的B键会退出应用😂）。</p>
+<span id="more"></span>
+<p>由于XBox通常通过电视机来输出，且用户与电视距离会稍远（<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/apps/design/devices/designing-for-tv#ui-element-sizing">参考链接</a>），所以为了让用户能够看清内容，XBox上的UWP的展示默认会放大两倍（<strong>当然</strong>你也可以<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/apps/design/devices/designing-for-tv#opting-out-of-scale-factor">阻止自动缩放</a>），这会导致原来在PC下非常正常的布局在XBox下变得亲妈都不认识（指我自己🤣）。</p>
+<p>虽然最好的做法是使用自适应布局同时适配两个平台，但是考虑到额外多出来的时间成本🤔…下次一定。</p>
+<p>所以我的思路是根据不同平台来加载不同的资源字典（<code>ResouceDictionary</code>），应该好搞~</p>
+<h2 id="如何判断设备类型"><a class="markdownIt-Anchor" href="#如何判断设备类型"></a> 如何判断设备类型？</h2>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Windows.System.Profile;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">if</span>(AnalyticsInfo.VersionInfo.DeviceFamily == <span class="string">&quot;Windows.Xbox&quot;</span>)&#123;</span><br><span class="line">    <span class="comment">//你的逻辑...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实我在Stackoverflow上有找到这个<a target="_blank" rel="noopener" href="https://stackoverflow.com/a/69278888/7632913">问题</a>，说是可以引用<code>Microsoft.Toolkit</code>工具包然后用<code>SystemInformation.DeviceFamily</code>来获取设备类型字符串，但是根据工具包的<a target="_blank" rel="noopener" href="https://github.com/CommunityToolkit/WindowsCommunityToolkit/blob/rel/7.1.0/Microsoft.Toolkit.Uwp/Helpers/SystemInformation.cs#L53">源码</a>，其实人家根本没做什么特殊操作，只是对<code>AnalyticsInfo.VersionInfo.DeviceFamily</code>封装了一下而已…可能因为这人是微软员工想推广自家的组件？🤔</p>
+<p>顺便吐槽一下为什么百度到的全是这样的结果？咱这没有<code>SystemInfo.deviceType</code>啊！是用<code>unity</code>的人多还是全都是爬虫复制的内容？</p>
+<img src="/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/p1.png" class="">
+<h2 id="如何动态操作资源字典"><a class="markdownIt-Anchor" href="#如何动态操作资源字典"></a> 如何动态操作资源字典？</h2>
+<p>我这边在根目录下新增了<code>Theme</code>文件夹，同时在该文件夹下新增了<code>XBox.xaml</code>和<code>PC.xaml</code>这两个资源文件，部分代码：</p>
+<figure class="highlight csharp"><figcaption><span>App.xaml.cs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnLaunched</span>(<span class="params">LaunchActivatedEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> family = AnalyticsInfo.VersionInfo.DeviceFamily;</span><br><span class="line">    <span class="comment">//为XBox添加额外的样式（同时移除PC.xaml）</span></span><br><span class="line">    <span class="keyword">if</span> (family == <span class="string">&quot;Windows.Xbox&quot;</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> xboxRD = <span class="keyword">new</span> ResourceDictionary();</span><br><span class="line">        xboxRD.Source = <span class="keyword">new</span> Uri(<span class="string">&quot;ms-appx:///Theme/XBox.xaml&quot;</span>);</span><br><span class="line">        Application.Current.Resources.MergedDictionaries.Add(xboxRD);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> pcRD = Application.Current.Resources.MergedDictionaries.FirstOrDefault(x =&gt; x.ContainsKey(<span class="string">&quot;PC&quot;</span>));</span><br><span class="line">        Application.Current.Resources.MergedDictionaries.Remove(pcRD);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><figcaption><span>App.xaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Application</span> <span class="attr">...</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Application.Resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ResourceDictionary</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ResourceDictionary.MergedDictionaries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">ResourceDictionary</span> <span class="attr">Source</span>=<span class="string">&quot;OtherStyle.xaml&quot;</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">ResourceDictionary</span> <span class="attr">Source</span>=<span class="string">&quot;Theme/PC.xaml&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">ResourceDictionary.MergedDictionaries</span>&gt;</span></span><br><span class="line">        &lt;/ResourceDictionary &gt;</span><br><span class="line">    &lt;/Application.Resources &gt;</span><br><span class="line"><span class="tag">&lt;/<span class="name">Application</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><figcaption><span>Theme/PC.xaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ResourceDictionary</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:x</span>=<span class="string">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 当前资源标识 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">x:Int32</span> <span class="attr">x:Key</span>=<span class="string">&quot;PC&quot;</span>&gt;</span>0<span class="tag">&lt;/<span class="name">x:Int32</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 页面中使用到的资源 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">x:Double</span> <span class="attr">x:Key</span>=<span class="string">&quot;PageMaxHeight&quot;</span>&gt;</span>550<span class="tag">&lt;/<span class="name">x:Double</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ResourceDictionary</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><figcaption><span>Theme/XBox.xaml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ResourceDictionary</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:x</span>=<span class="string">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 当前资源标识 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">x:Int32</span> <span class="attr">x:Key</span>=<span class="string">&quot;XBox&quot;</span>&gt;</span>0<span class="tag">&lt;/<span class="name">x:Int32</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 页面中使用到的资源 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">x:Double</span> <span class="attr">x:Key</span>=<span class="string">&quot;PageMaxHeight&quot;</span>&gt;</span>350<span class="tag">&lt;/<span class="name">x:Double</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ResourceDictionary</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后直接在页面中使用<code>&#123;StaticResource PageMaxHeight&#125;</code>就可以引用此资源来实现样式差异化处理了。</p>
+<p>其实对于合并资源的操作我在网上也没找到比较合适的代码，因为不知道如何定位到指定的资源字典，我这里是提前给资源字典里加了个<code>Key</code>来标识当前资源字典，比如<code>PC.xaml</code>里有个<code>PC</code>的资源，通过<code>Application.Current.Resources.MergedDictionaries.FirstOrDefault(x =&gt; x.ContainsKey(&quot;PC&quot;))</code>就可以定位到此资源。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/UWP/" rel="tag"># UWP</a>
+              <a href="/tags/XBox/" rel="tag"># XBox</a>
+              <a href="/tags/ResouceDictionary/" rel="tag"># ResouceDictionary</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/" rel="prev" title="Windows批量更改文件名（超简单PowerShell命令）">
+      <i class="fa fa-chevron-left"></i> Windows批量更改文件名（超简单PowerShell命令）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E8%AE%BE%E5%A4%87%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text"> 如何判断设备类型？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%8A%A8%E6%80%81%E6%93%8D%E4%BD%9C%E8%B5%84%E6%BA%90%E5%AD%97%E5%85%B8"><span class="nav-number">3.</span> <span class="nav-text"> 如何动态操作资源字典？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Victor Chen"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Victor Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Victor Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'b8Cl0cL4LSTvWfsE6yHbF6uk-9Nh9j0Va',
+      appKey     : 'Y5HlQlullBWD8Txpao74GIqp',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

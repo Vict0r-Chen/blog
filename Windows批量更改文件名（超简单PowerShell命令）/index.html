@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -26,9 +26,9 @@
 <meta property="og:url" content="https://v1ctor.cn/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
 <meta property="og:description" content="正文 今天有一个批量替换文件名的需求，记得以前用过一个工具可以批量命名，但想着应该有更简单的方式，于是Google，发现了一段超简单的PowerShell命令： Get-ChildItem &amp;#123;筛选条件&amp;#125; *| Rename-Item -NewName &amp;#123; $_.Name -replace &#39;&amp;#123;查找内容&amp;#125;&#39;,&#39;&amp;#123;替换内容&amp;#125;&#39; &amp;">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-05T12:17:12.000Z">
-<meta property="article:modified_time" content="2022-07-05T13:00:29.401Z">
+<meta property="article:modified_time" content="2022-07-22T16:46:11.542Z">
 <meta property="article:author" content="Victor Chen">
 <meta property="article:tag" content="PowerShell">
 <meta name="twitter:card" content="summary">
@@ -42,7 +42,7 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'zh-cn'
+    lang   : 'en'
   };
 </script>
 
@@ -160,7 +160,7 @@
     
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-cn">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -183,10 +183,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-07-05 20:17:12 / Modified: 21:00:29" itemprop="dateCreated datePublished" datetime="2022-07-05T20:17:12+08:00">2022-07-05</time>
+              <time title="Created: 2022-07-05 20:17:12" itemprop="dateCreated datePublished" datetime="2022-07-05T20:17:12+08:00">2022-07-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-23 00:46:11" itemprop="dateModified" datetime="2022-07-23T00:46:11+08:00">2022-07-23</time>
+              </span>
 
           
             <span id="/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="Windows批量更改文件名（超简单PowerShell命令）" title="Views">
@@ -254,7 +260,10 @@
     <a href="/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/" rel="prev" title="IOS中通过快捷捷径打开健康码/场所码">
       <i class="fa fa-chevron-left"></i> IOS中通过快捷捷径打开健康码/场所码
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/" rel="next" title="UWP判断当前运行平台是XBox还是PC">
+      UWP判断当前运行平台是XBox还是PC <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -330,12 +339,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
