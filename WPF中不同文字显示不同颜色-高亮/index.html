@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://v1ctor.cn/WPF%E4%B8%AD%E4%B8%8D%E5%90%8C%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA%E4%B8%8D%E5%90%8C%E9%A2%9C%E8%89%B2-%E9%AB%98%E4%BA%AE/20220113_01.png">
 <meta property="article:published_time" content="2022-01-13T02:14:49.000Z">
-<meta property="article:modified_time" content="2022-07-23T13:14:27.637Z">
+<meta property="article:modified_time" content="2022-07-23T13:23:17.043Z">
 <meta property="article:author" content="Victor Chen">
 <meta property="article:tag" content="WPF">
 <meta name="twitter:card" content="summary">
@@ -194,7 +194,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-23 21:14:27" itemprop="dateModified" datetime="2022-07-23T21:14:27+08:00">2022-07-23</time>
+                <time title="Modified: 2022-07-23 21:23:17" itemprop="dateModified" datetime="2022-07-23T21:23:17+08:00">2022-07-23</time>
               </span>
 
           
@@ -395,8 +395,8 @@
 
   
   <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
 <script src="/js/utils.js"></script>
 
@@ -459,7 +459,7 @@
 
 <script>
 NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
     var GUEST = ['nick', 'mail', 'link'];
     var guest = 'nick,mail,link';
     guest = guest.split(',').filter(item => {
