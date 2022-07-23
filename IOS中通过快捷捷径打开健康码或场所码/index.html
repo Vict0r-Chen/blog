@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p4.png">
 <meta property="og:image" content="https://v1ctor.cn/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/p5.png">
 <meta property="article:published_time" content="2022-07-03T05:50:52.000Z">
-<meta property="article:modified_time" content="2022-07-22T17:37:27.728Z">
+<meta property="article:modified_time" content="2022-07-23T13:14:27.633Z">
 <meta property="article:author" content="Victor Chen">
 <meta property="article:tag" content="Geek">
 <meta name="twitter:card" content="summary">
@@ -198,7 +198,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-23 01:37:27" itemprop="dateModified" datetime="2022-07-23T01:37:27+08:00">2022-07-23</time>
+                <time title="Modified: 2022-07-23 21:14:27" itemprop="dateModified" datetime="2022-07-23T21:14:27+08:00">2022-07-23</time>
               </span>
 
           
@@ -238,7 +238,7 @@
 <span id="more"></span>
 <h2 id="无关的话"><a class="markdownIt-Anchor" href="#无关的话"></a> 无关的话</h2>
 <p>终于又得空，有时间写写blog(bug?)了，最近有点理解《开端》里说的“塞尔达才是天”了😂</p>
-<p>其实本来有很多东西可写，奈何自己一直都这么懒🥲</p>
+<p>其实本来有很多东西可写，奈何自己一直都这么懒</p>
 <h2 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h2>
 <p>自从上次把“智慧南山”（似乎其它区的门禁小程序似乎也差不多）打开门禁的请求包用<code>Charles</code>抓下来放在快捷指令后总想着还有其它重复操作可以简化的，正好最近疫情又变严重，自然想起了场所码啦！</p>
 <p>废话少说，开打开打～</p>
@@ -265,15 +265,37 @@
 <h3 id="二-使用跨时空app打开已复制的页面路径"><a class="markdownIt-Anchor" href="#二-使用跨时空app打开已复制的页面路径"></a> 二、使用“跨时空”APP打开已复制的页面路径</h3>
 <p><em><strong>前提</strong></em>：前往APP Store下载“跨时空”</p>
 <ol>
-<li>将第一步的<code>账号原始ID(gh_1ac06b5a8f4e)</code>和<code>复制的小程序路径</code>分别替换下方链接中的<code>&#123;0&#125;</code>和<code>&#123;1&#125;</code>：<br />
-<code>ksk://kainy.cn/#weixin://app/KSK_URLscheme/jumpWxa/?userName=&#123;0&#125;&amp;path=&#123;1&#125;</code><br />
-此处我的结果：<br />
-<code>ksk://kainy.cn/#weixin://app/KSK_URLscheme/jumpWxa/?userName=gh_1ac06b5a8f4e&amp;path=operation_plus/pages/yiqing/daka/worker/inspector/fast-result/index.html?scene=id%3D999999999%2Ccp%3D0</code></li>
+<li>将第一步的<code>账号原始ID(gh_1ac06b5a8f4e)</code>和<code>复制的小程序路径</code>粘贴到下方并点击<strong>生成</strong>。</li>
+</ol>
+
+<script>
+   function concatPath(){
+      let id=document.getElementById("txtId").value;
+      let path=document.getElementById("txtPath").value;
+      document.getElementById("result").innerText=`ksk://kainy.cn/#weixin://app/KSK_URLscheme/jumpWxa/?userName=${id}&path=${path}`;
+   }
+</script>
+<div style="background:#23507f23; padding:10px; border-radius: 10px;margin: 10px 20px;">
+   <p style="text-align:center;margin-bottom:10px;">
+      <strong>生成URL</strong>
+   </p>
+   <div>
+      <span>账号原始ID：</span>
+      <input id="txtId">
+      <span>小程序路径：</span>
+      <input id="txtPath">
+      <button onclick="concatPath()">生成</button>
+      <p id="result"></p>
+   </div>
+</div>
+
+<ol start="2">
 <li>将上一步替换后的URL添加到<code>快捷指令</code>中：
 <ol>
 <li>打开<code>快捷指令</code>，点击右上角“+”，输入<code>快捷指令</code>的名称；</li>
 <li>点击<code>添加操作</code>，输入<code>打开URL</code>；</li>
-<li>将替换后的URL粘贴进<code>URL</code>中；</li>
+<li>将替换后的URL粘贴进<code>URL</code>中；<br />
+<em>此处生成的URL应是：<code>ksk://kainy.cn/#weixin://app/KSK_URLscheme/jumpWxa/?userName=gh_1ac06b5a8f4e&amp;path=operation_plus/pages/yiqing/daka/worker/inspector/fast-result/index.html?scene=id%3D999999999%2Ccp%3D0</code></em></li>
 </ol>
 </li>
 </ol>
