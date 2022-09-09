@@ -129,6 +129,16 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
   </ul>
 </nav>
 
@@ -160,13 +170,33 @@
   <div class="post-block">
     <div class="posts-collapse">
       <div class="collection-title">
-        <span class="collection-header">Um..! 7 posts in total. Keep on posting.</span>
+        <span class="collection-header">Um..! 8 posts in total. Keep on posting.</span>
       </div>
 
       
     <div class="collection-year">
       <span class="collection-header">2022</span>
     </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2022-09-09T14:51:51+08:00"
+              content="2022-09-09">
+          09-09
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2351527164/" itemprop="url">
+            <span itemprop="name">IOS中通过快捷捷径一键打开核酸码</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
 
   <article itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
@@ -284,7 +314,7 @@
 
       <div class="post-title">
           <a class="post-title-link" href="/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/" itemprop="url">
-            <span itemprop="name">安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止...'</span>
+            <span itemprop="name">安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止...</span>
           </a>
       </div>
 
@@ -388,16 +418,32 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">9</span>
-        <span class="site-state-item-name">tags</span>
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Vict0r-Chen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Vict0r-Chen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/victorchen.3012@gmail.com" title="E-Mail → victorchen.3012@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
 
 
 
@@ -517,17 +563,17 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
     new Valine({
       el         : '#valine-comments',
       verify     : false,
-      notify     : false,
+      notify     : true,
       appId      : 'b8Cl0cL4LSTvWfsE6yHbF6uk-9Nh9j0Va',
       appKey     : 'Y5HlQlullBWD8Txpao74GIqp',
       placeholder: "唠两句？",
       avatar     : 'mm',
       meta       : guest,
       pageSize   : '10' || 10,
-      visitor    : true,
+      visitor    : false,
       lang       : 'zh-cn' || 'zh-cn',
       path       : location.pathname,
-      recordIP   : false,
+      recordIP   : true,
       serverURLs : ''
     });
   }, window.Valine);

@@ -22,7 +22,7 @@
 
   <meta name="description" content="今天发现一个WPF程序在Win7上有兼容性问题，但是从log看不出有啥问题，于是搭了一个Win7的虚拟机环境，但上去装Visual Studio 2019远程调试工具时竟然提示“处理证书链,但是在不受信任提供程序信任的根证书中终止…”，心想这不会是个流氓软件吧？但我是从MS官网下载的啊…找了goole一下，应该是vs2019调试工具中的证书在win7的证书库中不存在导致的，因为无论是vs2019还">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安装Framework或远程调试工具时出现 &#39;处理证书链,但是在不受信任提供程序信任的根证书中终止...&#39;">
+<meta property="og:title" content="安装Framework或远程调试工具时出现 &#39;处理证书链,但是在不受信任提供程序信任的根证书中终止...">
 <meta property="og:url" content="https://v1ctor.cn/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
 <meta property="og:description" content="今天发现一个WPF程序在Win7上有兼容性问题，但是从log看不出有啥问题，于是搭了一个Win7的虚拟机环境，但上去装Visual Studio 2019远程调试工具时竟然提示“处理证书链,但是在不受信任提供程序信任的根证书中终止…”，心想这不会是个流氓软件吧？但我是从MS官网下载的啊…找了goole一下，应该是vs2019调试工具中的证书在win7的证书库中不存在导致的，因为无论是vs2019还">
@@ -30,9 +30,9 @@
 <meta property="og:image" content="https://v1ctor.cn/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/2021081601.png">
 <meta property="og:image" content="https://v1ctor.cn/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/2021081602.png">
 <meta property="article:published_time" content="2021-08-16T09:59:15.000Z">
-<meta property="article:modified_time" content="2022-07-23T13:23:17.043Z">
+<meta property="article:modified_time" content="2022-09-09T08:42:23.628Z">
 <meta property="article:author" content="Victor Chen">
-<meta property="article:tag" content=".NET">
+<meta property="article:tag" content="Framework">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://v1ctor.cn/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/2021081601.png">
 
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止...' | Victor's blog</title>
+  <title>安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止... | Victor's blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
     <script>
@@ -136,6 +136,16 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
   </ul>
 </nav>
 
@@ -178,7 +188,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止...'
+          安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止...
         </h1>
 
         <div class="post-meta">
@@ -195,17 +205,19 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-23 21:23:17" itemprop="dateModified" datetime="2022-07-23T21:23:17+08:00">2022-07-23</time>
+                <time title="Modified: 2022-09-09 16:42:23" itemprop="dateModified" datetime="2022-09-09T16:42:23+08:00">2022-09-09</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Net/" itemprop="url" rel="index"><span itemprop="name">.Net</span></a>
+                </span>
+            </span>
 
           
-            <span id="/%E5%AE%89%E8%A3%85Framework%E6%88%96%E8%BF%9C%E7%A8%8B%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%97%B6%E5%87%BA%E7%8E%B0-%E5%A4%84%E7%90%86%E8%AF%81%E4%B9%A6%E9%93%BE-%E4%BD%86%E6%98%AF%E5%9C%A8%E4%B8%8D%E5%8F%97%E4%BF%A1%E4%BB%BB%E6%8F%90%E4%BE%9B%E7%A8%8B%E5%BA%8F%E4%BF%A1%E4%BB%BB%E7%9A%84%E6%A0%B9%E8%AF%81%E4%B9%A6%E4%B8%AD%E7%BB%88%E6%AD%A2/" class="post-meta-item leancloud_visitors" data-flag-title="安装Framework或远程调试工具时出现 '处理证书链,但是在不受信任提供程序信任的根证书中终止...'" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
   
   <span class="post-meta-item">
     
@@ -257,7 +269,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/NET/" rel="tag"># .NET</a>
+              <a href="/tags/Framework/" rel="tag"># Framework</a>
           </div>
 
         
@@ -348,16 +360,32 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">9</span>
-        <span class="site-state-item-name">tags</span>
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Vict0r-Chen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Vict0r-Chen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/victorchen.3012@gmail.com" title="E-Mail → victorchen.3012@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
 
 
 
@@ -477,17 +505,17 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
     new Valine({
       el         : '#valine-comments',
       verify     : false,
-      notify     : false,
+      notify     : true,
       appId      : 'b8Cl0cL4LSTvWfsE6yHbF6uk-9Nh9j0Va',
       appKey     : 'Y5HlQlullBWD8Txpao74GIqp',
       placeholder: "唠两句？",
       avatar     : 'mm',
       meta       : guest,
       pageSize   : '10' || 10,
-      visitor    : true,
+      visitor    : false,
       lang       : 'zh-cn' || 'zh-cn',
       path       : location.pathname,
-      recordIP   : false,
+      recordIP   : true,
       serverURLs : ''
     });
   }, window.Valine);
