@@ -20,23 +20,24 @@
     var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="无关的话 本质上这是一篇分享快捷指令的水文😂 如果不是中文圈没有太多的能看的技术分享站，我就不会再发一篇垃圾文章滥竽充数了😎（说的就是你CSDN！当然V2ex不在此列哈）">
+  <meta name="description" content="前言 前段时间，应要求需要把现有的UWP及Electron应用兼容32位系统，在很多情况下可以分别引用32或64位的dll来打包程序（偷懒的情况下😅），毕竟也是分开提供给用户下载的。甚至对于内存要求不高的程序来说，只提供32位的程序都行😁但对于UWP应用来说，由于Xbox只支持64位，这时两种架构就要都兼容了。并且微软应用商店同一个版本号只能上传一个包，这意味着我们需要将64和32位合并在一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="IOS中通过快捷捷径一键打开核酸码">
-<meta property="og:url" content="https://v1ctor.cn/2351527164/index.html">
+<meta property="og:title" content="C#根据架构类型引用32或64位的DLL">
+<meta property="og:url" content="https://v1ctor.cn/1375702934/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
-<meta property="og:description" content="无关的话 本质上这是一篇分享快捷指令的水文😂 如果不是中文圈没有太多的能看的技术分享站，我就不会再发一篇垃圾文章滥竽充数了😎（说的就是你CSDN！当然V2ex不在此列哈）">
+<meta property="og:description" content="前言 前段时间，应要求需要把现有的UWP及Electron应用兼容32位系统，在很多情况下可以分别引用32或64位的dll来打包程序（偷懒的情况下😅），毕竟也是分开提供给用户下载的。甚至对于内存要求不高的程序来说，只提供32位的程序都行😁但对于UWP应用来说，由于Xbox只支持64位，这时两种架构就要都兼容了。并且微软应用商店同一个版本号只能上传一个包，这意味着我们需要将64和32位合并在一">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://v1ctor.cn/2351527164/1.png">
-<meta property="article:published_time" content="2022-09-09T06:51:51.000Z">
+<meta property="og:image" content="https://v1ctor.cn/1375702934/1.png">
+<meta property="og:image" content="https://v1ctor.cn/1375702934/2.png">
+<meta property="article:published_time" content="2022-09-09T11:21:37.000Z">
 <meta property="article:modified_time" content="2022-09-09T15:34:48.132Z">
 <meta property="article:author" content="Victor Chen">
-<meta property="article:tag" content="快捷捷径">
-<meta property="article:tag" content="COVID-19">
+<meta property="article:tag" content="UWP">
+<meta property="article:tag" content=".Net">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://v1ctor.cn/2351527164/1.png">
+<meta name="twitter:image" content="https://v1ctor.cn/1375702934/1.png">
 
-<link rel="canonical" href="https://v1ctor.cn/2351527164/">
+<link rel="canonical" href="https://v1ctor.cn/1375702934/">
 
 
 <script id="page-configurations">
@@ -49,7 +50,7 @@
   };
 </script>
 
-  <title>IOS中通过快捷捷径一键打开核酸码 | Victor's blog</title>
+  <title>C#根据架构类型引用32或64位的DLL | Victor's blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
     <script>
@@ -175,7 +176,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/2351527164/">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/1375702934/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -188,7 +189,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          IOS中通过快捷捷径一键打开核酸码
+          C#根据架构类型引用32或64位的DLL
         </h1>
 
         <div class="post-meta">
@@ -199,7 +200,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-09-09 14:51:51 / Modified: 23:34:48" itemprop="dateCreated datePublished" datetime="2022-09-09T14:51:51+08:00">2022-09-09</time>
+              <time title="Created: 2022-09-09 19:21:37 / Modified: 23:34:48" itemprop="dateCreated datePublished" datetime="2022-09-09T19:21:37+08:00">2022-09-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -207,7 +208,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Geek/" itemprop="url" rel="index"><span itemprop="name">Geek</span></a>
+                  <a href="/categories/Net/" itemprop="url" rel="index"><span itemprop="name">.Net</span></a>
                 </span>
             </span>
 
@@ -220,8 +221,8 @@
       </span>
       <span class="post-meta-item-text">Valine: </span>
     
-    <a title="valine" href="/2351527164/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2351527164/" itemprop="commentCount"></span>
+    <a title="valine" href="/1375702934/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/1375702934/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -236,16 +237,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="无关的话"><a class="markdownIt-Anchor" href="#无关的话"></a> 无关的话</h2>
-<p>本质上这是一篇分享快捷指令的水文😂</p>
-<p>如果不是中文圈没有太多的能看的技术分享站，我就不会再发一篇垃圾文章滥竽充数了😎（说的就是你CSDN！当然V2ex不在此列哈）</p>
+        <h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>前段时间，应要求需要把现有的<code>UWP</code>及<code>Electron</code>应用兼容32位系统，在很多情况下可以分别引用32或64位的dll来打包程序（偷懒的情况下😅），毕竟也是分开提供给用户下载的。甚至对于内存要求不高的程序来说，只提供32位的程序都行😁但对于UWP应用来说，由于Xbox只支持64位，这时两种架构就要都兼容了。并且微软应用商店同一个版本号只能上传一个包，这意味着我们需要将64和32位合并在一个包里面。</p>
 <span id="more"></span>
-<p>过去几个月一直使用快捷捷径打开核酸码，但第一次操作有点麻烦：需要先自行将核酸码<a target="_blank" rel="noopener" href="https://c.runoob.com/front-end/59/">转换</a>为<code>BASE64</code>格式(需要去掉类似“<code>data:image/png;base64,</code>”的前缀)，然后在快捷捷径中使用<strong>快速查看</strong>将<code>BASE64</code>以图片形式显示。</p>
 <h2 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h2>
-<p>今天本来想要把这个转换逻辑合并在网页里面时在Reddit找到一个更加优雅的快捷指令，初次运行时提示用户选择一个图片，然后将图片编码为<code>BASE64</code>后以文本文件(<code>photo.txt</code>)方式储存在本地文件夹(Shortcuts)，下次运行快捷捷径时，如果存在此文件则直接将文件解码并展示，Prefect！</p>
-<p>&gt;&gt;<strong><a target="_blank" rel="noopener" href="https://www.icloud.com/shortcuts/dadd007de9bd47bbb3a1f65362c88d4e">先上iCloud 链接</a></strong>&lt;&lt;</p>
-<p>快捷指令内容：</p>
-<img src="/2351527164/1.png" class="">
+<p>引用类型大致分为<strong>直接引用</strong>或在代码中<strong>动态引用</strong>。</p>
+<p>例如解决方案同级目录有一个文件夹<code>RefDlls</code>，里面分别是<code>x86</code>、<code>x64</code>这2个文件夹，然后这两个文件夹里放的是我们引用的dll：<code>Mylib.dll</code></p>
+<h3 id="对于直接在项目中引用"><a class="markdownIt-Anchor" href="#对于直接在项目中引用"></a> 对于直接在项目中引用</h3>
+<p>我们需要用文本编辑器打开项目文件(*.csproj)，以如下方式引用dll：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">&quot;Mylib.dll&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- &lt;HintPath&gt;..\RefDlls\x86\Mylib.dll&lt;/HintPath&gt; --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- &lt;HintPath&gt;..\RefDlls\x64\Mylib.dll&lt;/HintPath&gt; --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">HintPath</span>&gt;</span>..\RefDlls\$(Platform)\Mylib.dll<span class="tag">&lt;/<span class="name">HintPath</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Reference</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>很明确了，以上代码是使用<code>$(Platform)</code>来代替文件夹名称名称。</p>
+<p>这个方法对于直接保存在项目中的dll文件同样适用：</p>
+<p>如有<code>Mylib_x86.dll</code>和<code>Mylib_x64.dll</code>两个dll在<code>Assets</code>项目文件夹中，我们也可以在项目中通过预编译符来引用，具体如：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- &lt;Content Include=&quot;Assets\Mylib_x86.dll&quot; /&gt; --&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- &lt;Content Include=&quot;Assets\Mylib_x64.dll&quot; /&gt; --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Content</span> <span class="attr">Include</span>=<span class="string">&quot;Assets\Mylib_$(Platform).dll&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这时只需要保留这一个引用，原来针对<code>x86</code>或<code>x64</code>的引用就可以删除了，在编译时会使用自动引用对应的dll在项目中。</p>
+<h3 id="动态引用"><a class="markdownIt-Anchor" href="#动态引用"></a> 动态引用</h3>
+<p>这种情况相对比较好处理，使用条件编译符号即可。进入条件编译符号设定界面：<strong>项目-右键菜单-属性-生成</strong></p>
+<p>在条件编译符号中加入对应平台字符串，具体是在<code>x86</code>平台追加<code>WIN32</code>、<code>x64</code>平台下追加<code>WIN64</code>，如下图：</p>
+<img src="/1375702934/1.png" class="">
+<img src="/1375702934/2.png" class="">
+<p><em><strong>注意：Debug与Release模式需要分别设置</strong></em></p>
+<p>最后，在代码中使用<code>DllImport</code>来导入时增加条件编译符号的判断就行啦😁😁</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">if</span> WIN64</span></span><br><span class="line">[<span class="meta">DllImport(<span class="string">&quot;Assets\\Mylib_x64&quot;</span>)</span>]</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">[<span class="meta">DllImport(<span class="string">&quot;Assets\\Mylib_x86&quot;</span>)</span>]</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">extern</span> Int32 <span class="title">MethodName</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span>;</span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -254,8 +268,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84/" rel="tag"># 快捷捷径</a>
-              <a href="/tags/COVID-19/" rel="tag"># COVID-19</a>
+              <a href="/tags/UWP/" rel="tag"># UWP</a>
+              <a href="/tags/Net/" rel="tag"># .Net</a>
           </div>
 
         
@@ -264,13 +278,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/UWP%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E5%B9%B3%E5%8F%B0%E6%98%AFXBox%E8%BF%98%E6%98%AFPC/" rel="prev" title="UWP判断当前运行平台是XBox还是PC">
-      <i class="fa fa-chevron-left"></i> UWP判断当前运行平台是XBox还是PC
+    <a href="/2351527164/" rel="prev" title="IOS中通过快捷捷径一键打开核酸码">
+      <i class="fa fa-chevron-left"></i> IOS中通过快捷捷径一键打开核酸码
     </a></div>
-      <div class="post-nav-item">
-    <a href="/1375702934/" rel="next" title="C#根据架构类型引用32或64位的DLL">
-      C#根据架构类型引用32或64位的DLL <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -330,7 +341,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E5%85%B3%E7%9A%84%E8%AF%9D"><span class="nav-number">1.</span> <span class="nav-text"> 无关的话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E6%96%87"><span class="nav-number">2.</span> <span class="nav-text"> 正文</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text"> 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E6%96%87"><span class="nav-number">2.</span> <span class="nav-text"> 正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E7%9B%B4%E6%8E%A5%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%BC%95%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text"> 对于直接在项目中引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%BC%95%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text"> 动态引用</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
