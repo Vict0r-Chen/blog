@@ -2,7 +2,7 @@
     "applinks": {
         "apps": [],
         "details": [{
-            "appID": "com.dcvictor.shortAction",
+            "appID": "2Y6F4CC4R3.com.dcvictor.shortAction",
             "paths": [
                 "/*"
             ]
@@ -10,7 +10,7 @@
     },
     "webcredentials": {
         "apps": [
-            "com.dcvictor.shortAction"
+            "2Y6F4CC4R3.com.dcvictor.shortAction"
         ]
     }
 }
