@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/avatar.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="为了一个小想法，没想到我竟然花了688￥（一年）注册Apple开发者😂这属实是冲动消费了，希望一年内能上一两个APP值回票价吧！  周五晚上付款，本以为半小时就能审核通过，没想到现在周日凌晨1点了还在审核中。（Update: 最终是到周一下午时提醒我上传身份证，上传后几分钟立刻就通过了） 一开始是打算用Flutter来实现，后面想着我主要是考虑在IOS端使用，于是换成Swift了（虽然这两种语言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IOS开发之Swift学习笔记">
+<meta property="og:url" content="https://v1ctor.cn/744023512/index.html">
+<meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="为了一个小想法，没想到我竟然花了688￥（一年）注册Apple开发者😂这属实是冲动消费了，希望一年内能上一两个APP值回票价吧！  周五晚上付款，本以为半小时就能审核通过，没想到现在周日凌晨1点了还在审核中。（Update: 最终是到周一下午时提醒我上传身份证，上传后几分钟立刻就通过了） 一开始是打算用Flutter来实现，后面想着我主要是考虑在IOS端使用，于是换成Swift了（虽然这两种语言">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://v1ctor.cn/744023512/iosdeveloper.png">
+<meta property="article:published_time" content="2022-11-26T17:05:33.000Z">
+<meta property="article:modified_time" content="2022-12-15T11:40:20.338Z">
+<meta property="article:author" content="Victor Chen">
+<meta property="article:tag" content="IOS">
+<meta property="article:tag" content="Swift">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://v1ctor.cn/744023512/iosdeveloper.png">
+
+<link rel="canonical" href="https://v1ctor.cn/744023512/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>IOS开发之Swift学习笔记 | Victor's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HM4V7STC5P');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Victor's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay hungry, stay foolish.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/744023512/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IOS开发之Swift学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-27 01:05:33" itemprop="dateCreated datePublished" datetime="2022-11-27T01:05:33+08:00">2022-11-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-12-15 19:40:20" itemprop="dateModified" datetime="2022-12-15T19:40:20+08:00">2022-12-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IOS/" itemprop="url" rel="index"><span itemprop="name">IOS</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/744023512/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/744023512/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>为了一个小想法，没想到我竟然花了688￥（一年）注册Apple开发者😂这属实是冲动消费了，希望一年内能上一两个APP值回票价吧！</p>
+<img src="/744023512/iosdeveloper.png" class="">
+<p>周五晚上付款，本以为半小时就能审核通过，没想到现在周日凌晨1点了还在审核中。（Update: 最终是到周一下午时提醒我上传身份证，上传后几分钟立刻就通过了）</p>
+<p>一开始是打算用Flutter来实现，后面想着我主要是考虑在IOS端使用，于是换成Swift了（虽然这两种语言我都不会🤣）。</p>
+<p>所以在审核期间先多学习下Swift的基础知识，本文便用作学习记录~</p>
+<span id="more"></span>
+<hr />
+<h1 id="资源"><a class="markdownIt-Anchor" href="#资源"></a> 资源</h1>
+<h2 id="网站"><a class="markdownIt-Anchor" href="#网站"></a> 网站</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://replit.com/languages/swift/">Replit</a> - 在线执行Swift代码，运行速度快</li>
+<li><a target="_blank" rel="noopener" href="https://docs.swift.org/swift-book/GuidedTour/GuidedTour.html">Swift-book</a> - 官方教程（英文）</li>
+<li><a target="_blank" rel="noopener" href="https://swiftgg.gitbook.io/swift/">The Swift Programming Language</a> - 官方文档翻译</li>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/swift/swift-tutorial.html">菜鸟教程</a> - 第三方中文教程，比较简洁</li>
+</ul>
+<h1 id="基础语法"><a class="markdownIt-Anchor" href="#基础语法"></a> 基础语法</h1>
+<h2 id="属性"><a class="markdownIt-Anchor" href="#属性"></a> 属性</h2>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">sample</span> &#123;</span><br><span class="line">    <span class="comment">//self 属性: 类型的每一个实例都有一个隐含属性叫做self，self 完全等同于该实例本身</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//静态属性 sample.Version</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> <span class="type">Version</span>: <span class="type">String</span> <span class="operator">=</span> <span class="string">&quot;1.0.0&quot;</span>;</span><br><span class="line">    <span class="comment">//实例属性</span></span><br><span class="line">    <span class="keyword">var</span> no1 <span class="operator">=</span> <span class="number">0.0</span>, no2 <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">var</span> length <span class="operator">=</span> <span class="number">300.0</span>, breadth <span class="operator">=</span> <span class="number">150.0</span></span><br><span class="line">    <span class="comment">//计算属性 可写可读</span></span><br><span class="line">    <span class="keyword">var</span> middle: (<span class="type">Double</span>, <span class="type">Double</span>) &#123;</span><br><span class="line">        <span class="keyword">get</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (length <span class="operator">/</span> <span class="number">2</span>, breadth <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span>(axis)&#123;</span><br><span class="line">            <span class="comment">//此处的axis是此计算属性传入的(Double, Double)， axis.0即是第0个属性</span></span><br><span class="line">            no1 <span class="operator">=</span> axis.<span class="number">0</span> <span class="operator">-</span> (length <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">            no2 <span class="operator">=</span> axis.<span class="number">1</span> <span class="operator">-</span> (breadth <span class="operator">/</span> <span class="number">2</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//计算属性 只读（字典[Double:Double]集合）</span></span><br><span class="line">    <span class="keyword">var</span> readonlyProp: [<span class="type">String</span>:<span class="type">Double</span>] &#123;</span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            <span class="string">&quot;no1&quot;</span>: <span class="keyword">self</span>.no1,</span><br><span class="line">            <span class="string">&quot;no2&quot;</span>: <span class="keyword">self</span>.no2</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//属性观察器</span></span><br><span class="line">    <span class="comment">//存储属性在构造器中赋值时，它们的值是被直接设置的，不会触发任何属性观测器。</span></span><br><span class="line">    <span class="keyword">var</span> counter: <span class="type">Int</span> <span class="operator">=</span> <span class="number">0</span>&#123;</span><br><span class="line">        <span class="keyword">willSet</span>(newTotal)&#123;</span><br><span class="line">          <span class="built_in">print</span>(<span class="string">&quot;counter willSet: <span class="subst">\(newTotal)</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">didSet</span>&#123;</span><br><span class="line">          <span class="built_in">print</span>(<span class="string">&quot;counter didSet, newValue: <span class="subst">\(counter)</span>, oldValue: <span class="subst">\(oldValue)</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result <span class="operator">=</span> sample()</span><br><span class="line"><span class="built_in">print</span>(result.middle)<span class="comment">//(150.0, 75.0)</span></span><br><span class="line">result.middle <span class="operator">=</span> (<span class="number">0.0</span>, <span class="number">10.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(result.no1)<span class="comment">//-150.0</span></span><br><span class="line"><span class="built_in">print</span>(result.no2)<span class="comment">//-65.0</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(result.readonlyProp)<span class="comment">//[&quot;no2&quot;: -65.0, &quot;no1&quot;: -150.0]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(sample.<span class="type">Version</span>)<span class="comment">//&quot;1.0.0&quot;</span></span><br><span class="line"></span><br><span class="line">result.counter <span class="operator">=</span> <span class="number">100</span></span><br><span class="line"><span class="comment">/* 输出</span></span><br><span class="line"><span class="comment">counter willSet: 100</span></span><br><span class="line"><span class="comment">counter didSet, newValue: 100, oldValue: 0</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">result.counter <span class="operator">=</span> <span class="number">800</span></span><br><span class="line"><span class="comment">/* 输出</span></span><br><span class="line"><span class="comment">counter willSet: 800</span></span><br><span class="line"><span class="comment">counter didSet, newValue: 800, oldValue: 100</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h2 id="下标脚本"><a class="markdownIt-Anchor" href="#下标脚本"></a> 下标脚本</h2>
+<p>与C#的索引器差不多，但不得不承认的是这个更灵活、强大，也更复杂：</p>
+<ul>
+<li>下标脚本允许任意数量的入参索引，并且每个入参类型也没有限制。</li>
+<li>下标脚本的返回值也可以是任何类型。</li>
+<li>下标脚本可以使用变量参数和可变参数。</li>
+<li>一个类或结构体可以根据自身需要提供多个下标脚本实现，在定义下标脚本时通过传入参数的类型进行区分，使用下标脚本时会自动匹配合适的下标脚本实现运行，这就是下标脚本的重载。</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Matrix</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> rows: <span class="type">Int</span>, columns: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">var</span> print: [<span class="type">Double</span>]</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">rows</span>: <span class="type">Int</span>, <span class="params">columns</span>: <span class="type">Int</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.rows <span class="operator">=</span> rows</span><br><span class="line">        <span class="keyword">self</span>.columns <span class="operator">=</span> columns</span><br><span class="line">        print <span class="operator">=</span> <span class="type">Array</span>(repeating: <span class="number">0.0</span>, count: rows <span class="operator">*</span> columns)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">subscript</span>(<span class="params">row</span>: <span class="type">Int</span>, <span class="params">column</span>: <span class="type">Int</span>) -&gt; <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> print[(row <span class="operator">*</span> columns) <span class="operator">+</span> column]</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123;</span><br><span class="line">            print[(row <span class="operator">*</span> columns) <span class="operator">+</span> column] <span class="operator">=</span> newValue</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 创建了一个新的 3 行 3 列的Matrix实例</span></span><br><span class="line"><span class="keyword">var</span> mat <span class="operator">=</span> <span class="type">Matrix</span>(rows: <span class="number">3</span>, columns: <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过下标脚本设置值</span></span><br><span class="line">mat[<span class="number">0</span>,<span class="number">0</span>] <span class="operator">=</span> <span class="number">1.0</span></span><br><span class="line">mat[<span class="number">0</span>,<span class="number">1</span>] <span class="operator">=</span> <span class="number">2.0</span></span><br><span class="line">mat[<span class="number">1</span>,<span class="number">0</span>] <span class="operator">=</span> <span class="number">3.0</span></span><br><span class="line">mat[<span class="number">1</span>,<span class="number">1</span>] <span class="operator">=</span> <span class="number">5.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过下标脚本获取值</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(mat[<span class="number">0</span>,<span class="number">0</span>])</span>&quot;</span>)<span class="comment">//1.0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(mat[<span class="number">0</span>,<span class="number">1</span>])</span>&quot;</span>)<span class="comment">//2.0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(mat[<span class="number">1</span>,<span class="number">0</span>])</span>&quot;</span>)<span class="comment">//3.0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(mat[<span class="number">1</span>,<span class="number">1</span>])</span>&quot;</span>)<span class="comment">//5.0</span></span><br></pre></td></tr></table></figure>
+<h2 id="访问控制"><a class="markdownIt-Anchor" href="#访问控制"></a> 访问控制</h2>
+<ul>
+<li><code>public</code> - 可以访问自己模块中源文件里的任何实体，别人也可以通过引入该模块来访问源文件里的所有实体。</li>
+<li><code>internal</code> - 可以访问自己模块中源文件里的任何实体，但是别人不能访问该模块中源文件里的实体。</li>
+<li><code>fileprivate</code> - 文件内私有，只能在当前源文件中使用。</li>
+<li><code>private</code> - 只能在类中访问，离开了这个类或者结构体的作用域外面就无法访问。</li>
+</ul>
+<h2 id="more"><a class="markdownIt-Anchor" href="#more"></a> more…</h2>
+<p>更多的下次补充…</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/IOS/" rel="tag"># IOS</a>
+              <a href="/tags/Swift/" rel="tag"># Swift</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/3346291601/" rel="prev" title="我永远都想不到UWP/WPF开发中的这个自带的小组件会浪费我一整天的时间">
+      <i class="fa fa-chevron-left"></i> 我永远都想不到UWP/WPF开发中的这个自带的小组件会浪费我一整天的时间
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2719497957/" rel="next" title="关于UWP多语言切换的一些问题">
+      关于UWP多语言切换的一些问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B5%84%E6%BA%90"><span class="nav-number">1.</span> <span class="nav-text"> 资源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%AB%99"><span class="nav-number">1.1.</span> <span class="nav-text"> 网站</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text"> 基础语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.</span> <span class="nav-text"> 属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E6%A0%87%E8%84%9A%E6%9C%AC"><span class="nav-number">2.2.</span> <span class="nav-text"> 下标脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">2.3.</span> <span class="nav-text"> 访问控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#more"><span class="nav-number">2.4.</span> <span class="nav-text"> more…</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Victor Chen"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Victor Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Vict0r-Chen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Vict0r-Chen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/victorchen.3012@gmail.com" title="E-Mail → victorchen.3012@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Victor Chen</span>
+    <span class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17122079号-3 </a>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'b8Cl0cL4LSTvWfsE6yHbF6uk-9Nh9j0Va',
+      appKey     : 'Y5HlQlullBWD8Txpao74GIqp',
+      placeholder: "唠两句？",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
