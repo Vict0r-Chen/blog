@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/avatar.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="因为参加了远智的学历提升计划，要参加期末考试，我选的这个专业每次还要考十六个科目😢，因为专业不相关，所以也没计划去深入学习。又因为考试时不能打开他们手机端的APP题库，所以很多人都得先在手机上一个题目一个题目的截图，如果是我，得截16科*每科30道题≈480张图，然后还没法搜索…本着节省时间的宗旨，不得出此下策，另外为了方便其他有这方面需求的同学，特别发出这篇blog~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="远智学堂期末考试之试卷抓包及通过JS脚本实现一键答题">
+<meta property="og:url" content="https://v1ctor.cn/625924666/index.html">
+<meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="因为参加了远智的学历提升计划，要参加期末考试，我选的这个专业每次还要考十六个科目😢，因为专业不相关，所以也没计划去深入学习。又因为考试时不能打开他们手机端的APP题库，所以很多人都得先在手机上一个题目一个题目的截图，如果是我，得截16科*每科30道题≈480张图，然后还没法搜索…本着节省时间的宗旨，不得出此下策，另外为了方便其他有这方面需求的同学，特别发出这篇blog~">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://v1ctor.cn/625924666/ssl-add.png">
+<meta property="og:image" content="https://v1ctor.cn/625924666/getFullPaperInfo.png">
+<meta property="og:image" content="https://v1ctor.cn/625924666/limit.png">
+<meta property="article:published_time" content="2023-01-08T08:27:01.000Z">
+<meta property="article:modified_time" content="2023-01-09T18:33:33.933Z">
+<meta property="article:author" content="Victor Chen">
+<meta property="article:tag" content="Geek">
+<meta property="article:tag" content="远智学堂">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://v1ctor.cn/625924666/ssl-add.png">
+
+<link rel="canonical" href="https://v1ctor.cn/625924666/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>远智学堂期末考试之试卷抓包及通过JS脚本实现一键答题 | Victor's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HM4V7STC5P');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Victor's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay hungry, stay foolish.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/625924666/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          远智学堂期末考试之试卷抓包及通过JS脚本实现一键答题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-08 16:27:01" itemprop="dateCreated datePublished" datetime="2023-01-08T16:27:01+08:00">2023-01-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-01-10 02:33:33" itemprop="dateModified" datetime="2023-01-10T02:33:33+08:00">2023-01-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" itemprop="url" rel="index"><span itemprop="name">实用技能</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/625924666/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/625924666/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>因为参加了远智的学历提升计划，要参加期末考试，我选的这个专业每次还要考十六个科目😢，因为专业不相关，所以也没计划去深入学习。又因为考试时不能打开他们手机端的APP题库，所以很多人都得先在手机上一个题目一个题目的截图，如果是我，得截16科*每科30道题≈480张图，然后还没法搜索…本着节省时间的宗旨，不得出此下策，另外为了方便其他有这方面需求的同学，特别发出这篇blog~</p>
+<span id="more"></span>
+<h2 id="目的"><a class="markdownIt-Anchor" href="#目的"></a> 目的</h2>
+<p>通过APP抓包远智题库，将题库以json文件储存，然后通过JS脚本点击自动选择提选项来实现自动答题。</p>
+<h2 id="抓包"><a class="markdownIt-Anchor" href="#抓包"></a> 抓包</h2>
+<h3 id="电脑端下载并激活charles抓包工具"><a class="markdownIt-Anchor" href="#电脑端下载并激活charles抓包工具"></a> 电脑端下载并激活Charles抓包工具</h3>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.charlesproxy.com/download/">点击下载安装包</a></li>
+<li>打开Charle - Help - Register Charles，任意输入字符（如<code>Victor</code>）；</li>
+<li><a target="_blank" rel="noopener" href="https://www.zzzmode.com/mytools/charles/">点击进入</a>生成激活密钥的网址；</li>
+<li>在网页中输入刚才的字符，点击生成即会生成密钥（如<code>1ea1b0ced9c48f26b2</code>)，复制到Charles粘贴进去确认即可；</li>
+<li>在左下角的<code>Fliter</code>输入远智题图API的URL<code>https://onlineexam.yzou.cn</code>；</li>
+</ol>
+<h3 id="ios端配置代理与https证书"><a class="markdownIt-Anchor" href="#ios端配置代理与https证书"></a> IOS端配置代理与HTTPS证书</h3>
+<ol>
+<li>
+<p>在控制台中输入<code>ipconfig</code>查询当前电脑IP，将ip地址以及端口<code>8888</code>在手机上配置为代理：Settings - WLAN - Wifi详情 - Configure Proxy；</p>
+</li>
+<li>
+<p>在手机上访问<code>chls.pro/ssl</code>，进入页面会立刻提示此网站尝试下载证书，点击允许即可；</p>
+</li>
+<li>
+<p>下载成功后打开IOS Setting应用，第一项菜单应该就是<code>Profile Downloaded</code>，进去后点击<code>Install</code>然后输入锁屏密码；</p>
+</li>
+<li>
+<p>IOS 10.3系统及以上，需要在 Settings - General - About - Certificate Trust Settings里面找到<code>Charles Proxy CA(&#123;当前日期&#125;, &#123;电脑名称&#125;)</code>，打开信任开关即可；</p>
+</li>
+<li>
+<p>Charles设置Proxy，Proxy -&gt; SSL Proxying Settings…，接着弹框里勾选Enable SSL Proxying，点击<code>Include</code>列表下的<code>Add</code>，host填<code>onlineexam.yzou.cn</code>，Port填<code>443</code>，点击OK即可；</p>
+</li>
+</ol>
+<img src="/625924666/ssl-add.png" class="">
+<p>至此在远智APP访问考试相关的HTTPS请求就可以在<code>Charles</code>中看到了</p>
+<h3 id="手机端打开试卷"><a class="markdownIt-Anchor" href="#手机端打开试卷"></a> 手机端打开试卷</h3>
+<p>这里非常简单，在远智APP - 学堂 - 智能练题  - <strong>选中要考试的科目</strong> - 整卷练习 - 背题模式，点击<strong>查看</strong>进去</p>
+<h3 id="charles查看试卷答案"><a class="markdownIt-Anchor" href="#charles查看试卷答案"></a> Charles查看试卷答案</h3>
+<p>进入试卷界面后在Charles查找<code>getFullPaperInfo.do</code>请求即可。如下图可以看到其中一个单选题的题目、选项及答案：</p>
+<img src="/625924666/getFullPaperInfo.png" class="">
+<p>JSON内容应该是这样：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">	<span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="string">&quot;00&quot;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;body&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">		<span class="attr">&quot;referenceTime&quot;</span><span class="punctuation">:</span> <span class="number">1673101544933</span><span class="punctuation">,</span></span><br><span class="line">		<span class="attr">&quot;paperBaseInfo&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>...<span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="comment">//试卷信息</span></span><br><span class="line">		<span class="attr">&quot;examHeadlineDetail&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span>...<span class="punctuation">]</span><span class="comment">//考题信息</span></span><br><span class="line">	<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;rspTime&quot;</span><span class="punctuation">:</span> <span class="number">1673101544933</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;ok&quot;</span><span class="punctuation">:</span> <span class="keyword">true</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>题库准备完成后就可以根据题库的Json文件生成JS脚本然后在浏览器中执行来达到自动选择答案的目的啦😎</p>
+<h2 id="生成脚本"><a class="markdownIt-Anchor" href="#生成脚本"></a> 生成脚本</h2>
+<p>老办法，将上面抓到JSON粘贴到输入框，点击升级就会生成JS脚本，然后点击复制，去远智在线的考试界面，按F12打开控制台将脚本粘贴进去回车就好~</p>
+
+<script>
+    function LetterToNumber(letter) {
+        switch (letter) {
+            case "A":
+                return 0;
+            case "B":
+                return 1;
+            case "C":
+                return 2;
+            case "D":
+                return 3;
+            case "E":
+                return 4;
+            case "F":
+                return 5;
+            case "G":
+                return 6;
+            case "H":
+                return 7;
+            default:
+                alert("ERROR: " + letter);
+                return -1;
+        }
+    }
+    function setOutput(msg){
+      document.getElementById("result").innerText=msg;
+    }
+    function getJsPaperInfo(jsonData){
+      var output = "";
+      jsonData.body.examHeadlineDetail.forEach(element => {
+          output += "\n//" + element.headlineTitle + "\n";
+          if (element.headlineTitle == "单选题") {
+              for (let index = 0; index < element.examPaperChildVOList[0].examPaperTopicVOList.length; index++) {
+                  const item = element.examPaperChildVOList[0].examPaperTopicVOList[index];
+                  let anwser = LetterToNumber(item.result);
+                  console.log(`${item.topicStems}:${item.result} `);
+                  output += (`document.querySelectorAll("#singleCurrentTo${index} .el-radio")[${anwser}].click();\n`);
+              }
+          } else if (element.headlineTitle == "多选题") {
+              for (let index = 0; index < element.examPaperChildVOList[0].examPaperTopicVOList.length; index++) {
+                  const item = element.examPaperChildVOList[0].examPaperTopicVOList[index];
+                  console.log(`${item.topicStems}:${item.result}`);
+                  for (let ss = 0; ss < item.result.length; ss++) {
+                      const letters = item.result[ss];
+                      let anwser = LetterToNumber(letters);
+                      output += (`await document.querySelectorAll("#moreTopicInfo${index} .el-checkbox")[${anwser}].click();\n`);
+                  }
+              }
+          } else if (element.headlineTitle == "判断题") {
+              for (let index = 0; index < element.examPaperChildVOList[0].examPaperTopicVOList.length; index++) {
+                  const item = element.examPaperChildVOList[0].examPaperTopicVOList[index];
+                  let anwser = LetterToNumber(item.result);
+                  console.log(`${item.topicStems}:${item.result} ${anwser}`);
+                  output += (`document.querySelectorAll("#judgeTopicInfo${index} .el-radio")[${anwser}].click();\n`);
+              }
+          } else if (element.headlineTitle == "填空题") {
+              output += `function gapAQ(selector, text){var elements = document.querySelectorAll(selector);return Array.prototype.filter.call(elements, function(element){return RegExp(text).test(element.textContent);});};`;
+              for (let index = 0; index < element.examPaperChildVOList[0].examPaperTopicVOList.length; index++) {
+                  const item = element.examPaperChildVOList[0].examPaperTopicVOList[index];
+                  let anwser = JSON.parse(item.result);
+                  for (let prop in anwser) {
+                      console.log(prop);
+                      let iii = parseInt(prop.replace('result', '')) - 1;
+                      output += (`gapAQ('p','${element.headlineTitle}')[0].parentElement.querySelectorAll("#gapTopicInfo${index} > div.quill_box > div.el-row > div.quill-editor > div.ql-container.ql-snow > div.ql-editor")[${iii}].innerText="${anwser[prop]};"\n`);
+                  }
+              }
+          } else if (element.headlineTitle == "名词解释题") {
+              output += `function nounAQ(selector, text){var elements = document.querySelectorAll(selector);return Array.prototype.filter.call(elements, function(element){return RegExp(text).test(element.textContent);});};`;
+              for (let index = 0; index < element.examPaperChildVOList[0].examPaperTopicVOList.length; index++) {
+                  const item = element.examPaperChildVOList[0].examPaperTopicVOList[index];
+                  output += (`nounAQ('p','${element.headlineTitle}')[0].parentElement.querySelector("#qaTopicInfo${index} > div.quill_box > div.el-row > div.quill-editor > div.ql-container.ql-snow > div.ql-editor").innerText="${item.result};"\n`);
+              }
+          } else {
+              alert(`存在不支持的题型[${element.headlineTitle}]，请自行检查！`);
+          }
+      });
+      return output;
+    }
+    function generate(){
+        let jsonStr = document.getElementById("txtJson").value;
+        try{
+          let paperInfo = JSON.parse(jsonStr)
+          console.log({paperInfo})
+          let output = getJsPaperInfo(paperInfo);
+          setOutput(output);
+        }
+        catch(e){
+          console.error(e);
+          setOutput(`JSON格式有误`);
+        }
+    }
+    function copyResult(){
+      let result = document.getElementById("result").innerText;
+      navigator.clipboard.writeText(result);
+      alert("复制成功");
+    }
+</script>
+<div style="background:#23507f23; padding:10px; border-radius: 10px;margin: 10px 20px;">
+   <p style="text-align:center;margin-bottom:10px;">
+      <strong>1. 将JSON内容粘到输入框</strong>
+   </p>
+   <div>
+      <textarea id="txtJson" style="width:100%; height:100px"></textarea>
+   </div>
+   <div>
+      <button onclick="generate()">2. 点击生成脚本</button>
+      <hr/>
+      <div id="result"></div>
+      <button onclick="copyResult()">3. 复制</button>
+   </div>
+</div>
+<style>
+    .text-wrapper {
+        white-space: pre-wrap;
+    }
+    #result{
+      height: 140px;
+      overflow: scroll;
+      overflow-x: hidden;
+    }
+</style>
+
+<h2 id="突破考试时间至少要5分钟的限制"><a class="markdownIt-Anchor" href="#突破考试时间至少要5分钟的限制"></a> 突破考试时间至少要5分钟的限制</h2>
+<p>其实我本来觉得这个限制应该没法突破的，因为在后台稍微判断一下就可以做到，意想不到的是这个判断逻辑竟然坐在前端😢是我想多了（当然，也可能是同行心存善意🤣🤣）</p>
+<p>既如此，打开控制台，在<code>source</code>下的<code>webpack://</code>找到<code>newOnlineExam.vue</code>，在大概<code>1300</code>行处打个断点，页面里点击&quot;交卷&quot;时会命中此断点，然后将<code>rspTime</code>改大一点即可（我是把第一位的1改成2就好了）。</p>
+<img src="/625924666/limit.png" class="">
+<h2 id="注意事项"><a class="markdownIt-Anchor" href="#注意事项"></a> 注意事项</h2>
+<p>由于很多简答题没有答案，并且问题的顺序也不一致，所以对于简答题就需要自行谷歌，或者使用ChatGPT（吹爆！！！）来生成答案😉</p>
+<p><strong>郑重声明：使用时请自行核对答案，考0分我可不管啊</strong></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Geek/" rel="tag"># Geek</a>
+              <a href="/tags/%E8%BF%9C%E6%99%BA%E5%AD%A6%E5%A0%82/" rel="tag"># 远智学堂</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/3501988402/" rel="prev" title="Linux中部署PaddleOCR API以http的方式发起预测请求">
+      <i class="fa fa-chevron-left"></i> Linux中部署PaddleOCR API以http的方式发起预测请求
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text"> 目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%93%E5%8C%85"><span class="nav-number">2.</span> <span class="nav-text"> 抓包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%84%91%E7%AB%AF%E4%B8%8B%E8%BD%BD%E5%B9%B6%E6%BF%80%E6%B4%BBcharles%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7"><span class="nav-number">2.1.</span> <span class="nav-text"> 电脑端下载并激活Charles抓包工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ios%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86%E4%B8%8Ehttps%E8%AF%81%E4%B9%A6"><span class="nav-number">2.2.</span> <span class="nav-text"> IOS端配置代理与HTTPS证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%89%93%E5%BC%80%E8%AF%95%E5%8D%B7"><span class="nav-number">2.3.</span> <span class="nav-text"> 手机端打开试卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#charles%E6%9F%A5%E7%9C%8B%E8%AF%95%E5%8D%B7%E7%AD%94%E6%A1%88"><span class="nav-number">2.4.</span> <span class="nav-text"> Charles查看试卷答案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E8%84%9A%E6%9C%AC"><span class="nav-number">3.</span> <span class="nav-text"> 生成脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AA%81%E7%A0%B4%E8%80%83%E8%AF%95%E6%97%B6%E9%97%B4%E8%87%B3%E5%B0%91%E8%A6%815%E5%88%86%E9%92%9F%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text"> 突破考试时间至少要5分钟的限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">5.</span> <span class="nav-text"> 注意事项</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Victor Chen"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Victor Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Vict0r-Chen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Vict0r-Chen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/victorchen.3012@gmail.com" title="E-Mail → victorchen.3012@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Victor Chen</span>
+    <span class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17122079号-3 </a>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'b8Cl0cL4LSTvWfsE6yHbF6uk-9Nh9j0Va',
+      appKey     : 'Y5HlQlullBWD8Txpao74GIqp',
+      placeholder: "唠两句？",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
