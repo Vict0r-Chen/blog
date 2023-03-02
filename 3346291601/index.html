@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://v1ctor.cn/3346291601/3.png">
 <meta property="og:image" content="https://v1ctor.cn/3346291601/4.png">
 <meta property="article:published_time" content="2022-11-12T08:52:58.000Z">
-<meta property="article:modified_time" content="2023-02-06T16:40:58.493Z">
+<meta property="article:modified_time" content="2023-03-02T09:33:00.556Z">
 <meta property="article:author" content="Victor Chen">
 <meta property="article:tag" content="UWP">
 <meta property="article:tag" content="WPF">
@@ -208,7 +208,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-07 00:40:58" itemprop="dateModified" datetime="2023-02-07T00:40:58+08:00">2023-02-07</time>
+                <time title="Modified: 2023-03-02 17:33:00" itemprop="dateModified" datetime="2023-03-02T17:33:00+08:00">2023-03-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -221,20 +221,6 @@
             </span>
 
           
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/3346291601/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/3346291601/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 
         </div>
       </header>
@@ -294,7 +280,7 @@
 
           </div>
           
-    <div class="comments" id="valine-comments"></div>
+    <div class="comments" id="utterances-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -489,32 +475,18 @@
 
   
 
-
 <script>
-NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
-  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
-    var GUEST = ['nick', 'mail', 'link'];
-    var guest = 'nick,mail,link';
-    guest = guest.split(',').filter(item => {
-      return GUEST.includes(item);
-    });
-    new Valine({
-      el         : '#valine-comments',
-      verify     : false,
-      notify     : true,
-      appId      : 'b8Cl0cL4LSTvWfsE6yHbF6uk-9Nh9j0Va',
-      appKey     : 'Y5HlQlullBWD8Txpao74GIqp',
-      placeholder: "唠两句？",
-      avatar     : 'mm',
-      meta       : guest,
-      pageSize   : '10' || 10,
-      visitor    : false,
-      lang       : 'zh-cn' || 'zh-cn',
-      path       : location.pathname,
-      recordIP   : true,
-      serverURLs : ''
-    });
-  }, window.Valine);
+NexT.utils.loadComments(document.querySelector('#utterances-container'), () => {
+    // if (typeof parcelRequire === 'function') { return; }
+    var js = document.createElement('script');
+    js.type = 'text/javascript';
+    js.src = 'https://utteranc.es/client.js';
+    js.async = true;
+    js.crossorigin = 'anonymous';
+    js.setAttribute('repo', 'Vict0r-Chen/blog-comment');
+    js.setAttribute('issue-term', 'pathname');
+    js.setAttribute('theme', 'github-light');
+    document.getElementById('utterances-container').appendChild(js);
 });
 </script>
 

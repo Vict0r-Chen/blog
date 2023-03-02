@@ -28,7 +28,7 @@
 <meta property="og:description" content="前不久由于要做一个截图识别文字的功能，但阿里&#x2F;腾讯云收费太高，最终认为开源的 PaddleOCR 最合适，虽然由于识别速度不够快，一张截图需要1~2s才能识别成功——且在不考虑并发的情况下（可能由于我是用的CPU的版本，并且机器配置不够高），最终放弃了使用PaddleOCR，不过至少输出了一篇blog，也没算白费时间😒">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-05T16:24:31.000Z">
-<meta property="article:modified_time" content="2023-02-06T16:40:58.489Z">
+<meta property="article:modified_time" content="2023-03-02T09:33:00.552Z">
 <meta property="article:author" content="Victor Chen">
 <meta property="article:tag" content="PaddleOCR">
 <meta name="twitter:card" content="summary">
@@ -202,7 +202,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-07 00:40:58" itemprop="dateModified" datetime="2023-02-07T00:40:58+08:00">2023-02-07</time>
+                <time title="Modified: 2023-03-02 17:33:00" itemprop="dateModified" datetime="2023-03-02T17:33:00+08:00">2023-03-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -215,20 +215,6 @@
             </span>
 
           
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine: </span>
-    
-    <a title="valine" href="/3501988402/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/3501988402/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 
         </div>
       </header>
@@ -314,7 +300,7 @@
 
           </div>
           
-    <div class="comments" id="valine-comments"></div>
+    <div class="comments" id="utterances-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -510,32 +496,18 @@
 
   
 
-
 <script>
-NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
-  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
-    var GUEST = ['nick', 'mail', 'link'];
-    var guest = 'nick,mail,link';
-    guest = guest.split(',').filter(item => {
-      return GUEST.includes(item);
-    });
-    new Valine({
-      el         : '#valine-comments',
-      verify     : false,
-      notify     : true,
-      appId      : 'b8Cl0cL4LSTvWfsE6yHbF6uk-9Nh9j0Va',
-      appKey     : 'Y5HlQlullBWD8Txpao74GIqp',
-      placeholder: "唠两句？",
-      avatar     : 'mm',
-      meta       : guest,
-      pageSize   : '10' || 10,
-      visitor    : false,
-      lang       : 'zh-cn' || 'zh-cn',
-      path       : location.pathname,
-      recordIP   : true,
-      serverURLs : ''
-    });
-  }, window.Valine);
+NexT.utils.loadComments(document.querySelector('#utterances-container'), () => {
+    // if (typeof parcelRequire === 'function') { return; }
+    var js = document.createElement('script');
+    js.type = 'text/javascript';
+    js.src = 'https://utteranc.es/client.js';
+    js.async = true;
+    js.crossorigin = 'anonymous';
+    js.setAttribute('repo', 'Vict0r-Chen/blog-comment');
+    js.setAttribute('issue-term', 'pathname');
+    js.setAttribute('theme', 'github-light');
+    document.getElementById('utterances-container').appendChild(js);
 });
 </script>
 
