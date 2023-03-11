@@ -20,16 +20,20 @@
     var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Victor&#39;s blog">
-<meta property="og:url" content="https://v1ctor.cn/tags/%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84/index.html">
+  <meta name="description" content="前段时间部署了一个.net6的demo到centos上，因为怕麻烦所以直接使用的宝塔面板安装的数据库、nginx这些软件，虽然low，但是简单易用🤣本来也用着好好的，但是突然有一天在调试demo时发现连不上数据库了，以为代码有问题，结果换成Workbench竟然也连不上！明明啥都没动，不知怎么突然出来这么一个问题。。今天有空，google到解决方案后特地记录下，水一篇~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于客户端无法连接MySql的问题排查记录">
+<meta property="og:url" content="https://v1ctor.cn/2562236451/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="前段时间部署了一个.net6的demo到centos上，因为怕麻烦所以直接使用的宝塔面板安装的数据库、nginx这些软件，虽然low，但是简单易用🤣本来也用着好好的，但是突然有一天在调试demo时发现连不上数据库了，以为代码有问题，结果换成Workbench竟然也连不上！明明啥都没动，不知怎么突然出来这么一个问题。。今天有空，google到解决方案后特地记录下，水一篇~">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-03-09T16:18:02.000Z">
+<meta property="article:modified_time" content="2023-03-11T02:43:06.302Z">
 <meta property="article:author" content="Victor Chen">
-<meta property="article:tag" content="blog .net eletron wpf flutter 微信小程序 uniapp">
+<meta property="article:tag" content="Mysql">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://v1ctor.cn/tags/%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84/">
+<link rel="canonical" href="https://v1ctor.cn/2562236451/">
 
 
 <script id="page-configurations">
@@ -37,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Tag: 快捷捷径 | Victor's blog</title>
+  <title>关于客户端无法连接MySql的问题排查记录 | Victor's blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
     <script>
@@ -161,77 +165,122 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">快捷捷径
-          <small>Tag</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/2562236451/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于客户端无法连接MySql的问题排查记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-10 00:18:02" itemprop="dateCreated datePublished" datetime="2023-03-10T00:18:02+08:00">2023-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-11 10:43:06" itemprop="dateModified" datetime="2023-03-11T10:43:06+08:00">2023-03-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-09T14:51:51+08:00"
-              content="2022-09-09">
-          09-09
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2351527164/" itemprop="url">
-            <span itemprop="name">IOS中通过快捷捷径一键打开核酸码</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-07-03T13:50:52+08:00"
-              content="2022-07-03">
-          07-03
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/IOS%E4%B8%AD%E9%80%9A%E8%BF%87%E5%BF%AB%E6%8D%B7%E6%8D%B7%E5%BE%84%E6%89%93%E5%BC%80%E5%81%A5%E5%BA%B7%E7%A0%81%E6%88%96%E5%9C%BA%E6%89%80%E7%A0%81/" itemprop="url">
-            <span itemprop="name">IOS中通过快捷捷径打开健康码/场所码</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
+        <p>前段时间部署了一个.net6的demo到centos上，因为怕麻烦所以直接使用的<code>宝塔面板</code>安装的数据库、<code>nginx</code>这些软件，虽然low，但是简单易用🤣本来也用着好好的，但是突然有一天在调试demo时发现连不上数据库了，以为代码有问题，结果换成Workbench竟然也连不上！明明啥都没动，不知怎么突然出来这么一个问题。。今天有空，google到解决方案后特地记录下，水一篇~</p>
+<span id="more"></span>
+<h2 id="现象"><a class="markdownIt-Anchor" href="#现象"></a> 现象</h2>
+<ul>
+<li>无法使用代码、客户端连接数据库；</li>
+<li>在服务器可以使用<code>mysql</code>进入控制台查询数据；</li>
+<li>本地、云上防火墙都已放开端口<code>3306</code>；</li>
+<li>重启mysql服务、数据库也没用；</li>
+<li>使用<code>ps aux|grep mysql</code>看到mysql进程启动参数显示指定了端口：<code> --port=3306</code>；</li>
+<li>使用<code>netstat -antp|grep 3306</code>发现没用任何进程监听<code>3306</code>端口；</li>
+</ul>
+<h2 id="分析"><a class="markdownIt-Anchor" href="#分析"></a> 分析</h2>
+<p>我碰到的问题别人一定碰到过，之所以google不到解决方案是因为搜索词不对！</p>
+<p>从上面的现象可以看到防火墙没问题，mysql本身也正常跑着，问题就在为什么跑起来了但是没有<code>3306</code>的端口呢？结果一搜<code>mysql启动后没有监听任何端口</code>，立马就找到<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43671497/article/details/84931578">结果</a>了！</p>
+<h2 id="解决方案"><a class="markdownIt-Anchor" href="#解决方案"></a> 解决方案</h2>
+<p>我这里的原因是启用了<code>skip-grant-tables</code>，在配置文件夹里注释掉此项，然后重启mysql即可。</p>
+<p>在宝塔面板中操作非常简单：<code>软件商店-&gt;Mysql-&gt;设置-&gt;配置修改</code>，找到<code>skip-grant-tables</code>，改为<code>#skip-grant-tables</code>，点击保存，然后切回<code>服务</code>点击<code>重启</code>就好啦！</p>
+<h2 id="为什么skip-grant-tables会导致不监听端口"><a class="markdownIt-Anchor" href="#为什么skip-grant-tables会导致不监听端口"></a> 为什么skip-grant-tables会导致不监听端口？</h2>
+<p>以下是google到的相关说明：</p>
+<p><code>--skip-grant-tables</code>会让服务器跳过读取<code>mysql</code>系统模式中的<code>grant</code>表，从而在不使用权限系统的情况下启动，这使得任何可以访问服务器的人都可以无限制地访问所有数据库。</p>
+<p>因为使用<code>--skip-grant-tables</code>启动服务器会禁用身份验证检查，所以在这种情况下，服务器也会通过启用skip_networking来禁用远程连接。</p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/3769334848/" rel="prev" title="IOS开发之付费订阅学习笔记 - Revenuecat篇">
+      <i class="fa fa-chevron-left"></i> IOS开发之付费订阅学习笔记 - Revenuecat篇
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
 
           </div>
           
+    <div class="comments" id="utterances-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -278,6 +327,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text"> 现象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text"> 分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.</span> <span class="nav-text"> 解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88skip-grant-tables%E4%BC%9A%E5%AF%BC%E8%87%B4%E4%B8%8D%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3"><span class="nav-number">4.</span> <span class="nav-text"> 为什么skip-grant-tables会导致不监听端口？</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -426,6 +476,20 @@
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#utterances-container'), () => {
+    // if (typeof parcelRequire === 'function') { return; }
+    var js = document.createElement('script');
+    js.type = 'text/javascript';
+    js.src = 'https://utteranc.es/client.js';
+    js.async = true;
+    js.crossorigin = 'anonymous';
+    js.setAttribute('repo', 'Vict0r-Chen/blog-comment');
+    js.setAttribute('issue-term', 'pathname');
+    js.setAttribute('theme', 'dark-blue');
+    document.getElementById('utterances-container').appendChild(js);
+});
+</script>
 
 </body>
 </html>
