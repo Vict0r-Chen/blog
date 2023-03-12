@@ -28,7 +28,7 @@
 <meta property="og:description" content="前段时间部署了一个.net6的demo到centos上，因为怕麻烦所以直接使用的宝塔面板安装的数据库、nginx这些软件，虽然low，但是简单易用🤣本来也用着好好的，但是突然有一天在调试demo时发现连不上数据库了，以为代码有问题，结果换成Workbench竟然也连不上！明明啥都没动，不知怎么突然出来这么一个问题。。今天有空，google到解决方案后特地记录下，水一篇~">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-03-09T16:18:02.000Z">
-<meta property="article:modified_time" content="2023-03-12T18:21:20.028Z">
+<meta property="article:modified_time" content="2023-03-12T18:22:54.043Z">
 <meta property="article:author" content="Victor Chen">
 <meta property="article:tag" content="Mysql">
 <meta name="twitter:card" content="summary">
@@ -202,7 +202,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-03-13 02:21:20" itemprop="dateModified" datetime="2023-03-13T02:21:20+08:00">2023-03-13</time>
+                <time title="Modified: 2023-03-13 02:22:54" itemprop="dateModified" datetime="2023-03-13T02:22:54+08:00">2023-03-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,7 +246,6 @@
 <p>以下是google到的相关说明：</p>
 <p><code>--skip-grant-tables</code>会让服务器跳过读取<code>mysql</code>系统模式中的<code>grant</code>表，从而在不使用权限系统的情况下启动，这使得任何可以访问服务器的人都可以无限制地访问所有数据库。</p>
 <p>因为使用<code>--skip-grant-tables</code>启动服务器会禁用身份验证检查，所以在这种情况下，服务器也会通过启用skip_networking来禁用远程连接。</p>
-<p>test for cdn flush(01)</p>
 
     </div>
 
