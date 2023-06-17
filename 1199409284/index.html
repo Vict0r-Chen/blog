@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/avatar.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="相信很多人都有需要远程电脑的需求（特指打工人😂），向日葵太臃肿而且手机端使用收费，Windows原生的远程桌面深得我心，于是我使用了Frps来实现这个目的。但可能由于安全策略的原因，很多设置开机启动项的方式都需要先登录账户，这让使用便利性急剧下降，本来只需要请人帮忙按下电脑电源键就可以搞定，现在还得让人再帮忙输入一遍密码来启用Frps？！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次Windows登录前运行启动项的设置(frps)">
+<meta property="og:url" content="https://v1ctor.cn/1199409284/index.html">
+<meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="相信很多人都有需要远程电脑的需求（特指打工人😂），向日葵太臃肿而且手机端使用收费，Windows原生的远程桌面深得我心，于是我使用了Frps来实现这个目的。但可能由于安全策略的原因，很多设置开机启动项的方式都需要先登录账户，这让使用便利性急剧下降，本来只需要请人帮忙按下电脑电源键就可以搞定，现在还得让人再帮忙输入一遍密码来启用Frps？！">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://v1ctor.cn/1199409284/do_not_touch.gif">
+<meta property="article:published_time" content="2023-06-17T01:57:49.000Z">
+<meta property="article:modified_time" content="2023-06-17T03:09:36.580Z">
+<meta property="article:author" content="Victor Chen">
+<meta property="article:tag" content="开机启动">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://v1ctor.cn/1199409284/do_not_touch.gif">
+
+<link rel="canonical" href="https://v1ctor.cn/1199409284/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>记一次Windows登录前运行启动项的设置(frps) | Victor's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HM4V7STC5P');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Victor's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay hungry, stay foolish.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/1199409284/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          记一次Windows登录前运行启动项的设置(frps)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-06-17 09:57:49 / Modified: 11:09:36" itemprop="dateCreated datePublished" datetime="2023-06-17T09:57:49+08:00">2023-06-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" itemprop="url" rel="index"><span itemprop="name">实用技能</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>相信很多人都有需要远程电脑的需求（特指打工人😂），向日葵太臃肿而且手机端使用收费，Windows原生的远程桌面深得我心，于是我使用了Frps来实现这个目的。但可能由于安全策略的原因，很多设置开机启动项的方式都需要先登录账户，这让使用便利性急剧下降，本来只需要请人帮忙按下电脑电源键就可以搞定，现在还得让人再帮忙输入一遍密码来启用Frps？！</p>
+<span id="more"></span>
+<h2 id="启动文件夹-shellstartup"><a class="markdownIt-Anchor" href="#启动文件夹-shellstartup"></a> 启动文件夹 <code>Shell:startup</code></h2>
+<p>正常情况下，<code>shell:startup</code>是最好的选择，操作简单（相对注册表），按下<code>Windows+R</code>，输入<code>shell:startup</code>然后回车，直接将快捷方式或可执行文件放入其中即可，这时电脑启动后，<strong>登录账户后</strong>即可运行对应程序（注意：是要登录账户后才会运行），显然这不是我要的东西。</p>
+<h2 id="任务计划-task-scheduler"><a class="markdownIt-Anchor" href="#任务计划-task-scheduler"></a> 任务计划 <code>Task Scheduler</code></h2>
+<p>其实任务计划我也一直有用来做开机启动，但是要做几个特殊设置才能实现真正的开机启动（而不是登录后启动），以下是计划任务导出后的示例，可以创建一个xml文件，将内容复制进去然后直接在计划任务里面导入然后修改。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-16&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Task</span> <span class="attr">version</span>=<span class="string">&quot;1.2&quot;</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/windows/2004/02/mit/task&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">RegistrationInfo</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Date</span>&gt;</span>2023-01-01T00:00:00.0000000<span class="tag">&lt;/<span class="name">Date</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Author</span>&gt;</span>Victor Chen(v1ctor.cn)<span class="tag">&lt;/<span class="name">Author</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">URI</span>&gt;</span>\frpcTest<span class="tag">&lt;/<span class="name">URI</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">RegistrationInfo</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Triggers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">BootTrigger</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Enabled</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">BootTrigger</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Triggers</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Principals</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Principal</span> <span class="attr">id</span>=<span class="string">&quot;Author&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">UserId</span>&gt;</span>Administrator<span class="tag">&lt;/<span class="name">UserId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">LogonType</span>&gt;</span>S4U<span class="tag">&lt;/<span class="name">LogonType</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RunLevel</span>&gt;</span>HighestAvailable<span class="tag">&lt;/<span class="name">RunLevel</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Principal</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Principals</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Settings</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">MultipleInstancesPolicy</span>&gt;</span>IgnoreNew<span class="tag">&lt;/<span class="name">MultipleInstancesPolicy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">DisallowStartIfOnBatteries</span>&gt;</span>true<span class="tag">&lt;/<span class="name">DisallowStartIfOnBatteries</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">StopIfGoingOnBatteries</span>&gt;</span>true<span class="tag">&lt;/<span class="name">StopIfGoingOnBatteries</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">AllowHardTerminate</span>&gt;</span>true<span class="tag">&lt;/<span class="name">AllowHardTerminate</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">StartWhenAvailable</span>&gt;</span>false<span class="tag">&lt;/<span class="name">StartWhenAvailable</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">RunOnlyIfNetworkAvailable</span>&gt;</span>false<span class="tag">&lt;/<span class="name">RunOnlyIfNetworkAvailable</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">IdleSettings</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">StopOnIdleEnd</span>&gt;</span>true<span class="tag">&lt;/<span class="name">StopOnIdleEnd</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">RestartOnIdle</span>&gt;</span>false<span class="tag">&lt;/<span class="name">RestartOnIdle</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">IdleSettings</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">AllowStartOnDemand</span>&gt;</span>true<span class="tag">&lt;/<span class="name">AllowStartOnDemand</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Enabled</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Hidden</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Hidden</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">RunOnlyIfIdle</span>&gt;</span>false<span class="tag">&lt;/<span class="name">RunOnlyIfIdle</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">WakeToRun</span>&gt;</span>false<span class="tag">&lt;/<span class="name">WakeToRun</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ExecutionTimeLimit</span>&gt;</span>PT72H<span class="tag">&lt;/<span class="name">ExecutionTimeLimit</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Priority</span>&gt;</span>7<span class="tag">&lt;/<span class="name">Priority</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Settings</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Actions</span> <span class="attr">Context</span>=<span class="string">&quot;Author&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Exec</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Command</span>&gt;</span>目标程序全路径(如F:\frp\frpc.vbs)<span class="tag">&lt;/<span class="name">Command</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">WorkingDirectory</span>&gt;</span>目标程序所在目录(如:F:\frp\)<span class="tag">&lt;/<span class="name">WorkingDirectory</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Exec</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Actions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Task</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>导入后几个关键的设置点：</p>
+<ul>
+<li>在“操作”中修改“程序或脚本”的路径以及“起始于”的目录（建议直接在xml中修改后再导入）；</li>
+<li>点击“更改用户或组”，将用户修改为当前登录用户（可以在弹出框中点击“高级”-“查找”列出所有用户，双击选择）；</li>
+</ul>
+<p>导入成功后右键点击然后运行先试验是否正确启动程序，确认后再尝试重启电脑，如此即可实现<strong>真正的开机启动</strong>。</p>
+<p>PS：<br />
+最近购入了一个支持米家生态的开机棒，在米家APP上就可以远程对电脑进行开关机操作了（嗯…打工人…😅）！<br />
+后面有时间应该在软路由上部署一下frps，这样电脑端就不用设置开机启动项，只需要启用远程登录，而且整个网络环境下的所有电脑都同步支持了，这个应该是更优的方案，不过 If it is work, do not touch it😁</p>
+<img src="/1199409284/do_not_touch.gif" class="">
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8/" rel="tag"># 开机启动</a>
+              <a href="/tags/Windows/" rel="tag"># Windows</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2562236451/" rel="prev" title="关于客户端无法连接MySql的问题排查记录">
+      <i class="fa fa-chevron-left"></i> 关于客户端无法连接MySql的问题排查记录
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="utterances-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E5%A4%B9-shellstartup"><span class="nav-number">1.</span> <span class="nav-text"> 启动文件夹 Shell:startup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92-task-scheduler"><span class="nav-number">2.</span> <span class="nav-text"> 任务计划 Task Scheduler</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Victor Chen"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Victor Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Vict0r-Chen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Vict0r-Chen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/victorchen.3012@gmail.com" title="E-Mail → victorchen.3012@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Victor Chen</span>
+    <span class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17122079号-3 </a>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#utterances-container'), () => {
+    // if (typeof parcelRequire === 'function') { return; }
+    var js = document.createElement('script');
+    js.type = 'text/javascript';
+    js.src = 'https://utteranc.es/client.js';
+    js.async = true;
+    js.crossorigin = 'anonymous';
+    js.setAttribute('repo', 'Vict0r-Chen/blog-comment');
+    js.setAttribute('issue-term', 'pathname');
+    js.setAttribute('theme', 'dark-blue');
+    document.getElementById('utterances-container').appendChild(js);
+});
+</script>
+
+</body>
+</html>
