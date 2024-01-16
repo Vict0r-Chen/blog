@@ -20,16 +20,22 @@
     var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Victor&#39;s blog">
-<meta property="og:url" content="https://v1ctor.cn/tags/PowerShell/index.html">
+  <meta name="description" content="今天想把一台设备上退出自己的微软账户，因为这是公共设备，把自己邮箱展示在这实在不好，况且Edge还会自动同步我之前从Chrome同步过来的书签，这被人看到可要了老命了…网上都是说在账户列表Remove就可以，但是我这都没有Remove选项啊！  花费了大半个小时，最终总算通过删注册表来达成目标…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows移除已登录的微软账户或邮箱">
+<meta property="og:url" content="https://v1ctor.cn/377854043/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="今天想把一台设备上退出自己的微软账户，因为这是公共设备，把自己邮箱展示在这实在不好，况且Edge还会自动同步我之前从Chrome同步过来的书签，这被人看到可要了老命了…网上都是说在账户列表Remove就可以，但是我这都没有Remove选项啊！  花费了大半个小时，最终总算通过删注册表来达成目标…">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://v1ctor.cn/377854043/p2.png">
+<meta property="article:published_time" content="2024-01-16T07:14:49.000Z">
+<meta property="article:modified_time" content="2024-01-16T08:16:43.298Z">
 <meta property="article:author" content="Victor Chen">
-<meta property="article:tag" content="blog .net eletron wpf flutter 微信小程序 uniapp">
+<meta property="article:tag" content="Windows">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://v1ctor.cn/377854043/p2.png">
 
-<link rel="canonical" href="https://v1ctor.cn/tags/PowerShell/">
+<link rel="canonical" href="https://v1ctor.cn/377854043/">
 
 
 <script id="page-configurations">
@@ -37,12 +43,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Tag: PowerShell | Victor's blog</title>
+  <title>Windows移除已登录的微软账户或邮箱 | Victor's blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
     <script>
@@ -161,57 +167,115 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">PowerShell
-          <small>Tag</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/377854043/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Windows移除已登录的微软账户或邮箱
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-01-16 15:14:49 / Modified: 16:16:43" itemprop="dateCreated datePublished" datetime="2024-01-16T15:14:49+08:00">2024-01-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" itemprop="url" rel="index"><span itemprop="name">实用技能</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
+        <p>今天想把一台设备上退出自己的微软账户，因为这是公共设备，把自己邮箱展示在这实在不好，况且Edge还会自动同步我之前从Chrome同步过来的书签，这被人看到可要了老命了…网上都是说在账户列表Remove就可以，但是我这都没有Remove选项啊！</p>
+<img src="/377854043/p2.png" class="">
+<p>花费了大半个小时，最终总算通过删注册表来达成目标…</p>
+<span id="more"></span>
+<hr />
+<p>先贴出<a target="_blank" rel="noopener" href="https://answers.microsoft.com/en-us/windows/forum/all/how-do-i-removechange-the-main-account-the-account/577a2366-3a15-4b10-b5f3-dd31eb0be176">原文链接</a></p>
+<h2 id="注意事项"><a class="markdownIt-Anchor" href="#注意事项"></a> 注意事项</h2>
+<ul>
+<li>桌面的内容会被清空，需要提前将桌面内容备份</li>
+</ul>
+<h2 id="操作步骤"><a class="markdownIt-Anchor" href="#操作步骤"></a> 操作步骤</h2>
+<ol>
+<li><code>Win+R</code>输入<code>regedit</code>回车，打开注册表；</li>
+<li>删除此项：<code>HKEY_CURRENT_USER\Software\Microsoft\IdentityCRL</code>；</li>
+<li>删除此项：<code>HKEY_USERS\DEFAULT\Software\Microsoft\IdentityCRL</code>；</li>
+<li>重启;</li>
+</ol>
+<blockquote>
+<p>重启后会进入用户引导界面，此时跳过绑定账户即可。</p>
+</blockquote>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-07-05T20:17:12+08:00"
-              content="2022-07-05">
-          07-05
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Windows/" rel="tag"># Windows</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/Windows%E6%89%B9%E9%87%8F%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E8%B6%85%E7%AE%80%E5%8D%95PowerShell%E5%91%BD%E4%BB%A4%EF%BC%89/" itemprop="url">
-            <span itemprop="name">Windows批量更改文件名（超简单PowerShell命令）</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/451565415/" rel="prev" title="查看 MacOS/IOS 应用中*.car 资源文件">
+      <i class="fa fa-chevron-left"></i> 查看 MacOS/IOS 应用中*.car 资源文件
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
 
           </div>
           
+    <div class="comments" id="utterances-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -258,6 +322,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.</span> <span class="nav-text"> 注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text"> 操作步骤</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -406,6 +471,20 @@
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#utterances-container'), () => {
+    // if (typeof parcelRequire === 'function') { return; }
+    var js = document.createElement('script');
+    js.type = 'text/javascript';
+    js.src = 'https://utteranc.es/client.js';
+    js.async = true;
+    js.crossorigin = 'anonymous';
+    js.setAttribute('repo', 'Vict0r-Chen/blog-comment');
+    js.setAttribute('issue-term', 'pathname');
+    js.setAttribute('theme', 'dark-blue');
+    document.getElementById('utterances-container').appendChild(js);
+});
+</script>
 
 </body>
 </html>
