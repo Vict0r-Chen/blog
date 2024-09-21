@@ -20,16 +20,21 @@
     var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Victor&#39;s blog">
-<meta property="og:url" content="https://v1ctor.cn/archives/2023/08/index.html">
+  <meta name="description" content="最近收到反馈说electronJs的APP里面有个性能问题，在打开弹窗时非常容易复现，但是此前的版本似乎又没有这个问题，本来着急发版，没打算解决这个问题，今天任务提前完成，总算腾出了一点时间来Google…😅">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ElectronJs中backdrop-filter的性能问题">
+<meta property="og:url" content="https://v1ctor.cn/4039048371/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="最近收到反馈说electronJs的APP里面有个性能问题，在打开弹窗时非常容易复现，但是此前的版本似乎又没有这个问题，本来着急发版，没打算解决这个问题，今天任务提前完成，总算腾出了一点时间来Google…😅">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-09-21T09:44:26.000Z">
+<meta property="article:modified_time" content="2024-09-21T10:17:00.122Z">
 <meta property="article:author" content="Victor Chen">
-<meta property="article:tag" content="blog .net eletron wpf flutter 微信小程序 uniapp">
+<meta property="article:tag" content="ElectronJS">
+<meta property="article:tag" content="CSS3">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://v1ctor.cn/archives/2023/08/">
+<link rel="canonical" href="https://v1ctor.cn/4039048371/">
 
 
 <script id="page-configurations">
@@ -37,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | Victor's blog</title>
+  <title>ElectronJs中backdrop-filter的性能问题 | Victor's blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
     <script>
@@ -161,56 +166,114 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 23 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/4039048371/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ElectronJs中backdrop-filter的性能问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-09-21 17:44:26 / Modified: 18:17:00" itemprop="dateCreated datePublished" datetime="2024-09-21T17:44:26+08:00">2024-09-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElectronJS/" itemprop="url" rel="index"><span itemprop="name">ElectronJS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2023</span>
+        <p>最近收到反馈说electronJs的APP里面有个性能问题，在打开弹窗时非常容易复现，但是此前的版本似乎又没有这个问题，本来着急发版，没打算解决这个问题，今天任务提前完成，总算腾出了一点时间来Google…😅</p>
+<span id="more"></span>
+<hr />
+<h2 id="问题表现"><a class="markdownIt-Anchor" href="#问题表现"></a> 问题表现</h2>
+<p>应用中的svg里面有很多rect元素，在鼠标快速滑动时发现应用<code>:hover</code>样式时有一些延时，<code>Ctrl+R</code>刷新界面无法改善，必须重启APP才正常，找了很久都没找到原因，最后在dev tool里面取消模态窗体遮罩层的<code>backdrop-filter</code>竟然瞬间好了，于是开始Google+ChatGPT…</p>
+<h2 id="为什么backdrop-filter性能这么差"><a class="markdownIt-Anchor" href="#为什么backdrop-filter性能这么差"></a> 为什么<code>backdrop-filter</code>性能这么差？</h2>
+<p>首先请教一下ChatGPT，给我的答复：</p>
+<blockquote>
+<p><code>backdrop-filter</code> 会对元素后面的内容进行模糊或颜色变化等效果处理，这需要浏览器在渲染时进行额外的计算。具体原因如下：</p>
+<ul>
+<li>重绘频率高：每次页面内容变化时，backdrop-filter 都需要重新计算和重绘，这会增加CPU和GPU的负担。</li>
+<li>复杂的图像处理：模糊和其他滤镜效果需要对像素进行复杂的计算，尤其是在高分辨率屏幕上，这会显著增加计算量。</li>
+<li>硬件加速：虽然现代浏览器会尝试使用GPU加速这些效果，但在某些情况下，硬件加速可能并不总是有效，导致性能瓶颈。</li>
+</ul>
+</blockquote>
+<h2 id="如何改善"><a class="markdownIt-Anchor" href="#如何改善"></a> 如何改善？</h2>
+<p>看到“硬件加速”几个字，我突然想到我之前几个版本里面禁用了硬件加速——因为我发现ElectronJS在默认情况下就有一点模糊，最后发现是默认启用了硬件加速导致的。</p>
+<p>于是我把<code>app.disableHardwareAcceleration()</code>注释掉然后重启，居然正常了！但同时APP又变得有点糊，目前还不知道有什么办法可以优化这个问题，只能暂时忽略了。</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2023-08-10T16:52:33+08:00"
-              content="2023-08-10">
-          08-10
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ElectronJS/" rel="tag"># ElectronJS</a>
+              <a href="/tags/CSS3/" rel="tag"># CSS3</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/1977514895/" itemprop="url">
-            <span itemprop="name">Processing Resources failed with error: Duplicate Entry</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/377854043/" rel="prev" title="Windows移除已登录的微软账户或邮箱">
+      <i class="fa fa-chevron-left"></i> Windows移除已登录的微软账户或邮箱
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
 
           </div>
           
+    <div class="comments" id="utterances-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -257,6 +320,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%A1%A8%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text"> 问题表现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88backdrop-filter%E6%80%A7%E8%83%BD%E8%BF%99%E4%B9%88%E5%B7%AE"><span class="nav-number">2.</span> <span class="nav-text"> 为什么backdrop-filter性能这么差？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%94%B9%E5%96%84"><span class="nav-number">3.</span> <span class="nav-text"> 如何改善？</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -405,6 +469,20 @@
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#utterances-container'), () => {
+    // if (typeof parcelRequire === 'function') { return; }
+    var js = document.createElement('script');
+    js.type = 'text/javascript';
+    js.src = 'https://utteranc.es/client.js';
+    js.async = true;
+    js.crossorigin = 'anonymous';
+    js.setAttribute('repo', 'Vict0r-Chen/blog-comment');
+    js.setAttribute('issue-term', 'pathname');
+    js.setAttribute('theme', 'dark-blue');
+    document.getElementById('utterances-container').appendChild(js);
+});
+</script>
 
 </body>
 </html>
