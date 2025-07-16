@@ -20,21 +20,22 @@
     var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="今天写代码写着写着发现项目跑不起来了，一直报一个从来没见过的错误“Processing Resources failed with error: Duplicate Entry”，翻译过来大概是“处理资源失败并出现错误：重复条目”，但是错误信息只说出错的项目是入口项目，具体哪个文件又没指出，清理解决方案、重启VS都没用，但是回滚代码竟然可以了，这几十个文件难道要一一排除？😢">
+  <meta name="description" content="由于Claude Pro计划实在不太够用，然后Kimi K2发布这几天又火得不行，所以尝试使用Claude Code+Kimi K2的方式看看效果，接下来将说明如何配置。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Processing Resources failed with error: Duplicate Entry">
-<meta property="og:url" content="https://v1ctor.cn/1977514895/index.html">
+<meta property="og:title" content="Claude Code使用Kimi K2作为后端模型">
+<meta property="og:url" content="https://v1ctor.cn/2575047331/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
-<meta property="og:description" content="今天写代码写着写着发现项目跑不起来了，一直报一个从来没见过的错误“Processing Resources failed with error: Duplicate Entry”，翻译过来大概是“处理资源失败并出现错误：重复条目”，但是错误信息只说出错的项目是入口项目，具体哪个文件又没指出，清理解决方案、重启VS都没用，但是回滚代码竟然可以了，这几十个文件难道要一一排除？😢">
+<meta property="og:description" content="由于Claude Pro计划实在不太够用，然后Kimi K2发布这几天又火得不行，所以尝试使用Claude Code+Kimi K2的方式看看效果，接下来将说明如何配置。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-08-10T08:52:33.000Z">
-<meta property="article:modified_time" content="2025-07-16T02:18:31.460Z">
+<meta property="og:image" content="https://v1ctor.cn/2575047331/p1.png">
+<meta property="article:published_time" content="2025-07-16T01:47:59.000Z">
+<meta property="article:modified_time" content="2025-07-16T02:18:31.436Z">
 <meta property="article:author" content="Victor Chen">
-<meta property="article:tag" content="UWP">
-<meta property="article:tag" content="XBox">
+<meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://v1ctor.cn/2575047331/p1.png">
 
-<link rel="canonical" href="https://v1ctor.cn/1977514895/">
+<link rel="canonical" href="https://v1ctor.cn/2575047331/">
 
 
 <script id="page-configurations">
@@ -47,7 +48,7 @@
   };
 </script>
 
-  <title>Processing Resources failed with error: Duplicate Entry | Victor's blog</title>
+  <title>Claude Code使用Kimi K2作为后端模型 | Victor's blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
     <script>
@@ -173,7 +174,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/1977514895/">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/2575047331/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -186,7 +187,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Processing Resources failed with error: Duplicate Entry
+          Claude Code使用Kimi K2作为后端模型
         </h1>
 
         <div class="post-meta">
@@ -195,23 +196,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2023-08-10 16:52:33" itemprop="dateCreated datePublished" datetime="2023-08-10T16:52:33+08:00">2023-08-10</time>
+              <time title="Created: 2025-07-16 09:47:59 / Modified: 10:18:31" itemprop="dateCreated datePublished" datetime="2025-07-16T09:47:59+08:00">2025-07-16</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-07-16 10:18:31" itemprop="dateModified" datetime="2025-07-16T10:18:31+08:00">2025-07-16</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/UWP/" itemprop="url" rel="index"><span itemprop="name">UWP</span></a>
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
                 </span>
             </span>
 
@@ -226,16 +221,62 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>今天写代码写着写着发现项目跑不起来了，一直报一个从来没见过的错误“<code>Processing Resources failed with error: Duplicate Entry</code>”，翻译过来大概是“处理资源失败并出现错误：重复条目”，但是错误信息只说出错的项目是入口项目，具体哪个文件又没指出，清理解决方案、重启VS都没用，但是回滚代码竟然可以了，这几十个文件难道要一一排除？😢</p>
+        <p>由于<code>Claude Pro</code>计划实在不太够用，然后<code>Kimi K2</code>发布这几天又火得不行，所以尝试使用<code>Claude Code</code>+<code>Kimi K2</code>的方式看看效果，接下来将说明如何配置。</p>
 <span id="more"></span>
-<p>最后经过一番谷歌，发现是多语言资源中的项目重复了（我认为也有可能是Visual Studio的bug），原代码如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">data</span> <span class="attr">name</span>=<span class="string">&quot;Test&quot;</span> <span class="attr">xml:space</span>=<span class="string">&quot;preserve&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">data</span> <span class="attr">name</span>=<span class="string">&quot;Test_A.Text&quot;</span> <span class="attr">xml:space</span>=<span class="string">&quot;preserve&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>测试A<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>你可能跟我一样，这乍一看这没有重复啊，难不成<code>Test</code>和<code>Test_A</code>属于重复项？还真是！<br />
-于是去掉下划线，竟然可以了：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">data</span> <span class="attr">name</span>=<span class="string">&quot;Test&quot;</span> <span class="attr">xml:space</span>=<span class="string">&quot;preserve&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">data</span> <span class="attr">name</span>=<span class="string">&quot;TestA.Text&quot;</span> <span class="attr">xml:space</span>=<span class="string">&quot;preserve&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>测试A<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这就很奇怪，难道把下划线变成分隔符了吗？于是我去掉后面的“<code>.</code>”，保留下划线，这时居然又不会报错了：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">data</span> <span class="attr">name</span>=<span class="string">&quot;Test&quot;</span> <span class="attr">xml:space</span>=<span class="string">&quot;preserve&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">data</span> <span class="attr">name</span>=<span class="string">&quot;Test_A&quot;</span> <span class="attr">xml:space</span>=<span class="string">&quot;preserve&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>测试A<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这样看来，下划线应该是只有包含“<code>.</code>”的时候才会被视为分隔符？这是什么逻辑😅</p>
+<h2 id="配置方式"><a class="markdownIt-Anchor" href="#配置方式"></a> 配置方式</h2>
+<p>目前有两种方式可以让<code>Claude Code</code>使用<code>Kimi K2</code>作为后端模型：</p>
+<h3 id="方式一使用-claude-code-router"><a class="markdownIt-Anchor" href="#方式一使用-claude-code-router"></a> 方式一：使用 Claude Code Router</h3>
+<p><a target="_blank" rel="noopener" href="https://github.com/musistudio/claude-code-router">Claude Code Router</a> 是一个第三方路由工具，可以将Claude Code的请求转发到Kimi K2，实际上通过CCR可以使用任意模型。</p>
+<h3 id="方式二使用官方兼容接口推荐"><a class="markdownIt-Anchor" href="#方式二使用官方兼容接口推荐"></a> 方式二：使用官方兼容接口（推荐）</h3>
+<p>Kimi K2官方提供了与Anthropic API兼容的接口，这是我目前使用的方式。配置相当简单：</p>
+<h4 id="配置步骤"><a class="markdownIt-Anchor" href="#配置步骤"></a> 配置步骤</h4>
+<ol>
+<li>
+<p><strong>获取API Key</strong>：首先需要在<a target="_blank" rel="noopener" href="https://platform.moonshot.cn/">Moonshot平台</a>注册账号并获取API Key</p>
+</li>
+<li>
+<p><strong>配置环境变量</strong>：在<code>~/.bashrc</code>文件底部添加以下配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ANTHROPIC_BASE_URL=https://api.moonshot.cn/anthropic</span><br><span class="line"><span class="built_in">export</span> ANTHROPIC_API_KEY=你的API_KEY</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>重新加载配置</strong>：执行<code>source ~/.bashrc</code>或重启终端</p>
+</li>
+<li>
+<p><strong>重新编译Claude Code</strong>：配置完成后重新运行Claude Code即可。需要注意的是运行后要看<code>API Base URL</code>是不是<code>https://api.moonshot.cn/anthropic/</code>，如果没有显示<code>API Base URL</code>就代表配置没有生效，正常应该如下图</p>
+</li>
+</ol>
+<img src="/2575047331/p1.png" class="">
+<h3 id="注意"><a class="markdownIt-Anchor" href="#注意"></a> 注意</h3>
+<p>如果要取消使用<code>Kimi K2</code>切换回<code>Claude</code>模型，注释编译<code>~/.bashrc</code>后可能不会生效，因为之前的配置还存在ram里面，这时要么重启终端，要么使用<code>unset ANTHROPIC_BASE_URL</code>+<code>unset ANTHROPIC_API_KEY</code>来即时移除配置。</p>
+<h2 id="使用体验对比"><a class="markdownIt-Anchor" href="#使用体验对比"></a> 使用体验对比</h2>
+<h3 id="kimi-k2-vs-claude-sonnet-4"><a class="markdownIt-Anchor" href="#kimi-k2-vs-claude-sonnet-4"></a> Kimi K2 vs Claude Sonnet 4</h3>
+<p>经过一段时间的使用，个人感受如下：</p>
+<p><strong>Kimi K2的优点：</strong></p>
+<ul>
+<li>价格相对便宜</li>
+<li>对中文理解较好</li>
+<li>基本的编程任务能够胜任</li>
+<li>更加擅长前端</li>
+</ul>
+<p><strong>不足之处：</strong></p>
+<ul>
+<li>与Claude Sonnet 4相比，<strong>推理深度明显不够</strong></li>
+<li>对复杂问题的处理能力有限</li>
+<li>代码质量和架构设计能力还有差距</li>
+<li>注册的免费15￥额度根本没法用</li>
+</ul>
+<h3 id="速度和限制问题"><a class="markdownIt-Anchor" href="#速度和限制问题"></a> 速度和限制问题</h3>
+<p><strong>速度问题：</strong><br />
+Kimi K2的响应速度确实比较慢，这在日常编程中会影响工作效率。</p>
+<p><strong>限速限制：</strong><br />
+根据<a target="_blank" rel="noopener" href="https://platform.moonshot.cn/docs/pricing/limits">Moonshot官方文档</a>，K2模型有以下限制：</p>
+<ul>
+<li>免费用户限制较严格</li>
+<li><strong>需要充值一定金额才能正常使用</strong></li>
+<li>我个人充值了50元后才能够正常使用，供参考</li>
+</ul>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>虽然<code>Kimi K2</code>在某些方面还无法完全替代<code>Claude Sonnet 4</code>，但作为一个性价比选择，特别是对于预算有限或者<code>Claude Pro</code>额度不够的人来说，还是值得尝试的</p>
 
     </div>
 
@@ -245,8 +286,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/UWP/" rel="tag"># UWP</a>
-              <a href="/tags/XBox/" rel="tag"># XBox</a>
+              <a href="/tags/AI/" rel="tag"># AI</a>
           </div>
 
         
@@ -255,13 +295,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/1199409284/" rel="prev" title="记一次Windows登录前运行启动项的设置(frps)">
-      <i class="fa fa-chevron-left"></i> 记一次Windows登录前运行启动项的设置(frps)
+    <a href="/219264919/" rel="prev" title="UWP打包应用提示未给任务RemoveDisposableSigningCertificate的必需参数CertificateThumbprint赋值">
+      <i class="fa fa-chevron-left"></i> UWP打包应用提示未给任务RemoveDisposableSigningCertificate的必需参数CertificateThumbprint赋值
     </a></div>
-      <div class="post-nav-item">
-    <a href="/451565415/" rel="next" title="查看 MacOS/IOS 应用中*.car 资源文件">
-      查看 MacOS/IOS 应用中*.car 资源文件 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -321,6 +358,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text"> 配置方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80%E4%BD%BF%E7%94%A8-claude-code-router"><span class="nav-number">1.1.</span> <span class="nav-text"> 方式一：使用 Claude Code Router</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C%E4%BD%BF%E7%94%A8%E5%AE%98%E6%96%B9%E5%85%BC%E5%AE%B9%E6%8E%A5%E5%8F%A3%E6%8E%A8%E8%8D%90"><span class="nav-number">1.2.</span> <span class="nav-text"> 方式二：使用官方兼容接口（推荐）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 配置步骤</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">1.3.</span> <span class="nav-text"> 注意</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E4%BD%93%E9%AA%8C%E5%AF%B9%E6%AF%94"><span class="nav-number">2.</span> <span class="nav-text"> 使用体验对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kimi-k2-vs-claude-sonnet-4"><span class="nav-number">2.1.</span> <span class="nav-text"> Kimi K2 vs Claude Sonnet 4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9F%E5%BA%A6%E5%92%8C%E9%99%90%E5%88%B6%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text"> 速度和限制问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text"> 总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
