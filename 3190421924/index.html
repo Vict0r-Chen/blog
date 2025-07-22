@@ -20,38 +20,20 @@
     var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="虽然听起来有点奇怪：Swift语法都还没琢磨明白就要写付费订阅的功能了🤣但需求来了总不能不理是吧，本想在B站找找付费订阅相关的开发教程的，结果找到的全是&quot;iOS游戏辅助开发流程&quot;、“IOS无法取消订阅解决办法”、“兼容iOS16 跟Lebus学iOS原生开发…”、“关于入门成为苹果平台上独立开发者的二三事”…🤣 最后还是靠Google找到了RevenueCat，初步在dem">
+  <meta name="description" content="这两天想利用 MacOS 来 vibe coding 一个 IOS APP，但是装完 Claude Code 后，启动遇到“Invalid URL protocol”错误。实际上是由于Claude Code使用了nodejs内置的 http 类库 undici，但undici本身不支持socks5代理，所以把 socks5 代理换成 http 代理即可。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="IOS开发之付费订阅学习笔记 - Revenuecat篇">
-<meta property="og:url" content="https://v1ctor.cn/3769334848/index.html">
+<meta property="og:title" content="MacOS启动 Claude Code 时提示Invalid URL protocol">
+<meta property="og:url" content="https://v1ctor.cn/3190421924/index.html">
 <meta property="og:site_name" content="Victor&#39;s blog">
-<meta property="og:description" content="虽然听起来有点奇怪：Swift语法都还没琢磨明白就要写付费订阅的功能了🤣但需求来了总不能不理是吧，本想在B站找找付费订阅相关的开发教程的，结果找到的全是&quot;iOS游戏辅助开发流程&quot;、“IOS无法取消订阅解决办法”、“兼容iOS16 跟Lebus学iOS原生开发…”、“关于入门成为苹果平台上独立开发者的二三事”…🤣 最后还是靠Google找到了RevenueCat，初步在dem">
+<meta property="og:description" content="这两天想利用 MacOS 来 vibe coding 一个 IOS APP，但是装完 Claude Code 后，启动遇到“Invalid URL protocol”错误。实际上是由于Claude Code使用了nodejs内置的 http 类库 undici，但undici本身不支持socks5代理，所以把 socks5 代理换成 http 代理即可。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/2.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/3.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/4.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/5.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/6.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/7.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/8.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/9.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/10.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/11.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/12.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/13.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/14.png">
-<meta property="og:image" content="https://v1ctor.cn/3769334848/15.png">
-<meta property="article:published_time" content="2023-02-03T17:00:59.000Z">
-<meta property="article:modified_time" content="2025-07-22T14:03:00.083Z">
+<meta property="article:published_time" content="2025-07-22T13:28:49.000Z">
+<meta property="article:modified_time" content="2025-07-22T14:03:00.098Z">
 <meta property="article:author" content="Victor Chen">
-<meta property="article:tag" content="IOS">
-<meta property="article:tag" content="付费订阅">
-<meta property="article:tag" content="SwiftUI">
-<meta property="article:tag" content="RevenueCat">
+<meta property="article:tag" content="Claude Code">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://v1ctor.cn/3769334848/2.png">
 
-<link rel="canonical" href="https://v1ctor.cn/3769334848/">
+<link rel="canonical" href="https://v1ctor.cn/3190421924/">
 
 
 <script id="page-configurations">
@@ -64,7 +46,7 @@
   };
 </script>
 
-  <title>IOS开发之付费订阅学习笔记 - Revenuecat篇 | Victor's blog</title>
+  <title>MacOS启动 Claude Code 时提示Invalid URL protocol | Victor's blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
     <script>
@@ -190,7 +172,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/3769334848/">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/3190421924/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -203,7 +185,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          IOS开发之付费订阅学习笔记 - Revenuecat篇
+          MacOS启动 Claude Code 时提示Invalid URL protocol
         </h1>
 
         <div class="post-meta">
@@ -212,23 +194,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2023-02-04 01:00:59" itemprop="dateCreated datePublished" datetime="2023-02-04T01:00:59+08:00">2023-02-04</time>
+              <time title="Created: 2025-07-22 21:28:49 / Modified: 22:03:00" itemprop="dateCreated datePublished" datetime="2025-07-22T21:28:49+08:00">2025-07-22</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-07-22 22:03:00" itemprop="dateModified" datetime="2025-07-22T22:03:00+08:00">2025-07-22</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/IOS/" itemprop="url" rel="index"><span itemprop="name">IOS</span></a>
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
                 </span>
             </span>
 
@@ -243,81 +219,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>虽然听起来有点奇怪：Swift语法都还没琢磨明白就要写付费订阅的功能了🤣但需求来了总不能不理是吧，本想在B站找找付费订阅相关的开发教程的，结果找到的全是&quot;iOS游戏辅助开发流程&quot;、“IOS无法取消订阅解决办法”、“兼容iOS16 跟Lebus学iOS原生开发…”、“关于入门成为苹果平台上独立开发者的二三事”…🤣</p>
-<p>最后还是靠Google找到了<code>RevenueCat</code>，初步在demo实现了订阅的功能，特做记录。</p>
+        <p>这两天想利用 MacOS 来 vibe coding 一个 IOS APP，但是装完 <code>Claude Code</code> 后，启动遇到“Invalid URL protocol”错误。实际上是由于<code>Claude Code</code>使用了<code>nodejs</code>内置的 http 类库 <code>undici</code>，但<code>undici</code>本身不支持socks5代理，所以把 socks5 代理换成 http 代理即可。</p>
 <span id="more"></span>
-<p>老规矩，在做某一件事前首先要看的便是官方教程了：<a target="_blank" rel="noopener" href="https://help.apple.com/app-store-connect/?lang=zh-cn#/devb57be10e7">App 内购买项目配置流程</a>，这里说明了如何设置订阅项、如何沙箱测试等操作，如果你也是我一样的IOS开发新手，建议是必看的。</p>
-<h1 id="关于revenuecat"><a class="markdownIt-Anchor" href="#关于revenuecat"></a> 关于RevenueCat</h1>
-<h2 id="说明"><a class="markdownIt-Anchor" href="#说明"></a> 说明</h2>
-<ul>
-<li>这个产品提供了用于和Apple通讯的API服务（好像叫Server to Server？)，另外提供了Swift/OC的SDK用于与RevenueCat通讯及对StoreKit的包装。</li>
-<li>这个属于商业产品，月销售额低于1万美元不收取任何费用</li>
-<li>使用他们提供的Demo，可以快速实现订阅目标</li>
-</ul>
-<h2 id="使用流程"><a class="markdownIt-Anchor" href="#使用流程"></a> 使用流程</h2>
-<h3 id="app-store-connect配置"><a class="markdownIt-Anchor" href="#app-store-connect配置"></a> App Store Connect配置</h3>
-<ol>
-<li>创建订阅群组;</li>
-</ol>
-<img src="/3769334848/2.png" class="">
-<ol start="2">
-<li>创建订阅（自行设定订阅时长、价格或者<a target="_blank" rel="noopener" href="https://help.apple.com/app-store-connect/#/deve1d49254f">试用期</a>等等）;</li>
-</ol>
-<img src="/3769334848/3.png" class="">
-<h3 id="revenuecat配置"><a class="markdownIt-Anchor" href="#revenuecat配置"></a> RevenueCat配置</h3>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://app.revenuecat.com/signup">注册</a><code>RevenueCat</code>帐户;</li>
-<li>新建App Store App；</li>
-</ol>
-<img src="/3769334848/4.png" class="">
-<p>填写对应的APP name、App Bundle Id、共享密钥（在App Store Connect-APP信息-App专用共享密钥中可见）；<br />
-3. 新建成功后可看到<code>RevenueCat App ID</code>（<strong>Demo代码中使用</strong>）、<code>Apple Server Notification URL</code>（<strong>填入到App Store Connect-APP信息-App Store 服务器通知-沙盒环境服务器 URL</strong>）；</p>
-<img src="/3769334848/5.png" class="">
-<ol start="4">
-<li>创建Entitlements；</li>
-</ol>
-<img src="/3769334848/6.png" class="">
-<ol start="5">
-<li>点击Attach关联Products，然后点击<code>Add a new product</code>，创建产品，这<strong>需要与App Store Connect中的订阅名称、identifier保持一致</strong>，最终应该如下图：</li>
-</ol>
-<img src="/3769334848/7.png" class="">
-<ol start="6">
-<li>创建Offerings；</li>
-</ol>
-<img src="/3769334848/8.png" class="">
-<ol start="7">
-<li>在Offerings下创建Packages以及关联对应的Product（如Annual就应该关联quick.process.1year）；</li>
-</ol>
-<img src="/3769334848/9.png" class="">
-<h3 id="demo使用"><a class="markdownIt-Anchor" href="#demo使用"></a> Demo使用</h3>
-<ol>
-<li>Demo<a target="_blank" rel="noopener" href="https://github.com/RevenueCat/purchases-ios/tree/main/Examples/MagicWeatherSwiftUI">源码下载</a>；</li>
-<li>关联开发者帐户、TeamId、bundleId等信息；</li>
-<li>安装<code>RevenueCat</code>包：在Swift Package Manager中添加URL <a target="_blank" rel="noopener" href="https://github.com/RevenueCat/purchases-ios.git%EF%BC%9B">https://github.com/RevenueCat/purchases-ios.git；</a></li>
-<li>填写源码<code>Shared/Constants.swift</code>中的ApiKey、及entitlementID（此文设置的是<code>ProAccess</code>）；</li>
-</ol>
-<img src="/3769334848/10.png" class="">
-<h3 id="测试"><a class="markdownIt-Anchor" href="#测试"></a> 测试</h3>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://appstoreconnect.apple.com/access/users/sandbox">添加<code>沙盒测试员</code></a>，此处的邮箱不能注册过AppleId，我这里使用的是<a target="_blank" rel="noopener" href="https://www.linshiyouxiang.net/">临时邮箱服务</a>；</li>
-</ol>
-<img src="/3769334848/11.png" class="">
-<ol start="2">
-<li>在<code>设置-App Store-沙箱帐户</code>登录刚刚创建的帐户；</li>
-<li>将xcode运行目标设为自己的手机，运行即可查看效果；</li>
-</ol>
-<p>在User界面登录沙箱帐户，可以看到订阅状态是未激活的</p>
-<img src="/3769334848/12.png" class="">
-<p>此时在Weather界面点击<code>Change the Weather</code>会弹出购买订阅的信息</p>
-<img src="/3769334848/13.png" class="">
-<p>点击购买就会弹出购买确认</p>
-<img src="/3769334848/14.png" class="">
-<p>输入密码购买之后User界面的状态就会变为已激活，此时就可以随意点击<code>Change the Weather</code>来改变天气了！</p>
-<img src="/3769334848/15.png" class="">
-<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
-<p>RevenueCat本身优点还是很明显的，IOS开发者可以专注前端业务逻辑，不用关注后台相关的东西，并且作为一个成熟的产品，应该是全球范围的高可用的，比自建的服务器应该要稳定很多。</p>
-<p>缺点就是在国内访问好像速度不够快，境外访问应该没有这个问题。</p>
-<p>这次先记录到这里，应该有不少处不够清楚甚至有错误的地方，下次加强🥹🥹</p>
+<p>这里贴一下原始的错误，方便网友们 google 搜索</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[InvalidArgumentError]: Invalid URL protocol: the URL must start with `http:` or `https:`.</span><br><span class="line">    at DZ2 (file:///usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js:371:13606)</span><br><span class="line">    at Object.zw4 [as parseOrigin] (file:///usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js:371:13713)</span><br><span class="line">    at new GY2 (file:///usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js:409:8173)</span><br><span class="line">    at TR4 (file:///usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js:409:13530)</span><br><span class="line">    at new RY2 (file:///usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js:409:14532)</span><br><span class="line">    at file:///usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js:753:56171</span><br><span class="line">    at Q (file:///usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js:653:14408)</span><br><span class="line">    at dV2 (file:///usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js:753:56550)</span><br><span class="line">    at file:///usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js:871:1176</span><br><span class="line">    at Q (file:///usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js:653:14408) &#123;</span><br><span class="line">  code: &#x27;UND_ERR_INVALID_ARG&#x27;</span><br><span class="line">&#125;</span><br><span class="line">Node.js v22.17.1</span><br></pre></td></tr></table></figure>
+<p>事后才发现实际上有人在<code>Claude Code</code>的仓库提了<a target="_blank" rel="noopener" href="https://github.com/anthropics/claude-code/issues/3387">Issue</a>了</p>
+<blockquote>
+<p>This is a limitation of the undici proxy library that we use. Here’s the upstream github issue tracking this: nodejs undici#2224</p>
+</blockquote>
+<p>所以这个跟<code>Claude Code</code>也没关系，老老实实把 socks5 换成 http 代理就行。</p>
+<p>先执行<code>nano ~/.bash_profile</code>，然后找到类似以下的配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> http_proxy=socks5://xxx</span><br><span class="line"><span class="built_in">export</span> https_proxy=socks5://xxx</span><br></pre></td></tr></table></figure>
+<p>改成这样</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> http_proxy=http://xxx</span><br><span class="line"><span class="built_in">export</span> https_proxy=http://xxx</span><br></pre></td></tr></table></figure>
+<p>然后<code>source ~/.bash_profile</code>即可。</p>
 
     </div>
 
@@ -327,10 +242,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/IOS/" rel="tag"># IOS</a>
-              <a href="/tags/%E4%BB%98%E8%B4%B9%E8%AE%A2%E9%98%85/" rel="tag"># 付费订阅</a>
-              <a href="/tags/SwiftUI/" rel="tag"># SwiftUI</a>
-              <a href="/tags/RevenueCat/" rel="tag"># RevenueCat</a>
+              <a href="/tags/Claude-Code/" rel="tag"># Claude Code</a>
           </div>
 
         
@@ -339,13 +251,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/625924666/" rel="prev" title="远智学堂期末考试之试卷抓包及通过JS脚本实现一键答题">
-      <i class="fa fa-chevron-left"></i> 远智学堂期末考试之试卷抓包及通过JS脚本实现一键答题
+    <a href="/2575047331/" rel="prev" title="Claude Code使用Kimi K2作为后端模型">
+      <i class="fa fa-chevron-left"></i> Claude Code使用Kimi K2作为后端模型
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2562236451/" rel="next" title="关于客户端无法连接MySql的问题排查记录">
-      关于客户端无法连接MySql的问题排查记录 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -405,7 +314,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Erevenuecat"><span class="nav-number">1.</span> <span class="nav-text"> 关于RevenueCat</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.</span> <span class="nav-text"> 说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text"> 使用流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#app-store-connect%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.1.</span> <span class="nav-text"> App Store Connect配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#revenuecat%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.2.</span> <span class="nav-text"> RevenueCat配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#demo%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.3.</span> <span class="nav-text"> Demo使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">1.2.4.</span> <span class="nav-text"> 测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text"> 总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
