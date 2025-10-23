@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/avatar.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="直接分享PowerShell脚本（AI率100%，自测没问题😂），根据需求修改$Source和$Target变量，下面的脚本是把数据迁移到F:\Program Files (x86)\Chrome目录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用软连接迁移Chrome的UserData到其它盘以释放C盘空间">
+<meta property="og:url" content="https://v1ctor.cn/2801556722/index.html">
+<meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="直接分享PowerShell脚本（AI率100%，自测没问题😂），根据需求修改$Source和$Target变量，下面的脚本是把数据迁移到F:\Program Files (x86)\Chrome目录">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-10-23T03:34:55.000Z">
+<meta property="article:modified_time" content="2025-10-23T03:42:11.635Z">
+<meta property="article:author" content="Victor Chen">
+<meta property="article:tag" content="PowerShell">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://v1ctor.cn/2801556722/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>使用软连接迁移Chrome的UserData到其它盘以释放C盘空间 | Victor's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HM4V7STC5P');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Victor's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay hungry, stay foolish.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/2801556722/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用软连接迁移Chrome的UserData到其它盘以释放C盘空间
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-10-23 11:34:55 / Modified: 11:42:11" itemprop="dateCreated datePublished" datetime="2025-10-23T11:34:55+08:00">2025-10-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" itemprop="url" rel="index"><span itemprop="name">实用技能</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>直接分享PowerShell脚本（AI率100%，自测没问题😂），根据需求修改<code>$Source</code>和<code>$Target</code>变量，下面的脚本是把数据迁移到<code>F:\Program Files (x86)\Chrome</code>目录</p>
+<span id="more"></span>
+<h2 id="powershell脚本"><a class="markdownIt-Anchor" href="#powershell脚本"></a> PowerShell脚本</h2>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># === 移动 Chrome 用户数据并创建联接 (Junction) ===</span></span><br><span class="line"><span class="comment"># 以管理员身份运行</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$ErrorActionPreference</span> = <span class="string">&quot;Stop&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 源与目标路径（按需修改）</span></span><br><span class="line"><span class="variable">$Source</span> = <span class="string">&quot;<span class="variable">$env:LOCALAPPDATA</span>\Google\Chrome&quot;</span></span><br><span class="line"><span class="variable">$Target</span> = <span class="string">&quot;F:\Program Files (x86)\Chrome&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：复制完成后是否自动删除备份</span></span><br><span class="line"><span class="variable">$RemoveBackupAfterVerify</span> = <span class="variable">$false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查：源目录是否存在</span></span><br><span class="line"><span class="keyword">if</span> (<span class="operator">-not</span> (<span class="built_in">Test-Path</span> <span class="literal">-LiteralPath</span> <span class="variable">$Source</span>)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="string">&quot;找不到源目录：<span class="variable">$Source</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查：是否已经是联接</span></span><br><span class="line"><span class="variable">$srcItem</span> = <span class="built_in">Get-Item</span> <span class="literal">-LiteralPath</span> <span class="variable">$Source</span> <span class="literal">-ErrorAction</span> SilentlyContinue</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$srcItem</span> <span class="operator">-and</span> (<span class="variable">$srcItem</span>.Attributes <span class="operator">-band</span> [<span class="type">IO.FileAttributes</span>]::ReparsePoint)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="string">&quot;源路径 <span class="variable">$Source</span> 已经是联接（ReparsePoint）。无需重复迁移。&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭 Chrome 相关进程</span></span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;正在关闭 Chrome 进程...&quot;</span></span><br><span class="line"><span class="built_in">Get-Process</span> chrome <span class="literal">-ErrorAction</span> SilentlyContinue | <span class="built_in">ForEach-Object</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123; <span class="variable">$_</span>.CloseMainWindow() | <span class="built_in">Out-Null</span> &#125; <span class="keyword">catch</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">Start-Sleep</span> <span class="literal">-Seconds</span> <span class="number">2</span></span><br><span class="line"><span class="built_in">Get-Process</span> chrome <span class="literal">-ErrorAction</span> SilentlyContinue | <span class="built_in">Stop-Process</span> <span class="literal">-Force</span> <span class="literal">-ErrorAction</span> SilentlyContinue</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建目标父目录</span></span><br><span class="line"><span class="variable">$TargetParent</span> = [<span class="type">System.IO.Path</span>]::GetDirectoryName(<span class="variable">$Target</span>)</span><br><span class="line"><span class="keyword">if</span> (<span class="operator">-not</span> (<span class="built_in">Test-Path</span> <span class="literal">-LiteralPath</span> <span class="variable">$TargetParent</span>)) &#123;</span><br><span class="line">    <span class="built_in">Write-Host</span> <span class="string">&quot;创建目标父目录：<span class="variable">$TargetParent</span>&quot;</span></span><br><span class="line">    <span class="built_in">New-Item</span> <span class="literal">-ItemType</span> Directory <span class="literal">-Path</span> <span class="variable">$TargetParent</span> | <span class="built_in">Out-Null</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 若目标目录不存在则创建</span></span><br><span class="line"><span class="keyword">if</span> (<span class="operator">-not</span> (<span class="built_in">Test-Path</span> <span class="literal">-LiteralPath</span> <span class="variable">$Target</span>)) &#123;</span><br><span class="line">    <span class="built_in">Write-Host</span> <span class="string">&quot;创建目标目录：<span class="variable">$Target</span>&quot;</span></span><br><span class="line">    <span class="built_in">New-Item</span> <span class="literal">-ItemType</span> Directory <span class="literal">-Path</span> <span class="variable">$Target</span> | <span class="built_in">Out-Null</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment"># 目标存在但不为空时给出提示（避免 /MIR 覆盖）</span></span><br><span class="line">    <span class="variable">$existing</span> = <span class="built_in">Get-ChildItem</span> <span class="literal">-LiteralPath</span> <span class="variable">$Target</span> <span class="literal">-Force</span> | <span class="built_in">Select-Object</span> <span class="literal">-First</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$existing</span>) &#123;</span><br><span class="line">        <span class="built_in">Write-Host</span> <span class="string">&quot;警告：目标目录非空，将进行合并复制，不会删除已有文件。&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制（使用 robocopy，保留权限/时间戳）</span></span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;复制文件到新位置（可能需要一些时间）...&quot;</span></span><br><span class="line"><span class="variable">$rcLog</span> = <span class="built_in">Join-Path</span> <span class="variable">$env:TEMP</span> <span class="string">&quot;chrome_migrate_<span class="variable">$</span>(Get-Date -Format yyyyMMdd_HHmmss).log&quot;</span></span><br><span class="line"><span class="variable">$robocmd</span> = (<span class="string">&#x27;robocopy &quot;&#123;0&#125;&quot; &quot;&#123;1&#125;&quot; /E /COPYALL /XJ /R:1 /W:1 /MT:16 /NFL /NDL /NP /LOG:&quot;&#123;2&#125;&quot;&#x27;</span> <span class="operator">-f</span> <span class="variable">$Source</span>, <span class="variable">$Target</span>, <span class="variable">$rcLog</span>)</span><br><span class="line">cmd /c <span class="variable">$robocmd</span> | <span class="built_in">Out-Null</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 简单校验：判断关键文件是否存在（如 User Data\Default）</span></span><br><span class="line"><span class="variable">$expected</span> = <span class="built_in">Join-Path</span> <span class="variable">$Target</span> <span class="string">&quot;User Data&quot;</span></span><br><span class="line"><span class="keyword">if</span> (<span class="operator">-not</span> (<span class="built_in">Test-Path</span> <span class="literal">-LiteralPath</span> <span class="variable">$expected</span>)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="string">&quot;复制似乎不完整：未发现 <span class="variable">$expected</span>。请查看日志：<span class="variable">$rcLog</span>&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 备份原目录</span></span><br><span class="line"><span class="variable">$Backup</span> = (<span class="string">&quot;&#123;0&#125;.bak_&#123;1&#125;&quot;</span> <span class="operator">-f</span> <span class="variable">$Source</span>, (<span class="built_in">Get-Date</span> <span class="literal">-Format</span> yyyyMMdd_HHmmss))</span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;将源目录改名为备份：<span class="variable">$Backup</span>&quot;</span></span><br><span class="line"><span class="built_in">Rename-Item</span> <span class="literal">-LiteralPath</span> <span class="variable">$Source</span> <span class="literal">-NewName</span> (<span class="built_in">Split-Path</span> <span class="literal">-Leaf</span> <span class="variable">$Backup</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建联接（Junction）</span></span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;创建联接：<span class="variable">$Source</span> -&gt; <span class="variable">$Target</span>&quot;</span></span><br><span class="line"><span class="variable">$mk</span> = <span class="string">&#x27;mklink /J &quot;&#x27;</span> + <span class="variable">$Source</span> + <span class="string">&#x27;&quot; &quot;&#x27;</span> + <span class="variable">$Target</span> + <span class="string">&#x27;&quot;&#x27;</span></span><br><span class="line">cmd /c <span class="variable">$mk</span> | <span class="built_in">Out-Null</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 骑验联接是否创建成功</span></span><br><span class="line"><span class="variable">$item</span> = <span class="built_in">Get-Item</span> <span class="literal">-LiteralPath</span> <span class="variable">$Source</span> <span class="literal">-ErrorAction</span> SilentlyContinue</span><br><span class="line"><span class="keyword">if</span> (<span class="operator">-not</span> <span class="variable">$item</span> <span class="operator">-or</span> <span class="operator">-not</span> (<span class="variable">$item</span>.Attributes <span class="operator">-band</span> [<span class="type">IO.FileAttributes</span>]::ReparsePoint)) &#123;</span><br><span class="line">    <span class="comment"># 回滚</span></span><br><span class="line">    <span class="built_in">Write-Warning</span> <span class="string">&quot;联接创建失败，正在回滚...&quot;</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Test-Path</span> <span class="literal">-LiteralPath</span> <span class="variable">$Source</span>) &#123; <span class="built_in">Remove-Item</span> <span class="literal">-LiteralPath</span> <span class="variable">$Source</span> <span class="literal">-Force</span> <span class="literal">-Recurse</span> &#125;</span><br><span class="line">    <span class="built_in">Rename-Item</span> <span class="literal">-LiteralPath</span> <span class="variable">$Backup</span> <span class="literal">-NewName</span> (<span class="built_in">Split-Path</span> <span class="literal">-Leaf</span> <span class="variable">$Source</span>)</span><br><span class="line">    <span class="keyword">throw</span> <span class="string">&quot;创建联接失败。已回滚到原状态。&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;联接创建成功！Chrome 数据现已位于：<span class="variable">$Target</span>&quot;</span></span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;备份保存在：<span class="variable">$Backup</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：删除备份</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$RemoveBackupAfterVerify</span>) &#123;</span><br><span class="line">    <span class="built_in">Write-Host</span> <span class="string">&quot;验证通过，删除备份目录：<span class="variable">$Backup</span>&quot;</span></span><br><span class="line">    <span class="built_in">Remove-Item</span> <span class="literal">-LiteralPath</span> <span class="variable">$Backup</span> <span class="literal">-Recurse</span> <span class="literal">-Force</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">Write-Host</span> <span class="string">&quot;建议在确认 Chrome 正常运行一段时间后，再手动删除备份以释放空间。&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Write-Host</span> <span class="string">&quot;完成。&quot;</span></span><br></pre></td></tr></table></figure>
+<p>预期的输出结果应该是这样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">正在关闭 Chrome 进程...</span><br><span class="line">创建目标目录：F:\Program Files (x86)\Chrome</span><br><span class="line">复制文件到新位置（可能需要一些时间）...</span><br><span class="line">将源目录改名为备份：C:\Users\victor\AppData\Local\Google\Chrome.bak_20251023_112041</span><br><span class="line">创建联接：C:\Users\victor\AppData\Local\Google\Chrome -&gt; F:\Program Files (x86)\Chrome</span><br><span class="line">联接创建成功！Chrome 数据现已位于：F:\Program Files (x86)\Chrome</span><br><span class="line">备份保存在：C:\Users\victor\AppData\Local\Google\Chrome.bak_20251023_112041</span><br><span class="line">建议在确认 Chrome 正常运行一段时间后，再手动删除备份以释放空间。</span><br><span class="line">完成。</span><br></pre></td></tr></table></figure>
+<p>最后打开Chrome看看运行是否正常，没问题的话手动删掉<code>$env:LOCALAPPDATA\Google\Chrome.bak_xxx</code>文件夹即可。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/PowerShell/" rel="tag"># PowerShell</a>
+              <a href="/tags/Windows/" rel="tag"># Windows</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/1158735257/" rel="prev" title="使用fail2ban解决frps转发Windows远程时碰到的安全问题">
+      <i class="fa fa-chevron-left"></i> 使用fail2ban解决frps转发Windows远程时碰到的安全问题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="utterances-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#powershell%E8%84%9A%E6%9C%AC"><span class="nav-number">1.</span> <span class="nav-text"> PowerShell脚本</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Victor Chen"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Victor Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Vict0r-Chen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Vict0r-Chen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/victorchen.3012@gmail.com" title="E-Mail → victorchen.3012@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Victor Chen</span>
+    <span class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17122079号-3 </a>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#utterances-container'), () => {
+    // if (typeof parcelRequire === 'function') { return; }
+    var js = document.createElement('script');
+    js.type = 'text/javascript';
+    js.src = 'https://utteranc.es/client.js';
+    js.async = true;
+    js.crossorigin = 'anonymous';
+    js.setAttribute('repo', 'Vict0r-Chen/blog-comment');
+    js.setAttribute('issue-term', 'pathname');
+    js.setAttribute('theme', 'dark-blue');
+    document.getElementById('utterances-container').appendChild(js);
+});
+</script>
+
+</body>
+</html>
