@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/avatar.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近排查到一个很有意思的 Electron 焦点问题：App 明明已经被其他普通窗口遮住，其他窗口也确实还在接收输入，但 Electron 却始终认为自己的窗口处于聚焦状态。 这个问题只会在一个比较特殊的启动时序下出现：App 启动后、页面尚未完成首次渲染时，用户迅速切换到其他窗口；稍后 Electron 在 ready-to-show 中调用 show()，尝试显示并激活 App。Windows">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次electron自动聚焦导致焦点判断失效的问题">
+<meta property="og:url" content="https://v1ctor.cn/1114044935/index.html">
+<meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="最近排查到一个很有意思的 Electron 焦点问题：App 明明已经被其他普通窗口遮住，其他窗口也确实还在接收输入，但 Electron 却始终认为自己的窗口处于聚焦状态。 这个问题只会在一个比较特殊的启动时序下出现：App 启动后、页面尚未完成首次渲染时，用户迅速切换到其他窗口；稍后 Electron 在 ready-to-show 中调用 show()，尝试显示并激活 App。Windows">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-07-30T06:49:49.000Z">
+<meta property="article:modified_time" content="2026-07-30T07:06:14.440Z">
+<meta property="article:author" content="Victor Chen">
+<meta property="article:tag" content="ElectronJS">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://v1ctor.cn/1114044935/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>记一次electron自动聚焦导致焦点判断失效的问题 | Victor's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HM4V7STC5P');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Victor's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay hungry, stay foolish.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/1114044935/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          记一次electron自动聚焦导致焦点判断失效的问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-07-30 14:49:49 / Modified: 15:06:14" itemprop="dateCreated datePublished" datetime="2026-07-30T14:49:49+08:00">2026-07-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElectronJS/" itemprop="url" rel="index"><span itemprop="name">ElectronJS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近排查到一个很有意思的 Electron 焦点问题：App 明明已经被其他普通窗口遮住，其他窗口也确实还在接收输入，但 Electron 却始终认为自己的窗口处于聚焦状态。</p>
+<p>这个问题只会在一个比较特殊的启动时序下出现：App 启动后、页面尚未完成首次渲染时，用户迅速切换到其他窗口；稍后 Electron 在 <code>ready-to-show</code> 中调用 <code>show()</code>，尝试显示并激活 App。Windows 并没有真正把前台窗口交给 Electron，但 Electron 仍然触发了 <code>focus</code> 事件，<code>BrowserWindow.isFocused()</code> 也持续返回 <code>true</code>。</p>
+<p>如果 App 还接收来自全局快捷键、原生设备或其他后台输入源的事件，这个错误状态就会导致一个很直观的问题：App 虽然不在前台，却仍然会响应本应只在聚焦时处理的输入。</p>
+<span id="more"></span>
+<hr />
+<h2 id="原来的焦点判断"><a class="markdownIt-Anchor" href="#原来的焦点判断"></a> 原来的焦点判断</h2>
+<p>一开始，我使用的是 Electron 提供的窗口事件和 <code>BrowserWindow.isFocused()</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mainWindow.<span class="title function_">on</span>(<span class="string">&#x27;focus&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">updateFocusStatus</span>(<span class="literal">true</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">mainWindow.<span class="title function_">on</span>(<span class="string">&#x27;blur&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">updateFocusStatus</span>(<span class="literal">false</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">isWindowFocused</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> mainWindow.<span class="title function_">isFocused</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主进程将这个状态同步到渲染进程，渲染进程在处理输入前读取状态：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!store.<span class="property">getters</span>.<span class="property">isFocused</span>) <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">handleInput</span>()</span><br></pre></td></tr></table></figure>
+<p>另外还有一个定时检查，用来防止偶发漏掉 <code>focus</code> 或 <code>blur</code> 事件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">updateFocusStatus</span>(mainWindow.<span class="title function_">isFocused</span>())</span><br><span class="line">&#125;, <span class="number">500</span>)</span><br></pre></td></tr></table></figure>
+<p>这套逻辑看起来很完整：有事件通知、有主动查询、还有定时校正。正常切换窗口时也一直没有问题。</p>
+<p>问题在于，这三条路径最终都依赖同一个数据源——Electron 自己维护的焦点状态。一旦 <code>isFocused()</code> 返回的结果与 Windows 的实际前台窗口不一致，定时检查不仅无法纠正错误，反而会不断把错误的 <code>true</code> 写回状态管理。</p>
+<h2 id="show-不只是显示窗口"><a class="markdownIt-Anchor" href="#show-不只是显示窗口"></a> <code>show()</code> 不只是显示窗口</h2>
+<p>问题最初出现在下面这段很常见的代码中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mainWindow = <span class="keyword">new</span> <span class="title class_">BrowserWindow</span>(&#123;</span><br><span class="line">    <span class="attr">show</span>: <span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">mainWindow.<span class="title function_">on</span>(<span class="string">&#x27;ready-to-show&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    mainWindow.<span class="title function_">show</span>()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>我之前下意识地把 <code>show()</code> 理解成“显示窗口”，但根据 <a target="_blank" rel="noopener" href="https://www.electronjs.org/docs/latest/api/browser-window#winshow">Electron 的 BrowserWindow 文档</a>，它的实际语义是：</p>
+<blockquote>
+<p>显示窗口，并使窗口获得焦点。</p>
+</blockquote>
+<p>如果只想显示窗口、不激活它，Electron 提供的是 <a target="_blank" rel="noopener" href="https://www.electronjs.org/docs/latest/api/browser-window#winshowinactive"><code>showInactive()</code></a>。</p>
+<p>另外，官方 <code>ready-to-show</code> 示例使用的也是 <code>once</code>，而不是 <code>on</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mainWindow.<span class="title function_">once</span>(<span class="string">&#x27;ready-to-show&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    mainWindow.<span class="title function_">show</span>()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>使用 <code>on</code> 时，开发环境的页面重新加载等情况可能再次触发处理逻辑，让窗口重复调用 <code>show()</code> 并尝试抢焦点。它不是这次问题的唯一原因，但会扩大问题出现的窗口。</p>
+<h2 id="真正奇怪的地方"><a class="markdownIt-Anchor" href="#真正奇怪的地方"></a> 真正奇怪的地方</h2>
+<p><code>show()</code> 尝试让窗口获得焦点本身是预期行为。真正异常的是：Windows 没有将前台焦点交给 Electron，Electron 却认为激活已经成功。</p>
+<p>复现时可以看到：</p>
+<ul>
+<li>其他普通 Windows 窗口仍然位于 Electron 上方；</li>
+<li>其他窗口仍然能够接收键盘或导航输入；</li>
+<li>Electron 触发了 <code>focus</code> 事件；</li>
+<li><code>mainWindow.isFocused()</code> 返回 <code>true</code>；</li>
+<li>之后一直没有对应的 <code>blur</code> 事件。</li>
+</ul>
+<p>这里需要区分两种状态：</p>
+<ul>
+<li>Electron/Chromium Views 内部认为窗口是否处于 Active 状态；</li>
+<li>Windows 当前真正的前台窗口是谁。</li>
+</ul>
+<p>在当时使用的 Electron 13.6.9 中，<code>BrowserWindow.isFocused()</code> 最终依赖 Chromium Views 的 <code>Widget::IsActive()</code>；<code>show()</code> 则会尝试执行 <code>Widget::Activate()</code>。在这个特殊时序下，内部 Active 状态发生了变化，但 Windows 的实际前台窗口没有变化，于是两个状态产生了分歧。</p>
+<p>因此，仅仅记录 Electron 的 <code>focus</code>、<code>blur</code> 和 <code>isFocused()</code> 是无法发现问题的。它们看到的是同一个错误状态。</p>
+<h2 id="用-win32-api-确认真实前台窗口"><a class="markdownIt-Anchor" href="#用-win32-api-确认真实前台窗口"></a> 用 Win32 API 确认真实前台窗口</h2>
+<p>为了确认到底是谁判断错了，我在日志中同时记录了两组信息：</p>
+<ul>
+<li>Electron 的 <code>mainWindow.isFocused()</code>；</li>
+<li>Win32 <code>GetForegroundWindow()</code> 返回的 HWND。</li>
+</ul>
+<p><code>GetForegroundWindow()</code> 会返回用户当前正在使用的前台窗口句柄，具体定义可以查看 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/api/winuser/nf-winuser-getforegroundwindow">Microsoft Learn</a>。</p>
+<p>Electron 也可以通过 <code>getNativeWindowHandle()</code> 取得自身窗口的原生句柄。在 Windows 上，这个句柄的类型同样是 HWND：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> electronHandle = mainWindow.<span class="title function_">getNativeWindowHandle</span>()</span><br><span class="line"><span class="keyword">const</span> foregroundHandle = user32.<span class="title class_">GetForegroundWindow</span>()</span><br></pre></td></tr></table></figure>
+<p>将两者转换成相同格式后进行比较，就能判断 Electron 窗口是否真的是 Windows 前台窗口：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isNativeWindowFocused</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> foregroundHandle = user32.<span class="title class_">GetForegroundWindow</span>()</span><br><span class="line">    <span class="keyword">if</span> (!foregroundHandle) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> electronHandle = mainWindow.<span class="title function_">getNativeWindowHandle</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">normalizeHwnd</span>(foregroundHandle) === <span class="title function_">normalizeHwnd</span>(electronHandle)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的 <code>normalizeHwnd()</code> 需要根据使用的 FFI 库，将原生指针和 Electron 返回的 <code>Buffer</code> 统一转换成不会丢失精度的十六进制字符串或 <code>BigInt</code>。不要直接把 64 位 HWND 转成 JavaScript <code>Number</code>，否则可能出现精度问题。</p>
+<p>补完日志后，问题变得非常清楚：</p>
+<table>
+<thead>
+<tr>
+<th>时机</th>
+<th><code>BrowserWindow.isFocused()</code></th>
+<th>Win32 前台窗口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>调用 <code>show()</code> 前</td>
+<td><code>false</code></td>
+<td>其他窗口</td>
+</tr>
+<tr>
+<td>调用 <code>show()</code> 后</td>
+<td><code>true</code></td>
+<td>仍然是其他窗口</td>
+</tr>
+<tr>
+<td>100ms 后</td>
+<td><code>true</code></td>
+<td>仍然是其他窗口</td>
+</tr>
+<tr>
+<td>1s 后</td>
+<td><code>true</code></td>
+<td>仍然是其他窗口</td>
+</tr>
+</tbody>
+</table>
+<p>这说明并不是状态没有同步到渲染进程，而是主进程同步的源数据本身就是错的。Windows 只有一个实际前台窗口，此时应该以系统返回的 HWND 为准。</p>
+<h2 id="最后的解决方案"><a class="markdownIt-Anchor" href="#最后的解决方案"></a> 最后的解决方案</h2>
+<p>最终没有继续把 <code>BrowserWindow.isFocused()</code> 作为 Windows 上的唯一判断依据，而是封装了统一入口：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isWindowFocused</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!mainWindow || mainWindow.<span class="title function_">isDestroyed</span>()) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> electronFocused = mainWindow.<span class="title function_">isFocused</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (process.<span class="property">platform</span> !== <span class="string">&#x27;win32&#x27;</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> electronFocused</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> nativeFocused = <span class="title function_">getNativeWindowFocusStatus</span>()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 原生 API 初始化失败时保留原有逻辑，避免影响其他环境</span></span><br><span class="line">    <span class="keyword">return</span> nativeFocused == <span class="literal">null</span> ? electronFocused : nativeFocused</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 Windows 上，<code>getNativeWindowFocusStatus()</code> 内部调用 <code>GetForegroundWindow()</code>，并将结果与 App 自身 HWND 比较。然后让所有焦点相关逻辑都走这个统一入口：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mainWindow.<span class="title function_">on</span>(<span class="string">&#x27;focus&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">updateFocusStatus</span>(<span class="title function_">isWindowFocused</span>())</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">mainWindow.<span class="title function_">on</span>(<span class="string">&#x27;blur&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">updateFocusStatus</span>(<span class="literal">false</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">updateFocusStatus</span>(<span class="title function_">isWindowFocused</span>())</span><br><span class="line">&#125;, <span class="number">500</span>)</span><br></pre></td></tr></table></figure>
+<p>除此之外，我还做了几层防护：</p>
+<ol>
+<li>将渲染进程中的初始焦点状态设为 <code>false</code>。窗口尚未真正成为 Windows 前台窗口时，不应该提前接收输入。</li>
+<li>将 <code>ready-to-show.on()</code> 改为 <code>ready-to-show.once()</code>，避免页面重新加载时重复执行 <code>show()</code>。</li>
+<li>在 <code>show()</code> 后延迟 100ms 再根据 Win32 结果校正一次状态。</li>
+<li>在主进程的实际操作入口再次调用 <code>isWindowFocused()</code>，防止渲染进程中已经排队的异步任务绕过焦点变化。</li>
+<li>对于只需要显示、不应该主动抢焦点的场景，改用 <code>showInactive()</code>。</li>
+</ol>
+<p>这里最重要的是最后一道主进程校验。前端的状态门禁更适合改善交互，但它可能受到 IPC 延迟、状态同步或定时任务的影响。真正会产生副作用的操作，最好在执行前再检查一次系统真实焦点。</p>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>这个问题最容易误判成“主进程与渲染进程状态没有同步”。因为表面上看，渲染进程保存了一个错误的 <code>true</code>。但把时间线补完整后会发现，状态同步其实完全正常，只是 Electron 在特殊启动时序下提供了错误的焦点状态。</p>
+<p>这次排查最大的收获有三个：</p>
+<ul>
+<li><code>BrowserWindow.show()</code> 会显示并尝试聚焦窗口，不是单纯改变可见性；</li>
+<li><code>focus</code> 事件与 <code>isFocused()</code> 一致，不代表它们一定与操作系统的真实前台窗口一致；</li>
+<li>当功能依赖“App 必须真正在前台”这一安全边界时，Windows 上应使用 <code>GetForegroundWindow()</code> 与 App HWND 进行最终确认。</li>
+</ul>
+<p>跨平台框架提供的抽象通常已经足够好用，但窗口焦点、置顶、全屏和输入这类与操作系统结合很深的功能，一旦遇到极端时序，最终还是要回到原生系统状态来确认。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ElectronJS/" rel="tag"># ElectronJS</a>
+              <a href="/tags/Windows/" rel="tag"># Windows</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/73315643/" rel="prev" title="ChatGPT闲聊之从 WebAssembly 到 CPU Cache">
+      <i class="fa fa-chevron-left"></i> ChatGPT闲聊之从 WebAssembly 到 CPU Cache
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="utterances-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E6%9D%A5%E7%9A%84%E7%84%A6%E7%82%B9%E5%88%A4%E6%96%AD"><span class="nav-number">1.</span> <span class="nav-text"> 原来的焦点判断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#show-%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%98%BE%E7%A4%BA%E7%AA%97%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text"> show() 不只是显示窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E6%AD%A3%E5%A5%87%E6%80%AA%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="nav-number">3.</span> <span class="nav-text"> 真正奇怪的地方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8-win32-api-%E7%A1%AE%E8%AE%A4%E7%9C%9F%E5%AE%9E%E5%89%8D%E5%8F%B0%E7%AA%97%E5%8F%A3"><span class="nav-number">4.</span> <span class="nav-text"> 用 Win32 API 确认真实前台窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">5.</span> <span class="nav-text"> 最后的解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text"> 总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Victor Chen"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Victor Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Vict0r-Chen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Vict0r-Chen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/victorchen.3012@gmail.com" title="E-Mail → victorchen.3012@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Victor Chen</span>
+    <span class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17122079号-3 </a>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#utterances-container'), () => {
+    // if (typeof parcelRequire === 'function') { return; }
+    var js = document.createElement('script');
+    js.type = 'text/javascript';
+    js.src = 'https://utteranc.es/client.js';
+    js.async = true;
+    js.crossorigin = 'anonymous';
+    js.setAttribute('repo', 'Vict0r-Chen/blog-comment');
+    js.setAttribute('issue-term', 'pathname');
+    js.setAttribute('theme', 'dark-blue');
+    document.getElementById('utterances-container').appendChild(js);
+});
+</script>
+
+</body>
+</html>
