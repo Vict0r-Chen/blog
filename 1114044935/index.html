@@ -28,7 +28,7 @@
 <meta property="og:description" content="最近排查到一个很有意思的 Electron 焦点问题：App 明明已经被其他普通窗口遮住，其他窗口也确实还在接收输入，但 Electron 却始终认为自己的窗口处于聚焦状态。 这个问题只会在一个比较特殊的启动时序下出现：App 启动后、页面尚未完成首次渲染时，用户迅速切换到其他窗口；稍后 Electron 在 ready-to-show 中调用 show()，尝试显示并激活 App。Windows">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-07-30T06:49:49.000Z">
-<meta property="article:modified_time" content="2026-07-30T07:06:14.440Z">
+<meta property="article:modified_time" content="2026-10-23T05:50:45.897Z">
 <meta property="article:author" content="Victor Chen">
 <meta property="article:tag" content="ElectronJS">
 <meta property="article:tag" content="Windows">
@@ -195,10 +195,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2026-07-30 14:49:49 / Modified: 15:06:14" itemprop="dateCreated datePublished" datetime="2026-07-30T14:49:49+08:00">2026-07-30</time>
+              <time title="Created: 2026-07-30 14:49:49" itemprop="dateCreated datePublished" datetime="2026-07-30T14:49:49+08:00">2026-07-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-10-23 13:50:45" itemprop="dateModified" datetime="2026-10-23T13:50:45+08:00">2026-10-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -352,7 +358,10 @@
     <a href="/73315643/" rel="prev" title="ChatGPT闲聊之从 WebAssembly 到 CPU Cache">
       <i class="fa fa-chevron-left"></i> ChatGPT闲聊之从 WebAssembly 到 CPU Cache
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/689544421/" rel="next" title="微软商店 Partner Center 用 CSV 批量导入多语言商店一览（附模板和脚本）">
+      微软商店 Partner Center 用 CSV 批量导入多语言商店一览（附模板和脚本） <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -428,7 +437,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -441,7 +450,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

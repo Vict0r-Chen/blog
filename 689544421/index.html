@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/avatar.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"v1ctor.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideLeftIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近给自己的 Xbox 手柄测试工具发新版本，商店一览要支持 8 种语言，每种语言都有说明、新增功能、产品功能、搜索关键字，外加 6 张桌面截图和 6 张 Xbox 截图。在网页上一个个填，光截图就要上传将近 100 次。Partner Center 其实支持用 CSV 批量导入导出，但有个文档里没写清楚的坑：图片路径必须从你上传的文件夹名开始写，否则会直接提示“我们无法处理此 .csv 文件”，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微软商店 Partner Center 用 CSV 批量导入多语言商店一览（附模板和脚本）">
+<meta property="og:url" content="https://v1ctor.cn/689544421/index.html">
+<meta property="og:site_name" content="Victor&#39;s blog">
+<meta property="og:description" content="最近给自己的 Xbox 手柄测试工具发新版本，商店一览要支持 8 种语言，每种语言都有说明、新增功能、产品功能、搜索关键字，外加 6 张桌面截图和 6 张 Xbox 截图。在网页上一个个填，光截图就要上传将近 100 次。Partner Center 其实支持用 CSV 批量导入导出，但有个文档里没写清楚的坑：图片路径必须从你上传的文件夹名开始写，否则会直接提示“我们无法处理此 .csv 文件”，">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-10-23T03:43:31.000Z">
+<meta property="article:modified_time" content="2026-10-23T05:50:45.892Z">
+<meta property="article:author" content="Victor Chen">
+<meta property="article:tag" content="UWP">
+<meta property="article:tag" content="XBox">
+<meta property="article:tag" content="Microsoft Store">
+<meta property="article:tag" content="Partner Center">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://v1ctor.cn/689544421/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>微软商店 Partner Center 用 CSV 批量导入多语言商店一览（附模板和脚本） | Victor's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HM4V7STC5P"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-HM4V7STC5P');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Victor's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay hungry, stay foolish.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://v1ctor.cn/689544421/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Victor Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Victor's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微软商店 Partner Center 用 CSV 批量导入多语言商店一览（附模板和脚本）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-10-23 11:43:31 / Modified: 13:50:45" itemprop="dateCreated datePublished" datetime="2026-10-23T11:43:31+08:00">2026-10-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%9E%E7%94%A8%E6%8A%80%E8%83%BD/" itemprop="url" rel="index"><span itemprop="name">实用技能</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近给自己的 Xbox 手柄测试工具发新版本，商店一览要支持 8 种语言，每种语言都有说明、新增功能、产品功能、搜索关键字，外加 6 张桌面截图和 6 张 Xbox 截图。在网页上一个个填，光截图就要上传将近 100 次。Partner Center 其实支持用 CSV 批量导入导出，但有个文档里没写清楚的坑：<strong>图片路径必须从你上传的文件夹名开始写</strong>，否则会直接提示“我们无法处理此 .csv 文件”，而且错误详情是空的。</p>
+<p>这篇记录一下完整流程、踩到的坑，并附上内容模板和一个生成导入文件夹的脚本。</p>
+<span id="more"></span>
+<h2 id="tldr"><a class="markdownIt-Anchor" href="#tldr"></a> TL;DR</h2>
+<ol>
+<li>在 Partner Center 应用概述页的「Store 一览」下点「导出列表」，拿到 CSV。</li>
+<li>改 CSV：文字直接改；要换图片就把单元格改成图片的<strong>相对路径</strong>，并且路径要以<strong>上传的文件夹名</strong>开头，比如 <code>ListingImport/EN-1.png</code>。</li>
+<li>把 CSV 和图片放进同一个文件夹（就叫 <code>ListingImport</code>），点「导入列表」，选择这个文件夹。</li>
+</ol>
+<p>只改文字时，直接导入单个 CSV 就行；要上传新图片才需要导入文件夹。</p>
+<h2 id="导出的-csv-长什么样"><a class="markdownIt-Anchor" href="#导出的-csv-长什么样"></a> 导出的 CSV 长什么样</h2>
+<p>入口在应用概述页，当前提交的「Store 一览」下面有三个链接：「添加/删除语言」「导出列表」「导入列表」。导出的文件名类似 <code>listingData-&lt;产品ID&gt;-&lt;提交ID&gt;.csv</code>。</p>
+<p>打开后是一张「字段 × 语言」的表：</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>ID</th>
+<th>Type (类型)</th>
+<th>default</th>
+<th>en-us</th>
+<th>zh-hans</th>
+<th>…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Description</td>
+<td>2</td>
+<td>文本</td>
+<td></td>
+<td>英文说明</td>
+<td>中文说明</td>
+<td></td>
+</tr>
+<tr>
+<td>ReleaseNotes</td>
+<td>3</td>
+<td>文本</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>DesktopScreenshot1</td>
+<td>100</td>
+<td>相对路径(或指向合作伙伴中心文件的 URL)</td>
+<td></td>
+<td>https://…/listingassets/…</td>
+<td>https://…</td>
+<td></td>
+</tr>
+<tr>
+<td>…</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>每一行是一个字段，每一列是一种语言（列名就是语言代码）。</li>
+<li><code>Type</code> 列只有三种：<strong>文本</strong>、<strong>相对路径或 URL</strong>（图片、视频等资源）、<strong>True/False</strong>。这一列的文字会随网页语言变化，英文界面导出就是 <code>Text</code>。</li>
+<li>已经上传过的图片会导出成 Partner Center 里的网址。导入时保留这个网址，就表示继续用原来那张图。</li>
+</ul>
+<p>常用字段和网页上的长度上限（超过会导入失败）：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+<th>上限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Description</code></td>
+<td>说明</td>
+<td>10000 字符</td>
+</tr>
+<tr>
+<td><code>ReleaseNotes</code></td>
+<td>此版本的新增功能</td>
+<td>1500 字符</td>
+</tr>
+<tr>
+<td><code>Title</code></td>
+<td>产品名称，必须是已保留的名称，不能随便改</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ShortTitle</code></td>
+<td>短标题，空间有限的地方显示</td>
+<td>50 字符</td>
+</tr>
+<tr>
+<td><code>ShortDescription</code></td>
+<td>短说明，Xbox 商店等位置显示</td>
+<td>1000 字符</td>
+</tr>
+<tr>
+<td><code>Feature1</code>~<code>Feature20</code></td>
+<td>产品功能，商店页以列表显示</td>
+<td>每条 200 字符</td>
+</tr>
+<tr>
+<td><code>SearchTerm1</code>~<code>SearchTerm7</code></td>
+<td>搜索关键字</td>
+<td>最多 7 个，合计不超过 21 个词</td>
+</tr>
+<tr>
+<td><code>DevStudio</code></td>
+<td>开发者</td>
+<td>255 字符</td>
+</tr>
+<tr>
+<td><code>CopyrightTrademarkInformation</code></td>
+<td>版权和商标信息</td>
+<td>200 字符</td>
+</tr>
+<tr>
+<td><code>DesktopScreenshot1</code>~<code>30</code></td>
+<td>桌面截图</td>
+<td>图片</td>
+</tr>
+<tr>
+<td><code>DesktopScreenshotCaption1</code>~<code>30</code></td>
+<td>桌面截图标题</td>
+<td>文本</td>
+</tr>
+<tr>
+<td><code>XboxScreenshot1</code>~<code>30</code></td>
+<td>Xbox 截图，必须是 1920×1080 或 3840×2160</td>
+<td>图片</td>
+</tr>
+</tbody>
+</table>
+<h2 id="修改-csv-的注意事项"><a class="markdownIt-Anchor" href="#修改-csv-的注意事项"></a> 修改 CSV 的注意事项</h2>
+<ul>
+<li><strong>不要用 Excel 直接编辑保存。</strong> 导出文件是 UTF-8（带 BOM）、CRLF 换行，说明这类多行文本是带引号的多行单元格，Excel 另存很容易把编码或多行内容弄坏。建议用脚本改，或者用 VS Code 这类能保留编码的编辑器。</li>
+<li><strong>不要动 <code>Field</code>、<code>ID</code>、<code>Type</code> 三列，不要增删行列、不要调整顺序。</strong> 只改语言列里的值。</li>
+<li><strong>保留原文件名。</strong> 文件名里带着提交 ID，我一开始给它改了个短名字，后来虽然证明不是这次失败的原因，但没必要冒这个险。</li>
+<li>单元格<strong>留空</strong>表示清空该字段；图片单元格留空就是删除这张图。</li>
+<li>要加新语言，先在网页上「添加/删除语言」，再导出，CSV 里才会有那一列。</li>
+</ul>
+<h2 id="最大的坑图片路径要带上文件夹名"><a class="markdownIt-Anchor" href="#最大的坑图片路径要带上文件夹名"></a> 最大的坑：图片路径要带上文件夹名</h2>
+<p>导入时会提示“你可以上传单个 .csv 文件，也可以上传包含你的 .csv、图像和其他资源的文件夹”。要上传新图片，就得选文件夹。我的文件夹是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ListingImport-1.1.0/</span><br><span class="line">├── listingData-9N0C5DM13TRF-1152921505702200216.csv</span><br><span class="line">├── EN-1.png</span><br><span class="line">├── EN-2.png</span><br><span class="line">└── ZH-1.png …</span><br></pre></td></tr></table></figure>
+<p>按常识，CSV 和图片在同一个目录，单元格里写 <code>EN-1.png</code> 就应该能找到。结果导入直接失败：</p>
+<blockquote>
+<p>我们无法处理此 .csv 文件。请重新导出列表，进行任意需要的更新，然后重试。</p>
+</blockquote>
+<p>点「查看错误」，页面上只有一句“由于文件中有错误，无法导入以下语言的列表”，下面一个语言都没列。这说明整个文件在解析阶段就被拒绝了，而不是某个语言的内容有问题。提示还说“请重新导出”，很容易让人以为是导出文件过期了。</p>
+<p>排查过程是一步步缩小范围：</p>
+<table>
+<thead>
+<tr>
+<th>测试</th>
+<th>结果</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只改文字，所有图片格保持导出时的网址，导入单个 CSV</td>
+<td>✅ 成功</td>
+<td>CSV 格式和文字内容都没问题，问题在图片</td>
+</tr>
+<tr>
+<td>只改一张图，路径写 <code>EN-1.png</code>，导入文件夹</td>
+<td>❌ 失败</td>
+<td>和完整导入一样的错误</td>
+</tr>
+<tr>
+<td>只改一张图，路径写 <code>ImportTest-Img-B/EN-1.png</code>，导入文件夹</td>
+<td>✅ 成功</td>
+<td>路径要带文件夹名</td>
+</tr>
+</tbody>
+</table>
+<p>原因大概是浏览器上传文件夹时，每个文件的路径（<code>webkitRelativePath</code>）都是从<strong>所选文件夹的名字</strong>开始的，比如 <code>ImportTest-Img-B/EN-1.png</code>。Partner Center 直接拿单元格里的值去和这个路径比对，而不是按 CSV 所在位置计算相对路径。只写 <code>EN-1.png</code> 就匹配不上，然后整个文件报错。</p>
+<p>所以规则是：<strong>单元格里的路径 = 所选文件夹名 + <code>/</code> + 文件在文件夹里的路径</strong>。也因此，生成好之后<strong>文件夹不能改名</strong>，改了名路径就全对不上了。</p>
+<p>另外，不同语言的截图文件名经常一样（都叫 <code>1.png</code>），放进同一个文件夹前要改成不重名的名字，比如 <code>EN-1.png</code>、<code>ZH-1.png</code>，免得中文商店里出现英文截图。</p>
+<h2 id="模板和脚本"><a class="markdownIt-Anchor" href="#模板和脚本"></a> 模板和脚本</h2>
+<p>为了以后每次发版不再手动折腾，我写了一个脚本：输入导出的 CSV 和一份内容 JSON，输出一个可以直接导入的文件夹。它会自动处理上面这些坑：</p>
+<ul>
+<li>把图片复制进输出文件夹，自动改成不重名的文件名，路径自动加上文件夹名前缀；</li>
+<li>保持导出文件的编码、换行和文件名不变；</li>
+<li>检查各字段的长度上限、搜索关键字数量、Xbox 截图尺寸，有错误就不生成 CSV。</li>
+</ul>
+<p>下载：<a href="/689544421/partner-center-listing-kit.zip" title="partner-center-listing-kit.zip">partner-center-listing-kit.zip</a>，里面是脚本 <code>apply_listing.py</code> 和内容模板 <code>listing-template.json</code>。脚本只依赖 Python 3 标准库，装了 Pillow 会额外检查图片尺寸；也可以单独查看 <a href="/689544421/apply_listing.py" title="apply_listing.py">apply_listing.py</a>。</p>
+<h3 id="内容模板"><a class="markdownIt-Anchor" href="#内容模板"></a> 内容模板</h3>
+<p>键是语言代码，和 CSV 的列名一致；值是要写入的字段。没写的字段保持导出时的原值：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;zh-hans&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;第一段：一句话说清楚应用是做什么的。\n\n• 功能点 1\n• 功能点 2&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ReleaseNotes&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0 新版本\n• 新增：……&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;ShortTitle&quot;</span><span class="punctuation">:</span> <span class="string">&quot;不超过 50 个字符的短标题&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;Feature&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;功能 1&quot;</span><span class="punctuation">,</span> <span class="string">&quot;功能 2&quot;</span><span class="punctuation">,</span> <span class="string">&quot;功能 3&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;SearchTerm&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;关键字1&quot;</span><span class="punctuation">,</span> <span class="string">&quot;关键字2&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;DesktopScreenshot&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;Screenshots/ZH/1.png&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Screenshots/ZH/2.png&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;DesktopScreenshotCaption&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;截图 1 的说明&quot;</span><span class="punctuation">,</span> <span class="string">&quot;截图 2 的说明&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;XboxScreenshot&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;Screenshots/Xbox-ZH/1.png&quot;</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;en-us&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;…&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;DesktopScreenshot&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;Screenshots/EN/1.png&quot;</span><span class="punctuation">,</span> <span class="string">&quot;Screenshots/EN/2.png&quot;</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>几条规则：</p>
+<ul>
+<li><strong>值是字符串</strong>：直接写入同名字段。</li>
+<li><strong>值是列表</strong>：展开成带编号的字段。<code>&quot;Feature&quot;: [...]</code> 会写入 <code>Feature1</code>、<code>Feature2</code>……，列表之后的编号会被清空。截图、截图标题、搜索关键字都是这样写。</li>
+<li><strong>图片</strong>：写本地路径（相对 JSON 文件），或者写 http 开头的网址保留已上传的图片。</li>
+<li>以下划线开头的键会被忽略，可以当注释用。</li>
+</ul>
+<h3 id="使用步骤"><a class="markdownIt-Anchor" href="#使用步骤"></a> 使用步骤</h3>
+<ol>
+<li>
+<p>在 Partner Center 导出列表，得到 <code>listingData-xxx.csv</code>。</p>
+</li>
+<li>
+<p>复制一份模板，按语言填好内容，截图按语言放好。目录大概是这样：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Store/</span><br><span class="line">├── listingData-9N0C5DM13TRF-1152921505702200216.csv</span><br><span class="line">├── listing.json</span><br><span class="line">└── Screenshots/</span><br><span class="line">    ├── EN/1.png … 6.png</span><br><span class="line">    ├── ZH/1.png … 6.png</span><br><span class="line">    ├── Xbox-EN/1.png …</span><br><span class="line">    └── Xbox-ZH/1.png …</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>运行脚本，最后一个参数是输出文件夹名（会作为图片路径前缀）：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python apply_listing.py listingData-9N0C5DM13TRF-1152921505702200216.csv listing.json ListingImport</span><br></pre></td></tr></table></figure>
+<p>输出类似：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输出文件夹：D:\Store\ListingImport</span><br><span class="line">图片路径前缀：ListingImport/（导入时必须选择这个文件夹，文件夹名不要改）</span><br><span class="line">复制图片 24 张；修改字段 47 个</span><br></pre></td></tr></table></figure>
+<p>有问题时会列出来，并且不生成 CSV：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[警告] en-us 搜索关键字：7 个、共 28 个词，建议不超过 7 个 / 21 个词</span><br><span class="line">[错误] en-us XboxScreenshot1: Xbox 截图必须是 1920×1080 或 3840×2160，当前 2369×1637</span><br><span class="line">[错误] en-us ShortTitle: 60 字符，超过上限 50</span><br><span class="line">有错误，没有生成 CSV，修正后重新运行</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在 Partner Center 点「导入列表」，选择 <code>ListingImport</code> 文件夹。</p>
+</li>
+<li>
+<p>导入后抽查一两个语言的商店一览，确认文字和截图都对，再提交认证。</p>
+</li>
+</ol>
+<p>我这次用它重新生成了 8 种语言的导入文件（说明、新增功能、9 条产品功能、7 个关键字，每种语言 6 张桌面截图和 6 张 Xbox 截图），和手工整理、已经导入成功的那份 CSV 比对：文字字段逐格一致，96 个图片单元格都带着正确的文件夹前缀，并且都指向文件夹里存在的图片。</p>
+<h2 id="顺带几个商店一览的小经验"><a class="markdownIt-Anchor" href="#顺带几个商店一览的小经验"></a> 顺带几个商店一览的小经验</h2>
+<ul>
+<li><strong>Xbox 截图可以在电脑上截。</strong> 4K 显示器把 Windows 缩放临时调到 200%，有效分辨率正好是 1920×1080，和 Xbox 上的布局一样；UWP 应用按 <code>Win + Shift + Enter</code> 切到全屏，再全屏截图，得到的就是 3840×2160。截完记得把缩放改回来。</li>
+<li><strong>标题不要随便加第三方商标。</strong> 产品名称是保留名称，不能在 CSV 里改；名字里带 Xbox 这类商标也容易被认证卡住。可以在版权和商标信息里写一句“Xbox 是 Microsoft 集团的商标，本应用与 Microsoft 无关联”。</li>
+<li><strong>搜索关键字写具体需求，别写泛词。</strong> 比如“游戏手柄”比“游戏”更容易被搜索到；“Xbox 手柄测试工具”比“Xbox 手柄”更容易被搜索到。</li>
+</ul>
+<p>希望能帮到同样要维护多语言商店一览的朋友 😁</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/UWP/" rel="tag"># UWP</a>
+              <a href="/tags/XBox/" rel="tag"># XBox</a>
+              <a href="/tags/Microsoft-Store/" rel="tag"># Microsoft Store</a>
+              <a href="/tags/Partner-Center/" rel="tag"># Partner Center</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/1114044935/" rel="prev" title="记一次electron自动聚焦导致焦点判断失效的问题">
+      <i class="fa fa-chevron-left"></i> 记一次electron自动聚焦导致焦点判断失效的问题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="utterances-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tldr"><span class="nav-number">1.</span> <span class="nav-text"> TL;DR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E7%9A%84-csv-%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7"><span class="nav-number">2.</span> <span class="nav-text"> 导出的 CSV 长什么样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-csv-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text"> 修改 CSV 的注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%9A%84%E5%9D%91%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84%E8%A6%81%E5%B8%A6%E4%B8%8A%E6%96%87%E4%BB%B6%E5%A4%B9%E5%90%8D"><span class="nav-number">4.</span> <span class="nav-text"> 最大的坑：图片路径要带上文件夹名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E5%92%8C%E8%84%9A%E6%9C%AC"><span class="nav-number">5.</span> <span class="nav-text"> 模板和脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E6%A8%A1%E6%9D%BF"><span class="nav-number">5.1.</span> <span class="nav-text"> 内容模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="nav-number">5.2.</span> <span class="nav-text"> 使用步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%BA%E5%B8%A6%E5%87%A0%E4%B8%AA%E5%95%86%E5%BA%97%E4%B8%80%E8%A7%88%E7%9A%84%E5%B0%8F%E7%BB%8F%E9%AA%8C"><span class="nav-number">6.</span> <span class="nav-text"> 顺带几个商店一览的小经验</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Victor Chen"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Victor Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Vict0r-Chen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Vict0r-Chen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/victorchen.3012@gmail.com" title="E-Mail → victorchen.3012@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Victor Chen</span>
+    <span class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17122079号-3 </a>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#utterances-container'), () => {
+    // if (typeof parcelRequire === 'function') { return; }
+    var js = document.createElement('script');
+    js.type = 'text/javascript';
+    js.src = 'https://utteranc.es/client.js';
+    js.async = true;
+    js.crossorigin = 'anonymous';
+    js.setAttribute('repo', 'Vict0r-Chen/blog-comment');
+    js.setAttribute('issue-term', 'pathname');
+    js.setAttribute('theme', 'dark-blue');
+    document.getElementById('utterances-container').appendChild(js);
+});
+</script>
+
+</body>
+</html>
